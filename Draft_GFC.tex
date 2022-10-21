@@ -912,11 +912,11 @@ Now, that we know more about how the covariance behave, we can construct a centr
 \subsection{Isotropy test using the oriented perimeter}
 \begin{Theorem}(Multi-directional multivariate CLT for r-threshold). Let $r$ be a positive integer, $m \geq 2$ and $t_{1}, \cdots,t_{r} \in \mathbb{R}$, then, 
 \begin{equation*}
-m\left(\begin{pmatrix} \check{\mathcal{P}}^{\scriptscriptstyle (1)}_{m}(t_{1}) \\  \vdots \\ \check{\mathcal{P}}^{\scriptscriptstyle (1)}_{m}(t_{r}) \\ \check{\mathcal{P}}^{\scriptscriptstyle (2)}_{m}(t_{2}) \\  \vdots \\ \check{\mathcal{P}}^{\scriptscriptstyle (2)}_{m}(t_{r})  \end{pmatrix} - \begin{pmatrix} \mathbb{E}(\check{\mathcal{P}}^{\scriptscriptstyle (1)}_{m}(t_{1}))  \\ \vdots \\ \mathbb{E}(\check{\mathcal{P}}^{\scriptscriptstyle (1)}_{m}(t_{r}))\\\mathbb{E}(\check{\mathcal{P}}^{\scriptscriptstyle (2)}_{m}(t_{1})) \\ \vdots \\ \mathbb{E}(\check{\mathcal{P}}^{\scriptscriptstyle (2)}_{m}(t_{r})) \end{pmatrix}\right) \xrightarrow[m \to \infty]{d} \mathcal{N}\left(0,\,\Sigma_{2r}^{\star}\right),
+\frac{1}{m}\left(\begin{pmatrix} \mathcal{P}^{\scriptscriptstyle (1)}_{m}(t_{1}) \\  \vdots \\ \mathcal{P}^{\scriptscriptstyle (1)}_{m}(t_{r}) \\ \mathcal{P}^{\scriptscriptstyle (2)}_{m}(t_{2}) \\  \vdots \\ \mathcal{P}^{\scriptscriptstyle (2)}_{m}(t_{r})  \end{pmatrix} - \begin{pmatrix} \mathbb{E}(\mathcal{P}^{\scriptscriptstyle (1)}_{m}(t_{1}))  \\ \vdots \\ \mathbb{E}(\mathcal{P}^{\scriptscriptstyle (1)}_{m}(t_{r}))\\\mathbb{E}(\mathcal{P}^{\scriptscriptstyle (2)}_{m}(t_{1})) \\ \vdots \\ \mathbb{E}(\mathcal{P}^{\scriptscriptstyle (2)}_{m}(t_{r})) \end{pmatrix}\right) \xrightarrow[m \to \infty]{d} \mathcal{N}\left(0,\,\Sigma_{2r}^{\star}\right),
 \end{equation*}
 where $\xrightarrow[]{d}$ holds for the convergence in distribution and $\mathcal{N}\left(0,\,\Sigma_{2r}^{\star}\right)$ for the $2r$-dimensional centered Gaussian distribution with covariance matrix $\Sigma^\star$ given by
 \begin{align*}
-\Sigma^{\star}_{2r}(l,i,k,j) & : = \lim_{m \to \infty}\text{Cov}\left(m\check{\mathcal{P}}^{\scriptscriptstyle (i)}_{m}(t_{l}), m\check{\mathcal{P}}^{\scriptscriptstyle (j)}_{m}(t_{k}) \right)
+\Sigma^{\star}_{2r}(l,i,k,j) & : = \lim_{m \to \infty}\text{Cov}\left(\frac{1}{m}\mathcal{P}^{\scriptscriptstyle (i)}_{m}(t_{l}),  \frac{1}{m}\mathcal{P}^{\scriptscriptstyle (j)}_{m}(t_{k}) \right)
 \end{align*}
 \end{Theorem}
 \begin{proof}
@@ -970,17 +970,30 @@ To prove that $\{W^{m}_{x}, x\in G_{m}\}$ satisfies \textit{(ii)}, we write
 For \textit{(iii)} we observe that $\text{Var}(S_m) = \text{Var}\left( \sum^{r}_{j = 1}\frac{a^{\scriptscriptstyle (1)}_j}{m}\mathcal{P}^{\scriptscriptstyle (1)}_{m}(t_j) +\frac{a^{\scriptscriptstyle (2)}_j}{m}\mathcal{P}^{\scriptscriptstyle (2)}_{m}(t_j) \right)$ thus, as $m \to \infty$,
 $\text{Var}\left( \sum^{r}_{j = 1}\frac{a^{\scriptscriptstyle (1)}_j}{m}\mathcal{P}^{\scriptscriptstyle (1)}_{m}(t_j) +\frac{a^{\scriptscriptstyle (2)}_j}{m}\mathcal{P}^{\scriptscriptstyle (2)}_{m}(t_j) \right) \rightarrow \sum^{2}_{k = 1}\big[\sum_{j = 1}^{r}(a^{\scriptscriptstyle (k)}_{j})^{2}(\Sigma_{r}^{\scriptscriptstyle (k)})^{\star}(j,j) +  \sum_{0 \leq i < j \leq r} 2a^{\scriptscriptstyle (k)}_{i}a^{\scriptscriptstyle (k)}_{j}(\Sigma_{r}^{\scriptscriptstyle (k)})^{\star}(i,j)\big] + \sum_{0 \leq i < j \leq r}   2a^{\scriptscriptstyle (1)}_{i}a^{\scriptscriptstyle (2)}_{j}(\Sigma_{r}^{\scriptscriptstyle (1, 2)})^{\star}(i,j)$.
 \end{proof}
-In order to establish the isotropy test,we only need the CLT on the behavior of $ \check{\mathcal{P}}^{\scriptscriptstyle (1)}_{m}(t)$ and $ \check{\mathcal{P}}^{\scriptscriptstyle (2)}_{m}(t)$ at level $t$. Thus, we will show another central limit theorem with lesser conditions on the covariance structure $\rho$ of the field $X$.
+In order to establish the isotropy test,we only need the CLT on the behavior of $ \check{\mathcal{P}}^{\scriptscriptstyle (1)}_{m}(t)$ and $ \check{\mathcal{P}}^{\scriptscriptstyle (2)}_{m}(t)$ at level $t$.To get this result we just need to assume that the field has a covariance kernel is exponentially decaying.
+
 \begin{Theorem}(Multi-directional CLT at level $t$). Let $t \in \mathbb{R}$ , $m \geq 2$, then
 \begin{equation*}
-m\left(\begin{pmatrix} \check{\mathcal{P}}^{\scriptscriptstyle (1)}_{m}(t) \\ \check{\mathcal{P}}^{\scriptscriptstyle (2)}_{m}(t) \end{pmatrix} - \begin{pmatrix} \mathbb{E}(\check{\mathcal{P}}^{\scriptscriptstyle (1)}_{m}(t))  \\\mathbb{E}(\check{\mathcal{P}}^{\scriptscriptstyle (2)}_{m}(t)) \end{pmatrix}\right) \xrightarrow[m \to \infty]{d} \mathcal{N}\left(0,\,\Sigma_{2}^{\star}\right),
+\frac{1}{m}\left(\begin{pmatrix} \mathcal{P}^{\scriptscriptstyle (1)}_{m}(t) \\ \mathcal{P}^{\scriptscriptstyle (2)}_{m}(t) \end{pmatrix} - \begin{pmatrix} \mathbb{E}\left(\mathcal{P}^{\scriptscriptstyle (1)}_{m}(t)\right)  \\\mathbb{E}(\mathcal{P}^{\scriptscriptstyle (2)}_{m}(t)) \end{pmatrix}\right) \xrightarrow[m \to \infty]{d} \mathcal{N}\left(0,\,\Sigma_{2}^{\star}\right),
 \end{equation*}
 where $\xrightarrow[]{d}$ holds for the convergence in distribution and $\mathcal{N}\left(0,\,\Sigma_{2}^{\star}\right)$ for the $2$-dimensional centered Gaussian distribution with covariance matrix $\Sigma_{2}^\star$ given by
 \begin{align*}
-\Sigma^{\star}_{2}(i,j) & : = \lim_{m \to \infty}\text{Cov}\left(m\check{\mathcal{P}}^{\scriptscriptstyle (i)}_{m}(t), m\check{\mathcal{P}}^{\scriptscriptstyle (j)}_{m}(t) \right)
+\Sigma^{\star}_{2}(i,j) & : = \lim_{m \to \infty}\text{Cov}\left(\frac{1}{m}\mathcal{P}^{\scriptscriptstyle (i)}_{m}(t), \frac{1}{m}\mathcal{P}^{\scriptscriptstyle (j)}_{m}(t) \right)
 \end{align*}
 \end{Theorem}
-For the proof of this Theorem we refer the reader to \cite{RVY}.
+For the proof of this Theorem the main ingredients can be found in \cite{RVY}.
+\begin{proof}
+\begin{Theorem}(CLT for exponentially quasi-local statistics of clustering spin clusters models) Let $G$ be a discrete Cayley graph (basically $\mathbb{Z}^{2}$) and together with $(\epsilon, \mathcal{P})$: if $G$ is $b$-amenable, $\mathcal{P}$ is a clustering spin model with summable $\Phi$, $\left(\sum_{x \in V}\Phi^{1/p}(c|x|) = \sum_{n \geq 0} |\partial W_n| \phi^{1/p}(cn) < \infty \right)$ and $\epsilon$ is a local score function. Then you get the CLT.
+\end{Theorem}
+\begin{Corollary}
+Let $\mathcal{H}$ be a stationnary Gaussian field, on a discrete Cayley graph $G$ with $X(0)$ having unit variance. the level set $\mathcal{P}_{u}$ satisfy exponential clustering constant $C = 2^{12/5}k^{8/5}$, $c_{k} = 1$ and clustering function $\Phi(t) = w(O,x)$.
+\end{Corollary}
+\begin{Definition}
+\end{Definition}(Clustering spin models) We say that $\mathcal{P}$ is a clustering spin model if for all $p,q \geq 1$ there exists constant $C_{p+q}, c_{p+q}$ and a fast decreasing function $\Phi$ ($\Phi \leq 1$,  decreasing and $\lim_{s \to \infty}s^{m}\Phi(s) = 0$ for all $m\geq 1$) such that for all distinct $x_{1}, \ldots, x_{p+q} \in V$ (vertices) we have 
+$$|\mathbb{P}\left(\{x_{1}, \ldots, x_{p+q}\} \subset \mathcal{P}\right) - \mathbb{P}\left(\{x_{1}, \ldots, x_{p}\}\subset \mathcal{P}\right)\mathbb{P}\left(\{x_{p+1}, \ldots, x_{p+q}\}\subset \mathcal{P}\right)| \leq C_{p+q}\Phi\left(c_{p+q}s\right)$$
+where $s = d\left(\{x_{1}, \ldots, x_{p}\}, \{x_{p+1}, \ldots, x_{p+q}\}\right)$
+$\rightarrow$ A spin model $\mathcal{P}$ is said to be \textbf{exponentially} if $\mathcal{P}$ is a \textbf{clustering spin} model with $c_{k} \geq c > 0$ and $C_{k} = O(k^{ak})$ for some $a \in [0,1)$and the clustering function satisfies the growth condition $\lim\sup_{t\to \infty}\frac{\log\Phi(t)}{t^{b}} < 0$.
+\end{proof}
 \paragraph{A test statistic} Following the idea  in \cite{bierme2019}  we propose a method to test the isotropy of the field $X$.
 
 Let us consider the null hypothesis
@@ -992,17 +1005,17 @@ and consider the following normality asymptotic result.
 \begin{Proposition}[Ratio of oriented perimeters]\label{deltamethodgeneralprop} 
 Let  $t \in \mathbb{R}$, and $\check{\mathcal{P}}^{\scriptscriptstyle  (i) }(\cdot)$ be the scaled oriented perimeter over direction $i$, introduced in Definition \ref{defPerimetre} computed at level $t$. Then, it holds that,
 \begin{equation*}
-m\left(\cfrac{\check{\mathcal{P}}^{\scriptscriptstyle  (1) }_{m}(t)}{\check{\mathcal{P}}^{\scriptscriptstyle  (2)}_{m}(t)} - \cfrac{\mathbb{E}\left(\check{\mathcal{P}}^{\scriptscriptstyle  (1) }_{m}(t)\right)}{\mathbb{E}\left(\check{\mathcal{P}}^{\scriptscriptstyle  (2)}_{m}(t)\right)} \right)  \xrightarrow[m \to \infty]{d} \mathcal{N}\left(0,  \tilde{\sigma}^{2}(t) \right),
+\frac{1}{m}\left(\cfrac{\mathcal{P}^{\scriptscriptstyle  (1) }_{m}(t)}{\mathcal{P}^{\scriptscriptstyle  (2)}_{m}(t)} - \cfrac{\mathbb{E}\left(\mathcal{P}^{\scriptscriptstyle  (1) }_{m}(t)\right)}{\mathbb{E}\left(\mathcal{P}^{\scriptscriptstyle  (2)}_{m}(t)\right)} \right)  \xrightarrow[m \to \infty]{d} \mathcal{N}\left(0,  \tilde{\sigma}^{2}(t) \right),
 \end{equation*}
 with $\tilde{\sigma}^{2}(t) = \frac{\tilde{\sigma}_{\scriptscriptstyle 1,1}^{2}(t)(\mu^{\star}_{2}(t))^{2} - 2\mu^{\star}_{2}(t)\mu^{\star}_{1}(t)\tilde{\sigma}_{\scriptscriptstyle 1,2}^{2}(t) +\tilde{\sigma}_{\scriptscriptstyle 2,2}^{2}(t)\mu^{\star}_{1}(t))^{2}}{\mu^{\star}_{2}(t)^4}$
-Let $t \in \mathbb{R}$  and  $R_{m}(t) := \cfrac{\check{\mathcal{P}}^{\scriptscriptstyle  (1) }(t)}{\check{\mathcal{P}}^{\scriptscriptstyle  (2) }(t)}$. Then, under $H_{0}$, it holds that
+Let $t \in \mathbb{R}$  and  $R_{m}(t) := \cfrac{\mathcal{P}^{\scriptscriptstyle  (1) }(t)}{\mathcal{P}^{\scriptscriptstyle  (2) }(t)}$. Then, under $H_{0}$, it holds that
 \begin{equation}\label{ratiounderH0}
-m\left(R_{m}(t) - 1 \right)  \xrightarrow[m \to \infty]{d, H_0} \mathcal{N}\left(0,  \tilde{\sigma}^{2}(t)  \right),
+\frac{1}{m}\left(R_{m}(t) - 1 \right)  \xrightarrow[m \to \infty]{d, H_0} \mathcal{N}\left(0,  \tilde{\sigma}^{2}(t)  \right),
 \end{equation}
 and $\tilde{\sigma}^{2}(t) = \frac{2\left(\tilde{\sigma}_{\scriptscriptstyle 1,1}^{2}(t) \, - \, \tilde{\sigma}_{\scriptscriptstyle 1,2}^{2}(t)\right)}{\mu^{\star}_{2}(t)^2}$
 \end{Proposition}
-Consider the consistent empirical estimator $\hat{\sigma}(t):= m^{2}\hat{\mathbb{V}\left(R_{m}(t)\right)}$ of $\tilde{\sigma}^{2}(t)$, where $\hat{\mathbb{V}\left(R_{m}(t)\right)}$ is the empirical variance of the considered ratio. Then, from \ref{deltamethodgeneralprop}, it holds that 
-$$ \frac{m}{\sqrt{\hat{\sigma}(t)}}\left(R_{m}(t) - 1 \right) = \frac{1}{\sqrt{\hat{\mathbb{V}\left(R_{m}(t)\right)}}}\left(R_{m}(t) - 1 \right)   \xrightarrow[m \to \infty]{d, H_{0}} \mathcal{N}\left(0, 1 \right).$$
+Consider the consistent empirical estimator $\hat{\sigma}(t):= \frac{1}{m^2}\hat{\mathbb{V}\left(R_{m}(t)\right)}$ of $\tilde{\sigma}^{2}(t)$, where $\hat{\mathbb{V}\left(R_{m}(t)\right)}$ is the empirical variance of the considered ratio. Then, from \ref{deltamethodgeneralprop}, it holds that 
+$$ \frac{1}{m\sqrt{\hat{\sigma}(t)}}\left(R_{m}(t) - 1 \right) = \frac{1}{\sqrt{\hat{\mathbb{V}\left(R_{m}(t)\right)}}}\left(R_{m}(t) - 1 \right)   \xrightarrow[m \to \infty]{d, H_{0}} \mathcal{N}\left(0, 1 \right).$$
 Take a confidence level $\alpha \in (0,1)$ and set $q_{1-\frac{\alpha}{2}}$ such that $\mathbb{P}\left(|\mathcal{N}\left(0,1\right)| \leq  q_{1-\frac{\alpha}{2}} \right) = 1 - \frac{\alpha}{2}$. We define the symmetric accessible test $\hat{\phi}(t)_{m}$ with asymptotic level $\alpha$ as 
 \begin{equation}
 \label{phihat}
