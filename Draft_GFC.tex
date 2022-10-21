@@ -326,14 +326,15 @@ Using this result, one can define an estimator for $\rho(e_i)$.
 \end{remark}
 Study of the behavior of the nodal curve $t = 0$, 
 \begin{remark}
+\label{decreasingrho}
 Considering $\tilde{\rho}(e_i), \bar{\rho}(e_i)$ two covariance, we  have the following result 
 \begin{equation*}
- \text{if} \hspace{0.5cm} \tilde{\rho}(e_i) \leq \bar{\rho}(e_i) \hspace{0.5cm} \text{then} \hspace{0.5cm}\mathbb{E}\left(\mathcal{P}^{\scriptscriptstyle (i)}_{m, \tilde{\rho}}(0)\right) \geq \mathbb{E}\left(\mathcal{P}^{\scriptscriptstyle (i)}_{m, \bar{\rho}}(0)\right).
+ \text{if} \hspace{0.5cm} \tilde{\rho}(e_i) < \bar{\rho}(e_i) \hspace{0.5cm} \text{then} \hspace{0.5cm}\mathbb{E}\left(\mathcal{P}^{\scriptscriptstyle (i)}_{m, \tilde{\rho}}(0)\right) > \mathbb{E}\left(\mathcal{P}^{\scriptscriptstyle (i)}_{m, \bar{\rho}}(0)\right).
 \end{equation*}
-Where $\mathcal{P}^{\scriptscriptstyle (i)}_{m, \tilde{\rho}}$ is the normalized perimeter with respect of the orientation $i$ associated to the Gaussian field of covariance $\tilde{\rho}$. 
+Where $\mathcal{P}^{\scriptscriptstyle (i)}_{m, \tilde{\rho}}$ is the perimeter with respect of the orientation $i$ associated to the Gaussian field of covariance $\tilde{\rho}$. 
 \end{remark}
 \begin{proof}
-Note that $\rho \mapsto \sqrt{1-\rho}$ is decreasing similarly  for level $0$, one has $\mathbb{E}\left(f^{(i)}(0)\right) = \mathbb{E}\left(\frac{\sqrt{1-\rho(e_i)}}{\sqrt{1+\rho(e_i)}}|N|\right) - \mathbb{E}\left(-\frac{\sqrt{1-\rho(e_i)}}{\sqrt{1+\rho(e_i)}}|N|\right) = 2\mathbb{E}\left(\frac{\sqrt{1-\rho(e_i)}}{\sqrt{1+\rho(e_i)}}|N|\right) - 1$, since $\rho \mapsto \frac{\sqrt{1-\rho}}{\sqrt{1+\rho}}$ is decreasing, we see that $\rho \mapsto 2\mathbb{E}\left(\frac{\sqrt{1-\rho}}{\sqrt{1+\rho}}|N|\right) - 1 $ is also decreasing. 
+Note that $\rho \mapsto \sqrt{1-\rho}$ is strictly decreasing similarly  for level $0$, one has $\mathbb{E}\left(f^{(i)}(0)\right) = \mathbb{E}\left(\frac{\sqrt{1-\rho(e_i)}}{\sqrt{1+\rho(e_i)}}|N|\right) - \mathbb{E}\left(-\frac{\sqrt{1-\rho(e_i)}}{\sqrt{1+\rho(e_i)}}|N|\right) = 2\mathbb{E}\left(\frac{\sqrt{1-\rho(e_i)}}{\sqrt{1+\rho(e_i)}}|N|\right) - 1$, since $\rho \mapsto \frac{\sqrt{1-\rho}}{\sqrt{1+\rho}}$ is strictly decreasing, we see that $\rho \mapsto 2\mathbb{E}\left(\frac{\sqrt{1-\rho}}{\sqrt{1+\rho}}|N|\right) - 1 $ is also strictly decreasing. 
 \end{proof}
 \textcolor{blue}{reorient toward Github for illustrations.}
 \section{Covariance of the perimeter for two thresholds}
@@ -986,7 +987,7 @@ For the proof of this Theorem the main ingredients can be found in \cite{RVY}.
 \begin{Theorem}(CLT for exponentially quasi-local statistics of clustering spin clusters models) Let $G$ be a discrete Cayley graph (basically $\mathbb{Z}^{2}$) and together with $(\epsilon, \mathcal{P})$: if $G$ is $b$-amenable, $\mathcal{P}$ is a clustering spin model with summable $\Phi$, $\left(\sum_{x \in V}\Phi^{1/p}(c|x|) = \sum_{n \geq 0} |\partial W_n| \phi^{1/p}(cn) < \infty \right)$ and $\epsilon$ is a local score function. Then you get the CLT.
 \end{Theorem}
 \begin{Corollary}
-Let $\mathcal{H}$ be a stationnary Gaussian field, on a discrete Cayley graph $G$ with $X(0)$ having unit variance. the level set $\mathcal{P}_{u}$ satisfy exponential clustering constant $C = 2^{12/5}k^{8/5}$, $c_{k} = 1$ and clustering function $\Phi(t) = w(O,x)$.
+Let $\mathcal{H}$ be a stationary Gaussian field, on a discrete Cayley graph $G$ with $X(0)$ having unit variance. the level set $\mathcal{P}_{u}$ satisfy exponential clustering constant $C = 2^{12/5}k^{8/5}$, $c_{k} = 1$ and clustering function $\Phi(t) = w(O,x)$.
 \end{Corollary}
 \begin{Definition}
 \end{Definition}(Clustering spin models) We say that $\mathcal{P}$ is a clustering spin model if for all $p,q \geq 1$ there exists constant $C_{p+q}, c_{p+q}$ and a fast decreasing function $\Phi$ ($\Phi \leq 1$,  decreasing and $\lim_{s \to \infty}s^{m}\Phi(s) = 0$ for all $m\geq 1$) such that for all distinct $x_{1}, \ldots, x_{p+q} \in V$ (vertices) we have 
@@ -1021,9 +1022,9 @@ Take a confidence level $\alpha \in (0,1)$ and set $q_{1-\frac{\alpha}{2}}$ such
 \label{phihat}
 \hat{\phi}(t)_{m}= \mathbbm{1}_{\left\{ \frac{1}{\sqrt{\hat{\mathbb{V}\left(R_{m}(t)\right)}}}\left|\left(R_{m}(t) - 1 \right)\right| \geq q_{1- \frac{\alpha}{2}} \right\}}
 \end{equation}
+\begin{remark}(Power of the statistical test for the level $t = 0$) In Remark \ref{decreasingrho} we showed that the function $\rho \mapsto 2\mathbb{E}\left(\frac{\sqrt{1-\rho}}{\sqrt{1+\rho}}|N|\right) - 1 $ is strictly decreasing, thus, if $\rho(e_1) \neq \rho(e_2)$ thus $\frac{\mathbb{E}\left(\mathcal{P}^{1}(0)\right)}{\mathbb{E}\left(\mathcal{P}^{2}(0)\right)} \neq 1$. 
+\end{remark}
 \section{Numerical studies}
-
-
 \subsection{Numerical studies of moments of the estimated perimeter}
 
 Let $X$ be a stationary, isotropic centered Gaussian field with covariance function given by $\rho(x) = (1 -3||x||_{2}/3C + (||x||_{2}/2C)^{3})\mathbbm{1}_{||x||_{2} < C}, x \in \mathbb{R}^2$
@@ -1084,15 +1085,16 @@ with $a, b \in \mathbb{R}^{2}$ and $\theta \in [0, \pi)$, the field $Y$ is also 
   \centering
     {\includegraphics[scale=0.4]{TestaniPhi0.pdf}}
     \hspace{0.2cm} 
- \caption{We represent the values of $\hat{\Phi}_{m}$ see Equation \eqref{phihat}, computed as a function of $b$ and a fixed value $t=0$in blue color for a Montecarlo $= 2000$, and $C = 40$.}
+ \caption{We represent the values of $\hat{\Phi}_{m}$ see Equation \eqref{phihat}, computed as a function of $b$ and a fixed value $t=0$ in blue color for a Montecarlo $= 2000$, and $C = 40$.}
 \label{fig2}
 \end{figure}
 
 \begin{figure}[H]
   \centering
-    {\includegraphics[scale=0.4]{TestaniRatiovsRHO.pdf}}
+    {\includegraphics[scale=0.2]{TestaniRatiovsRHO.pdf}}
+    {\includegraphics[scale=0.2]{TestaniRatiovsTVA.pdf}}
     \hspace{0.2cm} 
- \caption{We represent the values of the mean of the ratio between the oriented perimeter $\mathbb{E}\left(\frac{\mathcal{P}^{(1)}(0)}{\mathcal{P}^{(2)}(0)}\right)$ in blue and the ratio between of the empirical value for $\hat{\rho(e_i)}$ computed using the total variation (\ref{totalvariation}) for different values of $b$, Montecarlo $= 500$, and $C = 40$.}
+ \caption{We represent the values of the mean of the ratio between the oriented perimeter $\mathbb{E}\left(\frac{\mathcal{P}^{(1)}(0)}{\mathcal{P}^{(2)}(0)}\right)$ in blue and the ratio between of the empirical value for $\hat{\rho(e_i)}$ computed using the first moment of the total variation (\ref{totalvariation}) for different values of $b$, Montecarlo $= 500$, $t = 0$ and $C = 40$.}
 \label{fig2}
 \end{figure}
 
