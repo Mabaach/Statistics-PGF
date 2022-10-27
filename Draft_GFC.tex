@@ -24,7 +24,7 @@
 \usepackage{algorithmic}
 \usepackage{cancel}
 \usepackage{tikz}
-\usepackage{subcaption}
+\usepackage{subcaption} 
 \usetikzlibrary{patterns}
 \usepackage{xcolor}
 \usepackage{bbm}
@@ -239,6 +239,9 @@ with $N \sim \mathcal{N}(0,1)$.
 \begin{remark}(degenerative case)
 If  $\rho(e_i) = -1, \; \mathbb{E}\left(f^{(i)}(t) \right)= 2\left(1 - \Phi\left(\max\left(0,t\right)\right)\right).$
 \end{remark}
+\begin{remark}
+the function $t \mapsto \mathbb{E}\left(f^{(i)}(t) \right)$ is even.
+\end{remark}
 \begin{proof}
 Let us start with the case where $\rho(e_{i}) \in ]-1,1]$. Considering the formula for $\mathcal{P}^{\scriptscriptstyle  (i)}_{m}(t)$ and applying the stationarity hypothesis, since
 \begin{align*}
@@ -293,7 +296,7 @@ v & = & \frac{y+z}{\sqrt{2}} \\
 \end{array}\right.$}, we get the same result as in \cite{Psymetrie} (Proposition \textcolor{blue}{3.1}).
 \end{remark}
 \begin{remark}
-In order to have convergence when $m \to \infty$, one has to consider the normalise perimeter with the area of the window ($m^2$).
+In order to have convergence when $m$ goes to infinity, one has to consider the normalised perimeter with the area of the window ($m^2$).
 \end{remark}
 The total variation of an image $u \in L^{1}_{loc}(\Omega)$ is given by $\int_{\Omega}|\nabla u|dx$ which is equal by the coarea formula to $\int_{\mathbb{R}}\mathcal{P}(t)dt$.
 \begin{Proposition}
@@ -335,6 +338,30 @@ Where $\mathcal{P}^{\scriptscriptstyle (i)}_{m, \tilde{\rho}}$ is the perimeter 
 \end{remark}
 \begin{proof}
 Note that $\rho \mapsto \sqrt{1-\rho}$ is strictly decreasing similarly  for level $0$, one has $\mathbb{E}\left(f^{(i)}(0)\right) = \mathbb{E}\left(\frac{\sqrt{1-\rho(e_i)}}{\sqrt{1+\rho(e_i)}}|N|\right) - \mathbb{E}\left(-\frac{\sqrt{1-\rho(e_i)}}{\sqrt{1+\rho(e_i)}}|N|\right) = 2\mathbb{E}\left(\frac{\sqrt{1-\rho(e_i)}}{\sqrt{1+\rho(e_i)}}|N|\right) - 1$, since $\rho \mapsto \frac{\sqrt{1-\rho}}{\sqrt{1+\rho}}$ is strictly decreasing, we see that $\rho \mapsto 2\mathbb{E}\left(\frac{\sqrt{1-\rho}}{\sqrt{1+\rho}}|N|\right) - 1 $ is also strictly decreasing. 
+\end{proof}
+\textcolor{blue}{Decreasing behavior for all level $t$.}
+\begin{remark}
+Considering $\tilde{\rho}(e_i), \bar{\rho}(e_i)$ two covariance, we  have the following result 
+\begin{equation*}
+ \text{if} \hspace{0.5cm} \tilde{\rho}(e_i) < \bar{\rho}(e_i) \hspace{0.5cm} \text{then} \hspace{0.5cm}\mathbb{E}\left(\mathcal{P}^{\scriptscriptstyle (i)}_{m, \tilde{\rho}}(t)\right) > \mathbb{E}\left(\mathcal{P}^{\scriptscriptstyle (i)}_{m, \bar{\rho}}(t)\right).
+\end{equation*}
+Where $\mathcal{P}^{\scriptscriptstyle (i)}_{m, \tilde{\rho}}$ is the perimeter with respect of the orientation $i$ associated to the Gaussian field of covariance $\tilde{\rho}$. 
+\end{remark}
+\begin{proof}
+Let $x\in(-1,1)$ and $f: x \mapsto \mathbb{E}\left(\Phi\left(\dfrac{2t + \sqrt{2(1-x)}|N|}{\sqrt{2(1+x)}}\right)  - \Phi\left(\dfrac{2t - \sqrt{2(1-x)}|N|}{\sqrt{2(1+x)}}\right)\right)$ we consider $a,b  \in (-1,1)$, such that $a > b$, 
+{\tiny
+\begin{align*}
+f(a) - f(b) = \mathbb{E}\left(\Phi\left(\dfrac{2t + \sqrt{2(1-a)}|N|}{\sqrt{2(1+a)}}\right) - \Phi\left(\dfrac{2t + \sqrt{2(1-b)}|N|}{\sqrt{2(1+b)}}\right)\right) + \mathbb{E}\left(\Phi\left(\dfrac{2t - \sqrt{2(1-b)}|N|}{\sqrt{2(1+b)}}\right)- \Phi\left(\dfrac{2t - \sqrt{2(1-a)}|N|}{\sqrt{2(1+a)}}\right)\right) \\ 
+= \underbrace{\mathbb{E}\left(\Phi\left(\dfrac{2t + \sqrt{2(1-a)}|N|}{\sqrt{2(1+a)}}\right) - \Phi\left(\dfrac{2t + \sqrt{2(1-b)}|N|}{\sqrt{2(1+b)}}\right)\right)}_{< 0} + \mathbb{E}\left(\Phi\left(\dfrac{-2t + \sqrt{2(1-a)}|N|}{\sqrt{2(1+a)}}\right)- \Phi\left(\dfrac{-2t + \sqrt{2(1-b)}|N|}{\sqrt{2(1+b)}}\right)\right) \\
+= \underbrace{\mathbb{E}\left(\Phi\left(\dfrac{2t + \sqrt{2(1-a)}|N|}{\sqrt{2(1+a)}}\right) - \Phi\left(\dfrac{2t + \sqrt{2(1-b)}|N|}{\sqrt{2(1+b)}}\right)\right)}_{< 0} + \underbrace{\mathbb{E}\left(\Phi\left(\dfrac{-2t + \sqrt{2(1-a)}|N|}{\sqrt{2(1+a)}}\right)- \Phi\left(\dfrac{-2t + \sqrt{2(1-b)}|N|}{\sqrt{2(1+b)}}\right)\right)}_{<  0} \\
+= \underbrace{\mathbb{E}\left(\Phi\left(\dfrac{2t + \sqrt{2(1-a)}|N|}{\sqrt{2(1+a)}}\right) - \Phi\left(\dfrac{2t + \sqrt{2(1-b)}|N|}{\sqrt{2(1+b)}}\right)\right) + \mathbb{E}\left(\Phi\left(\dfrac{-2t + \sqrt{2(1-a)}|N|}{\sqrt{2(1+a)}}\right)- \Phi\left(\dfrac{-2t + \sqrt{2(1-b)}|N|}{\sqrt{2(1+b)}}\right)\right)}_{<  0}
+\end{align*}}
+Thus if $a > b$
+{\tiny
+\begin{align*}
+\mathbb{E}\left(\Phi\left(\dfrac{2t + \sqrt{2(1-a)}|N|}{\sqrt{2(1+a)}}\right)  - \Phi\left(\dfrac{2t - \sqrt{2(1-a)}|N|}{\sqrt{2(1+a)}}\right)\right) <  \mathbb{E}\left(\Phi\left(\dfrac{2t + \sqrt{2(1-b)}|N|}{\sqrt{2(1+b)}}\right)  - \Phi\left(\dfrac{2t - \sqrt{2(1-b)}|N|}{\sqrt{2(1+b)}}\right)\right)
+\end{align*}}
+
 \end{proof}
 \textcolor{blue}{reorient toward Github for illustrations.}
 \section{Covariance of the perimeter for two thresholds}
@@ -1067,7 +1094,7 @@ with $a, b \in \mathbb{R}^{2}$ and $\theta \in [0, \pi)$, the field $Y$ is also 
 
 \begin{figure}[H]
   \centering
-    {\includegraphics[scale=0.3]{Variance_40.pdf}}
+    {\includegraphics[scale=0.3]{Variance_40_30_10_1.pdf}}
     \hspace{0.2cm}
  \caption{We represent of the values of $\mathbb{V}\left(\mathcal{P}\right)(t)$, the value of the theoretical curve Equation \eqref{Thisthofour} in (blue) and the empirical values are in orange, the computations were done with a Montecarlo $= 100000$ to compute the theoretical value and Montecarlo $= 2000$ to compute the empirical one, for the values $b = 1$ and $C = 40$. }
 \label{fig2}
