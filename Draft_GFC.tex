@@ -116,28 +116,13 @@ where $(z_{ix}, z_{iy})$ are the coordinates of intensity $z_i$, same for the ot
 r=\sqrt{\hat{x}^{2} + \hat{y}^{2}}, \; \hspace{1cm} \; \hat{\Phi} = \begin{cases} \arctan{\frac{\hat{y}}{\hat{x}}} \hspace{0.5cm} \text{if} \; \hat{x} > 0 , \\
 180 + \arctan{\frac{\hat{y}}{\hat{x}}} \hspace{0.5cm} \text{if} \; \hat{x} < 0 
 \end{cases}
-\end{equation*}
-% where $b_{i} = \begin{cases}0 \; \text{if} \; \gamma = 0 \\ 1 \; \text{else} \end{cases}$, for each sample $\Gamma_{1}, \ldots, \Gamma_{d}$ they determine a mean vector of length $r$ and mean angle $\hat{\Phi}$, (They just sample from the same image $Z_{l,l}$...). They use the standard ellipse to analyses these statistics. Hum this is what they say about this \textit{The tips of the vectors of a second order
-% sample form a scatter diagram of data with
-% standard deviations in the $X$ and $Y$ directions and a
-% certain trend upward or downward. The standard ellipse
-% describes this behavior in a condensed way: assuming
-% normality, roughly $40\%$ of data points fall inside the
-% ellipse and $60\%$ of them outside. The parent population
-% does not need to be normal, although it is desirable that
-% it does not deviate from normality too much.}
-% They define the standard ellipse in the following way
-% \begin{itemize}
-%   \item its center $(\hat{x}, \hat{y})$ \\
-%   \item Construct a rectangle with center at $(\hat{x}, \hat{y})$ and sides parallel to the $X$ and $Y$ axes.. 
-%   \item the standard ellipse is embedded in the rectangle above (see the article for more details on the construction). 
-  % \end{itemize}
+\end{equation*}We debi
 By using standard ellipse, they can compute the direction of maximum variability in a direction of angle $\theta$. So, they are able to describe the spatial behavior of the mean vectors, quantifying by the calculation of $\theta$ the direction of maximum variability
 
 \section{Mathematical framework}\label{section1}
 \subsection{Construction of the binary image}\label{construction}
 \paragraph{Square tiling}
-Let $m$ be an integer with $m \geq 2$. Without loss of generality, we consider our observation window as the unit square $S = [0,m]^{2}$ and  we divide our window into $m^{2}$ pairwise disjoint squares. We denote by $G_{m} := \text{\larger[1]{$[$}}0, m \text{\larger[1]{$)$}}^{2} \cap \mathbb{Z}^{2} $ and for $x \in G_{m}$, we define $C_{m}(x)$ as
+Let $m$ be an integer with $m \geq 2$. Without loss of generality, we consider our observation window as the unit square $S = [0,m]^{2}$ and  we divide our window into $m^{2}$ pairwise disjoint squares. We denote by $G_{m} := \text{\larger[1]{$[$}}0, m \text{\larger[1]{$)$}}^{2} \cap \mathbb{Z}^{2} $ the set of point in $S$ with interger coordinates and for $x \in G_{m}$, we define $C_{m}(x)$ as
 \begin{equation*}
 C_{m}(x) \, := \,x + \text{\larger[1]{$[$}}0, 1 \text{\larger[1]{$]$}}^{2} \subset S.
 \end{equation*}
@@ -150,8 +135,8 @@ Figure \ref{fig1} shows an example of a square tiling with $m = 4$.
   \draw[step = 1cm, black, thick](0,0) grid (4,4);
 \draw[pattern=north west lines, pattern color=blue] (0,0) rectangle (1,1);
 \draw[pattern=north west lines, pattern color=blue] (3,1) rectangle (2,2);
-\foreach \x in {0,1,2,3,4}{
-  \foreach \y in {0,1,2,3,4}{
+\foreach \x in {0,1,2,3}{
+  \foreach \y in {0,1,2,3}{
   \draw[fill = red] (\x,\y) circle (2pt);
   } 
 }
@@ -172,7 +157,7 @@ We denote by $\rho(x) :=\text{Cov}\left(X_{\scriptscriptstyle 0}, X_{\scriptscri
     {\includegraphics[scale=0.25]{GaussianZUn.pdf}}
     {\includegraphics[scale=0.25]{GaussianZZZUn.pdf}}
     \vspace{-2cm}
- \caption{Generations of Gaussian random field with covariance $\rho(x) = e^{-\kappa||x||^{2}}$ with $m = 1024$, and different values for $\kappa$, from left to right $\kappa = 0.01, 0.1, 1$, Using the Matlab function \textit{stationary Gaussian process} \cite{MATLAB}.}
+ \caption{Generations of Gaussian random field with covariance $\rho(x) = e^{-\kappa||x||^{2}}$ with $m = 1024$, and different values for $\kappa$, from left to right $\kappa = 0.01, 0.1, 1$, using the Matlab function \textit{stationary Gaussian process} \cite{MATLAB}.}
 \label{fig22}
 \end{figure}
 Let us consider a threshold parameter $t \in \mathbb{R}$. We introduce the associated binary image $Z^{\scriptscriptstyle (m)}_{t} = \left(\mathbbm{1}_{\left\{X_x \geq t\right\}} \right)_{x \in G_{m}}$, each cell $C_{m}(x)$ is associated to black or white according to whether $Z^{\scriptscriptstyle (m)}_{t} (x) = 0$ or $Z^{\scriptscriptstyle (m)}_{t}(x)~= 1$. 
@@ -216,7 +201,7 @@ f_{t}^{\scriptscriptstyle (i)}(x) := \mathbbm{1}_{\left\{\min\left(X_{x}, X_{\sc
 \end{equation}
 to compute the contribution of the edge $w_i(x)$ to the perimeter of the black component of $Z^{\scriptscriptstyle (m)}$.
 \begin{Definition}[Perimeter of a binary image $Z^{\scriptscriptstyle (m)}$]\label{defPerimetre}~\\
-For $t\in \mathbb{R},$ we denote by $\mathcal{P}_{m}^{\scriptscriptstyle (i)}(t) =~\sum_{x: w_{i}(x) \subset \text{\larger[1]{$($}}0, m \text{\larger[1]{$)$}}^{2}} f_{t}^{\scriptscriptstyle (i)}(x)$ the  sum of all vertical contributions for $i = 1$ and horizontal ones for $i = 2$. Then, the perimeter of the binary image $Z$ is given by
+For $t\in \mathbb{R},$ we denote by $\mathcal{P}_{m}^{\scriptscriptstyle (i)}(t) =~\sum_{\scriptscriptstyle x: w_{i}(x) \in \mathbb{E}^{\scriptscriptstyle (i)}_{m}} f_{t}^{\scriptscriptstyle (i)}(x)$ the  sum of all vertical contributions for $i = 1$ and horizontal ones for $i = 2$. Then, the perimeter of the binary image $Z$ is given by
 \begin{equation}
 \mathcal{P}_{m}(t) := \mathcal{P}_{m}^{\scriptscriptstyle (1)}(t) + \mathcal{P}_{m}^{\scriptscriptstyle (2)}(t).
  \label{eq:6}
@@ -227,62 +212,83 @@ For $t\in \mathbb{R},$ we denote by $\mathcal{P}_{m}^{\scriptscriptstyle (i)}(t)
 Let us start this study by investigating the first moment of the perimeter.
 \begin{Proposition}[First moment of the perimeter] 
 \label{propFisrtmoment}
-We assume that $\left(X_x \right)_{x \in G_{m}}$ is a stationary Gaussian centered with unit variance random field and $\rho(e_i) = \text{Cov}\left(X_{\scriptscriptstyle 0}, X_{e_i}\right)$ with $\rho(e_i) \in [-1, 1]$. The expected value of the perimeter in \eqref{eq:6} is  given \linebreak by $\mathbb{E}\left(\mathcal{P}_{m}(t)\right) = \mathbb{E}\left(\mathcal{P}^{\scriptscriptstyle  (1)}_{m}(t)\right) + \mathbb{E}\left(\mathcal{P}^{\scriptscriptstyle  (2)}_{m}(t)\right)$  and
-if $\rho(e_{i}) \in ]-1,1]$, 
-{\small
-\begin{align}
-\label{propEquationFisrtmoment}
-\mathbb{E}\left(f^{(i)}(t) \right) = \mathbb{E}\left(\Phi\left(\dfrac{2t + \sqrt{2(1-\rho(e_i))}|N|}{\sqrt{2(1+\rho(e_i))}}\right)  - \Phi\left(\dfrac{2t - \sqrt{2(1-\rho(e_i))}|N|}{\sqrt{2(1+\rho(e_i))}}\right)\right)
-\end{align}}
+We assume that $\left(X_x \right)_{x \in G_{m}}$ is a stationary Gaussian centered with unit variance random field let us denote \linebreak by  $\rho(e_i) = \text{Cov}\left(X_{\scriptscriptstyle 0}, X_{e_i}\right) \in~[-1, 1]$. The expected value of the perimeter in \eqref{eq:6} is  given \linebreak by $$\mathbb{E}\left(\mathcal{P}_{m}(t)\right) = m(m-1)\sum_{1}^{2}\mathbb{E}\left(f^{(i)}(t) \right)$$  and
+\begin{itemize}
+  \item if $\rho(e_{i}) \in ]-1,1]$, 
+    {\small
+  \begin{align}
+  \label{propEquationFisrtmoment}
+  \mathbb{E}\left(f^{(i)}(t) \right) = \mathbb{E}\left(\Phi\left(\dfrac{2t + \sqrt{2(1-\rho(e_i))}|N|}{\sqrt{2(1+\rho(e_i))}}\right)  - \Phi\left(\dfrac{2t - \sqrt{2(1-\rho(e_i))}|N|}{\sqrt{2(1+\rho(e_i))}}\right)\right)
+  \end{align}}
 with $N \sim \mathcal{N}(0,1)$. 
+\item if $\rho(e_i) = -1, \; \mathbb{E}\left(f^{(i)}(t) \right)= 2\left(1 - \Phi\left(\max\left(0,t\right)\right)\right).$
+  \end{itemize}
 \end{Proposition}
-\begin{remark}(degenerative case)
-If  $\rho(e_i) = -1, \; \mathbb{E}\left(f^{(i)}(t) \right)= 2\left(1 - \Phi\left(\max\left(0,t\right)\right)\right).$
-\end{remark}
-\begin{remark}
-the function $t \mapsto \mathbb{E}\left(f^{(i)}(t) \right)$ is even.
-\end{remark}
+\textcolor{blue}{\begin{remark}
+Note that $\mathbb{E}\left(f^{(i)}(t) \right) = 0$ in the case where $\rho(e_i) = 1$ 
+\end{remark}}
 \begin{proof}
-Let us start with the case where $\rho(e_{i}) \in ]-1,1]$. Considering the formula for $\mathcal{P}^{\scriptscriptstyle  (i)}_{m}(t)$ and applying the stationarity hypothesis, since
+Let us assume that $\rho(e_{i}) \in ]-1,1]$. Considering the formula for $\mathcal{P}^{\scriptscriptstyle  (i)}_{m}(t)$ and applying the stationarity hypothesis, since
 \begin{align*}
-\left\{ x \in G_{m}; w_{i}(x) \subset (0,m)^{2}\right\} & = \left\{x \in \llbracket 0, m-1 \rrbracket^{2}, (x, x+e_i)\subset (0,m)^{2} \right\} \\ 
+\left\{ x \in G_{m}; w_{i}(x) \in \mathbb{E}^{\scriptscriptstyle  (i)}_{m}\right\} & = \left\{x \in \llbracket 0, m-1 \rrbracket^{2}, (x, x+e_i)\subset (0,m)^{2} \right\} \\ 
 & = \left\{ 0, m-1 \right\} \times \left\{ 1, m - 1\right\},
 \end{align*}
 one can write that, 
-\begin{equation}
+\begin{equation*}
 \mathbb{E}\left(\mathcal{P}^{\scriptscriptstyle  (i)}_{m}(t) \right) = m(m-1)\mathbb{E}\left(f^{(i)}(t)\right).
 \label{covarianeproof}
-\end{equation}
+\end{equation*}
  with $\mathbb{E}\left(f^{(i)}(t)\right) = \mathbb{P}\left(\min\left(X_{\scriptscriptstyle 0}, X_{e_i}\right) < t \leq \max\left(X_{\scriptscriptstyle 0}, X_{e_i}\right)\right)$. \\
- We start by applying to the Gaussian vector $\left(X_{\scriptscriptstyle 0}, X_{e_i}\right)$ the following transformation \begin{equation} \label{expressions} \Delta^{i}_{\scriptscriptstyle 0} := X_{e_i} - X_{\scriptscriptstyle 0}, \hspace{0.5cm} S^{i}_{\scriptscriptstyle 0} := X_{e_i} + X_{\scriptscriptstyle 0}\end{equation}
-The covariance matrix of the new Gaussian vector $\left(\Delta^{\scriptscriptstyle (1)}_{\scriptscriptstyle 0}, S^{\scriptscriptstyle (1)}_{\scriptscriptstyle 0}\right)$ is given by ${\tilde{\Sigma}_{i}(0)~= M\Sigma_{i}(0) M^{\star}}$ with {\small $M = \begin{pmatrix}
+ We start by applying to the Gaussian vector $\left(X_{\scriptscriptstyle 0}, X_{e_i}\right)$ the following transformation \begin{equation*} \label{expressions} \Delta^{\scriptscriptstyle (i)}_{\scriptscriptstyle 0} := X_{e_i} - X_{\scriptscriptstyle 0}, \hspace{0.5cm} S^{\scriptscriptstyle (i)}_{\scriptscriptstyle 0} := X_{e_i} + X_{\scriptscriptstyle 0}\end{equation*}
+Let us introduce the following Lemma, 
+\begin{Lemma}
+\label{lemmasommediff}
+Let $a,b,t \in \mathbb{R}$, then 
+$$\min(a,b) \leq t \leq \max(a,b) \iff\left|t - \frac{a+b}{2}\right| \leq \left| \frac{ b-a }{2}\right| $$
+\end{Lemma}
+\begin{proof}
+\begin{align*}
+\min(a,b) \leq t \leq \max(a,b) & \leftrightarrow \min(0, b - a) \leq t - a \leq \max(0, b - a) \\
+& \iff \min(0, b - a) \leq t + \frac{b-a - (b+a)}{2} \leq \max(0, b - a) \\
+& \iff\min(- \frac{b-a}{2}, \frac{b - a}{2}) \leq t -\frac{b+a}{2} \leq \max(- \frac{b-a}{2}, \frac{b-a}{2}) \\
+& \iff - \frac{\left|b-a\right|}{2} \leq t -\frac{b+a}{2} \leq + \frac{\left|b-a\right|}{2} \\
+& \iff \left|t -\frac{b+a}{2}\right| \leq \frac{\left|b-a\right|}{2}
+\end{align*}
+\end{proof}
+Thus, applying the Lemma we get 
+{\small
+\begin{align*}
+\mathbb{E}\left(f^{(i)}(t)\right) & = \mathbb{P}\left(\min\left(X_{\scriptscriptstyle 0}, X_{e_i}\right) < t \leq \max\left(X_{\scriptscriptstyle 0}, X_{e_i}\right)\right) \\
+& = \mathbb{E}\left(\mathbbm{1}_{\left\{\min(X_{\scriptscriptstyle 0}, X_{e_i}) \leq t \leq \max(X_{\scriptscriptstyle 0}, X_{e_i})\right\}}\right) \\
+& = \mathbb{E}\left(\mathbbm{1}_{\left\{ \left|2t - S^{\scriptscriptstyle (i)}_{\scriptscriptstyle 0}\right| \leq \left|\Delta^{\scriptscriptstyle (i)}_{\scriptscriptstyle 0}\right|\right\}}\right).
+\end{align*}}Besides, the covariance matrix of the new Gaussian vector $\left(\Delta^{\scriptscriptstyle (i)}_{\scriptscriptstyle 0}, S^{\scriptscriptstyle (i)}_{\scriptscriptstyle 0}\right)$ is given by ${\tilde{\Sigma}_{i}(0)~= M\Sigma_{i}(0) M^{\star}}$ with {\small $M = \begin{pmatrix}
 -1 & 1 \\
 1 & 1  \\
 \end{pmatrix}$} and $\Sigma_{i}(0) = \begin{pmatrix} 1 & \rho(e_i) \\
 \rho(e_i) & 1  \\ 
 \end{pmatrix}.$ \\
-Thus, $\tilde{\Sigma}_{i}(0) = \begin{pmatrix}  2(1-\rho(e_i)) & 0 \\ 0 & 2(1+\rho(e_1)  \end{pmatrix}$, which directly  implies that the two variables are independent.
+Thus, $\tilde{\Sigma}_{i}(0) = \begin{pmatrix}  2(1-\rho(e_i)) & 0 \\ 0 & 2(1+\rho(e_i)  \end{pmatrix}$, which directly  implies that the two variables~$\Delta^{\scriptscriptstyle (i)}_{\scriptscriptstyle 0}$ and $S^{\scriptscriptstyle (i)}_{\scriptscriptstyle 0}$ are independent, we get the following system 
+$\left\{
+ \begin{array}{rlc}
+  \Delta^{\scriptscriptstyle (i)}_{\scriptscriptstyle 0} & = & \sqrt{2(1-\rho(e_i))}U, \textcolor{white}{(1-\rho(e_i))U + }\\
+  S^{\scriptscriptstyle (i)}_{\scriptscriptstyle 0} & = & \textcolor{white}{(1-\rho(e_i))U + } \sqrt{2(1+\rho(e_i)}V, 
+\end{array}
+\right.$
 {\small
 \begin{align*}
-\mathbb{E}\left(f^{(i)}(t)\right) & = \mathbb{P}\left(\min\left(X_{\scriptscriptstyle 0}, X_{e_i}\right) < t \leq \max\left(X_{\scriptscriptstyle 0}, X_{e_i}\right)\right) \\
-& = \mathbb{E}\left(\mathbbm{1}_{\left\{\min(X_{\scriptscriptstyle 0}, X_{e_i}) \leq t \leq \max(X_{\scriptscriptstyle 0}, X_{e_i})\right\}}\right) \\
-&= \mathbb{E}\left(\mathbbm{1}_{\left\{\min(0, X_{e_i} -X_{\scriptscriptstyle 0}) \leq t -X_{\scriptscriptstyle 0}\leq \max(0, X_{e_i}-X_{0})\right\}}\right) \\
-& = \mathbb{E}\left(\mathbbm{1}_{\left\{\min(0, \Delta^{\scriptscriptstyle (i)}_{\scriptscriptstyle 0}) \leq t + \frac{\Delta^{\scriptscriptstyle (i)}_{\scriptscriptstyle 0} - S^{\scriptscriptstyle (i)}_{\scriptscriptstyle 0}}{2}\leq \max(0, \Delta^{\scriptscriptstyle (i)}_{\scriptscriptstyle 0})\right\}}\right) \\
-& = \mathbb{E}\left(\mathbbm{1}_{\left\{\min(-\frac{\Delta^{\scriptscriptstyle (i)}_{\scriptscriptstyle 0}}{2}, \frac{\Delta^{\scriptscriptstyle (i)}_{\scriptscriptstyle 0}}{2}) \leq t - \frac{S^{\scriptscriptstyle (i)}_{\scriptscriptstyle 0}}{2}\leq \max(-\frac{\Delta^{\scriptscriptstyle (i)}_{\scriptscriptstyle 0}}{2}, \frac{\Delta^{\scriptscriptstyle (i)}_{\scriptscriptstyle 0}}{2})\right\}}\right) \\
-& = \mathbb{E}\left(\mathbbm{1}_{\left\{ \left|2t - S^{\scriptscriptstyle (1)}_{\scriptscriptstyle 0}\right| \leq \left|\Delta^{\scriptscriptstyle (1)}_{\scriptscriptstyle 0}\right|\right\}}\right). \\
-& = \mathbb{E}\left(\mathbbm{1}_{\left\{\frac{2t - \sqrt{2(1-\rho(e_i))}|N|}{\sqrt{2(1+\rho(e_i))}}  \leq Y \leq \frac{2t + \sqrt{2(1-\rho(e_i))}|N|}{\sqrt{2(1+\rho(e_i))}}\right\}}\right)
+\mathbb{E}\left(f^{(i)}(t)\right) & = \mathbb{E}\left(\mathbbm{1}_{\left\{ \left|2t - S^{\scriptscriptstyle (1)}_{\scriptscriptstyle 0}\right| \leq \left|\Delta^{\scriptscriptstyle (1)}_{\scriptscriptstyle 0}\right|\right\}}\right) \\
+& = \mathbb{E}\left(\mathbbm{1}_{\left\{ - \sqrt{2(1-\rho(e_i))}\left|U\right| \leq 2t - \sqrt{2(1+\rho(e_i)}V \leq \sqrt{2(1-\rho(e_i))}\left|U\right| \right\}}\right) \\
+& = \mathbb{E}\left(\mathbbm{1}_{\left\{\frac{2t - \sqrt{2(1-\rho(e_i))}|U|}{\sqrt{2(1+\rho(e_i))}}  \leq V \leq \frac{2t + \sqrt{2(1-\rho(e_i))}|U|}{\sqrt{2(1+\rho(e_i))}}\right\}}\right), 
 \end{align*}}  
-with $N, Y \sim \mathcal{N}(0,I_{2})$, thus 
+with $U, V \sim \mathcal{N}(0,I_{2})$, thus 
 $$\mathbb{E}\left(f^{(i)}(t)\right) = \mathbb{E}\left(\Phi\left(\dfrac{2t + \sqrt{2(1-\rho(e_i))}|N|}{\sqrt{2(1+\rho(e_i))}}\right)  - \Phi\left(\dfrac{2t - \sqrt{2(1-\rho(e_i))}|N|}{\sqrt{2(1+\rho(e_i))}}\right)\right).$$
 Let us now consider the case where $\rho(e_i) = -1$. Then there exists $N \sim \mathcal{N}\left(0,1\right)$ such that $\left(X_{\scriptscriptstyle 0}, X_{e_i}\right) \overset{d}{=} \left(N, -N\right)$. Thus, 
 \begin{align*}
 \mathbb{P}\left(\min\left(X_{\scriptscriptstyle 0}, X_{e_i}\right) < t \leq \max\left(X_{\scriptscriptstyle 0}, X_{e_i}\right)\right) & = \mathbb{P}\left(\min\left(N, -N\right) < t \leq \max\left(N, -N\right)\right) \\
-& \hspace{-6cm}= \mathbb{P}\left(-|N| < t \leq |N|\right) = \cfrac{2}{\sqrt{2\pi}} \int_{\scriptscriptstyle 0}^{+\infty} \mathbbm{1}_{\left\{-z < t \leq z\right\}} e^{-\frac{z^2}{2}}dz  = \cfrac{2}{\sqrt{2\pi}} \int_{\scriptscriptstyle 0}^{+\infty} \mathbbm{1}_{\left\{t \leq z\right\}} e^{-\frac{z^2}{2}}dz \\
-& \hspace{-6cm}= 2\left(1 - \Phi\left(\max\left(0,t\right)\right)\right).
+& = \mathbb{P}\left(|t| \leq |N|\right) = 2\left(1 - \Phi\left(|t|\right)\right).
 \end{align*}
 \end{proof}
 Note that this result extends those given in \cite{HermineAgnes} (Proposition 3) since we do not assume here that $\rho(e_i) > 0$. 
-
 \begin{remark}
 \label{iidCase}
 In the independent case, $\rho(e_i) = 0$, we can write
@@ -298,7 +304,7 @@ v & = & \frac{y+z}{\sqrt{2}} \\
 \begin{remark}
 In order to have convergence when $m$ goes to infinity, one has to consider the normalised perimeter with the area of the window ($m^2$).
 \end{remark}
-The total variation of an image $u \in L^{1}_{loc}(\Omega)$ is given by $\int_{\Omega}|\nabla u|dx$ which is equal by the coarea formula to $\int_{\mathbb{R}}\mathcal{P}(t)dt$.
+The total variation of an image $u \in L^{1}_{loc}(\Omega)$ is given by $\int_{\Omega}|\nabla u|dx$ which is equal by the coarea formula to $\int_{\mathbb{R}}\mathcal{P}(t)dt$ with $\mathcal{P}(t)$ being the perimeter associated to the level set of the image $u$ at level $t$ .
 \begin{Proposition}
 Under the assumptions stated in Proposition \ref{propFisrtmoment}, we get 
 \begin{equation}
@@ -322,26 +328,22 @@ Using the result stated in Proposition \ref{propFisrtmoment}, we get that $\math
 }
 \end{proof}
 \begin{remark}
-The first moment of the total variation is given by the sum over the two directions of Equation \eqref{totalvariation}. 
-\end{remark}
-\begin{remark}
 Using this result, one can define an estimator for $\rho(e_i)$. 
 \end{remark}
-Study of the behavior of the nodal curve $t = 0$, 
 \begin{remark}
 \label{decreasingrho}
-Considering $\tilde{\rho}(e_i), \bar{\rho}(e_i)$ two covariance, we  have the following result 
+Considering $\tilde{\rho}(e_i), \bar{\rho}(e_i)$ two covariance, we  have the following result concerning the expected perimeter of the nodal curve ($t=0$).
 \begin{equation*}
- \text{if} \hspace{0.5cm} \tilde{\rho}(e_i) < \bar{\rho}(e_i) \hspace{0.5cm} \text{then} \hspace{0.5cm}\mathbb{E}\left(\mathcal{P}^{\scriptscriptstyle (i)}_{m, \tilde{\rho}}(0)\right) > \mathbb{E}\left(\mathcal{P}^{\scriptscriptstyle (i)}_{m, \bar{\rho}}(0)\right).
+ \text{if} \hspace{0.5cm} \tilde{\rho}(e_i) < \bar{\rho}(e_i) \hspace{0.5cm} \text{then} \hspace{0.5cm}\mathbb{E}\left(\mathcal{P}^{\scriptscriptstyle (i)}_{m, \tilde{\rho}}(0)\right) > \mathbb{E}\left(\mathcal{P}^{\scriptscriptstyle (i)}_{m, \bar{\rho}}(0)\right),
 \end{equation*}
-Where $\mathcal{P}^{\scriptscriptstyle (i)}_{m, \tilde{\rho}}$ is the perimeter with respect of the orientation $i$ associated to the Gaussian field of covariance $\tilde{\rho}$. 
+where $\mathcal{P}^{\scriptscriptstyle (i)}_{m, \tilde{\rho}}$ is the perimeter with respect of the orientation $i$ associated to the Gaussian field of covariance $\tilde{\rho}$. 
 \end{remark}
 \begin{proof}
-Note that $\rho \mapsto \sqrt{1-\rho}$ is strictly decreasing similarly  for level $0$, one has $\mathbb{E}\left(f^{(i)}(0)\right) = \mathbb{E}\left(\frac{\sqrt{1-\rho(e_i)}}{\sqrt{1+\rho(e_i)}}|N|\right) - \mathbb{E}\left(-\frac{\sqrt{1-\rho(e_i)}}{\sqrt{1+\rho(e_i)}}|N|\right) = 2\mathbb{E}\left(\frac{\sqrt{1-\rho(e_i)}}{\sqrt{1+\rho(e_i)}}|N|\right) - 1$, since $\rho \mapsto \frac{\sqrt{1-\rho}}{\sqrt{1+\rho}}$ is strictly decreasing, we see that $\rho \mapsto 2\mathbb{E}\left(\frac{\sqrt{1-\rho}}{\sqrt{1+\rho}}|N|\right) - 1 $ is also strictly decreasing. 
+One has $\mathbb{E}\left(f^{(i)}(0)\right) = \mathbb{E}\left(\frac{\sqrt{1-\rho(e_i)}}{\sqrt{1+\rho(e_i)}}|N|\right) - \mathbb{E}\left(-\frac{\sqrt{1-\rho(e_i)}}{\sqrt{1+\rho(e_i)}}|N|\right) = 2\mathbb{E}\left(\frac{\sqrt{1-\rho(e_i)}}{\sqrt{1+\rho(e_i)}}|N|\right) -~1$. Since $\rho \mapsto \frac{\sqrt{1-\rho}}{\sqrt{1+\rho}}$ is strictly decreasing, we see that $\rho \mapsto 2\mathbb{E}\left(\frac{\sqrt{1-\rho}}{\sqrt{1+\rho}}|N|\right) - 1 $ is also strictly decreasing. 
 \end{proof}
 \textcolor{blue}{Decreasing behavior for all level $t$.}
 \begin{remark}
-Considering $\tilde{\rho}(e_i), \bar{\rho}(e_i)$ two covariance, we  have the following result 
+Considering $\tilde{\rho}(e_i), \bar{\rho}(e_i)$ two covariance, we  have the following result concerning the expected perimeter at level $t$:
 \begin{equation*}
  \text{if} \hspace{0.5cm} \tilde{\rho}(e_i) < \bar{\rho}(e_i) \hspace{0.5cm} \text{then} \hspace{0.5cm}\mathbb{E}\left(\mathcal{P}^{\scriptscriptstyle (i)}_{m, \tilde{\rho}}(t)\right) > \mathbb{E}\left(\mathcal{P}^{\scriptscriptstyle (i)}_{m, \bar{\rho}}(t)\right).
 \end{equation*}
@@ -361,15 +363,15 @@ Thus if $a > b$
 \begin{align*}
 \mathbb{E}\left(\Phi\left(\dfrac{2t + \sqrt{2(1-a)}|N|}{\sqrt{2(1+a)}}\right)  - \Phi\left(\dfrac{2t - \sqrt{2(1-a)}|N|}{\sqrt{2(1+a)}}\right)\right) <  \mathbb{E}\left(\Phi\left(\dfrac{2t + \sqrt{2(1-b)}|N|}{\sqrt{2(1+b)}}\right)  - \Phi\left(\dfrac{2t - \sqrt{2(1-b)}|N|}{\sqrt{2(1+b)}}\right)\right)
 \end{align*}}
-
 \end{proof}
 \textcolor{blue}{reorient toward Github for illustrations.}
 \section{Covariance of the perimeter for two thresholds}
-Let $s, t \in \mathbb{R}$ such that $t \leq s$. Let us consider a stationary Gaussian random field $\left(X_{\scriptscriptstyle x}\right)_{x \in G_{m}}$ with zero mean and unit variance whose covariance structure is given by $\rho(x) = \text{Cov}\left(X_{\scriptscriptstyle 0}, X_{\scriptscriptstyle x}\right)$.
+Let $s, t \in \mathbb{R}$ such that $t \leq s$. Let us consider a stationary Gaussian random field $\left(X_{\scriptscriptstyle x}\right)_{x \in \mathbb{Z}^{2}}$ with zero mean and unit variance whose covariance structure is given by $\rho(x) = \text{Cov}\left(X_{\scriptscriptstyle 0}, X_{\scriptscriptstyle x}\right)$.
 \begin{Lemma} 
 \label{CovLemma}
 \begin{align}
-\text{Cov}(\mathcal{P}_{m}(t), \mathcal{P}_{m}(s))  & = \text{Cov}(\mathcal{P}_{m}^{\scriptscriptstyle (1)}(t), \mathcal{P}_{m}^{\scriptscriptstyle (1)}(s)) + 2\text{Cov}(\mathcal{P}_{m}^{\scriptscriptstyle (1)}(t), \mathcal{P}_{m}^{\scriptscriptstyle (2)}(s)) + \text{Cov}(\mathcal{P}_{m}^{\scriptscriptstyle (2)}(t), \mathcal{P}_{m}^{\scriptscriptstyle (2)}(s)) .
+\text{Cov}(\mathcal{P}_{m}(t), \mathcal{P}_{m}(s))  & = \text{Cov}(\mathcal{P}_{m}^{\scriptscriptstyle (1)}(t), \mathcal{P}_{m}^{\scriptscriptstyle (1)}(s)) + \text{Cov}(\mathcal{P}_{m}^{\scriptscriptstyle (1)}(t), \mathcal{P}_{m}^{\scriptscriptstyle (2)}(s)) + \text{Cov}(\mathcal{P}_{m}^{\scriptscriptstyle (2)}(t), \mathcal{P}_{m}^{\scriptscriptstyle (1)}(s)) \\
+& + \text{Cov}(\mathcal{P}_{m}^{\scriptscriptstyle (2)}(t), \mathcal{P}_{m}^{\scriptscriptstyle (2)}(s)) .
 \label{covariance}
 \end{align} 
 With 
@@ -386,16 +388,15 @@ and
 \end{align*}
 \end{Lemma}
 \begin{proof}
-To simplify the notations, we chose to do the computations for direction $i =1$. Let us start with the computation of $\text{Cov}(\mathcal{P}_{m}^{\scriptscriptstyle (1)}(t), \mathcal{P}_{m}^{\scriptscriptstyle (1)}(s))$ for $t \leq s$. 
+Let us start with the computation of $\text{Cov}(\mathcal{P}_{m}^{\scriptscriptstyle (1)}(t), \mathcal{P}_{m}^{\scriptscriptstyle (1)}(s))$ for $t \leq s$. 
 \begin{align*}
-\text{Cov}(\mathcal{P}_{m}^{\scriptscriptstyle (1)}(t), \mathcal{P}_{m}^{\scriptscriptstyle (1)}(s))& = \text{Cov}\left( \sum_{x, w_{1}(x) \subset \text{\larger[1]{$($}}0, m \text{\larger[1]{$)$}}^{2}}f_{t}^{\scriptscriptstyle (1)}(x), \sum_{y, w_{1}(y) \subset \text{\larger[1]{$($}}0, m \text{\larger[1]{$)$}}^{2}} f_{s}^{\scriptscriptstyle (1)}(y)\right) \\
-& = \sum_{x, w_{1}(x) \subset \text{\larger[1]{$($}}0, m \text{\larger[1]{$)$}}^{2}} \sum_{y, w_{1}(y) \subset \text{\larger[1]{$($}}0, m \text{\larger[1]{$)$}}^{2}} \text{Cov}\left(f_{t}^{\scriptscriptstyle (1)}(x), f_{s}^{\scriptscriptstyle (1)}(y) \right).
+\text{Cov}(\mathcal{P}_{m}^{\scriptscriptstyle (1)}(t), \mathcal{P}_{m}^{\scriptscriptstyle (1)}(s))& = \sum_{x, w_{1}(x) \in \mathbb{E}^{\scriptscriptstyle (1)}_{m}} \sum_{y, w_{1}(y) \in \mathbb{E}^{\scriptscriptstyle (1)}_{m}} \text{Cov}\left(f_{t}^{\scriptscriptstyle (1)}(x), f_{s}^{\scriptscriptstyle (1)}(y) \right).
 \end{align*}
-By the stationarity hypothesis, one has $\text{Cov}\left(f_{t}^{\scriptscriptstyle (1)}(x), f_{s}^{\scriptscriptstyle (1)}(y) \right)= \text{Cov}\left(f_{t}^{\scriptscriptstyle (1)}(0), f_{s}^{\scriptscriptstyle (1)}(y-x) \right)$. Then 
+By stationarity, one has $\text{Cov}\left(f_{t}^{\scriptscriptstyle (1)}(x), f_{s}^{\scriptscriptstyle (1)}(y) \right)= \text{Cov}\left(f_{t}^{\scriptscriptstyle (1)}(0), f_{s}^{\scriptscriptstyle (1)}(y-x) \right)$, 
 \begin{align*}
-\text{Cov}\left(\mathcal{P}_{m}^{\scriptscriptstyle (1)}(t),\mathcal{P}_{m}^{\scriptscriptstyle (1)}(s) \right) & = \sum_{x_1 = 0}^{m-1}\sum_{x_2 = 1}^{m-1}\sum_{y_1 = 0}^{m-1}\sum_{y_2 = 1}^{m-1} \text{Cov}\left(f_{t}^{\scriptscriptstyle (1)}(0), f_{s}^{ \scriptscriptstyle (1)}(y-x) \right)
+\text{Cov}\left(\mathcal{P}_{m}^{\scriptscriptstyle (1)}(t),\mathcal{P}_{m}^{\scriptscriptstyle (1)}(s) \right) & = \sum_{x_1 = 0}^{m-1}\sum_{x_2 = 1}^{m-1}\sum_{y_1 = 0}^{m-1}\sum_{y_2 = 1}^{m-1} \text{Cov}\left(f_{t}^{\scriptscriptstyle (1)}(0), f_{s}^{ \scriptscriptstyle (1)}(y-x) \right).
 \end{align*}
-for $x_1 \in [0,m-1]$ and $z_1 = y_1 - x_1$ one has
+For $x_1 \in [0,m-1]$ and $z_1 = y_1 - x_1$ one has
 \begin{align*} 
 \left\{
 \begin{array}{rcl}
@@ -433,54 +434,22 @@ For the second part of \eqref{covariance}, we have still by stationarity
 \text{Cov}\left(\mathcal{P}_{m}^{\scriptscriptstyle (1)}(t),\mathcal{P}_{m}^{\scriptscriptstyle (2)}(s) \right) & = \sum_{x, w_{1}(x) \subset \text{\larger[1]{$($}}0, m \text{\larger[1]{$)$}}^{2}} \sum_{y, w_{2}(y) \subset \text{\larger[1]{$($}}0, m \text{\larger[1]{$)$}}^{2}} \text{Cov}\left(f_{t}^{\scriptscriptstyle (1)}(0), f_{s}^{ \scriptscriptstyle (2)}(y-x) \right)\\
 & =  \sum_{x_1 = 0}^{m-1}\sum_{x_2 = 1}^{m-1}\sum_{y_1 = 1}^{m-1}\sum_{y_2 = 0}^{m-1}\text{Cov}\left(f_{t}^{\scriptscriptstyle (1)}(0), f_{s}^{ \scriptscriptstyle (2)}(y-x) \right)
 \end{align*}
-Again, considering $z_1 = y_1 - x_1$
-\begin{align*} 
-\left\{
-\begin{array}{rcl}
-0 \leq x_1 \leq m-1 \\
-1 \leq y_1 \leq m-1 
-\end{array}\right.& \implies  \left\{ \begin{array}{rcl}
-0 \leq x_1 \leq m-1 \hspace{0.7cm} \\
-1 -x_1 \leq z_1 \leq m- 1 - x_1
-\end{array}\right. \\
-& \implies  \left\{
-\begin{array}{rcl}
-2 - m \leq z_1 \leq m-1 \hspace{2.5cm}  \\
-\max(0, 1-z_1) \leq x_1 \leq \min(m-1 , m-1-z_1),
-\end{array}\right.
-\end{align*} 
-and, $z_{2} = y_{2}-x_{2}$
-\begin{align*} 
-\left\{
-\begin{array}{rcl}
-1 \leq x_2 \leq m-1 \\
-0 \leq y_2 \leq m-1 
-\end{array}\right.& \implies  \left\{ \begin{array}{rcl}
-1 \leq x_2 \leq m-1 \hspace{0.7cm} \\
--x_2 \leq z_2 \leq m- 1 - x_2
-\end{array}\right. \\
-& \implies  \left\{
-\begin{array}{rcl}
-1 - m \leq z_2 \leq m-2 \hspace{2.5cm}  \\
-\max(1, -z_2) \leq x_2 \leq \min(m-1 , m-1-z_2)
-\end{array}\right..
-\end{align*} 
-Thus, 
+Again, considering $z_1 = y_1 - x_1$ and, $z_{2} = y_{2}-x_{2}$, we get
 \begin{align*}
 \text{Cov}\left(\mathcal{P}_{m}^{\scriptscriptstyle (1)}(t),\mathcal{P}_{m}^{\scriptscriptstyle (2)}(s) \right) & = \sum_{z_2 = 0}^{m-2} \sum_{z_1=1}^{m-1}\left(m-z_2-1\right)\left(m-z_1\right)\text{Cov}\left(f_{t}^{\scriptscriptstyle (1)}(0), f_{s}^{ \scriptscriptstyle (2)}(z) \right)\\
 & + \sum_{z_2 = 0}^{m-2} \sum_{z_1=2-m}^{\scriptscriptstyle 0}\left(m-z_2-1\right)\left(m+z_1-1\right)\text{Cov}\left(f_{t}^{\scriptscriptstyle (1)}(0), f_{s}^{ \scriptscriptstyle (2)}(z) \right)\\
 & + \sum_{z_2 = -m+1}^{-1} \sum_{z_1=1}^{m-1}\left(m+z_2\right)\left(m-z_1\right)\text{Cov}\left(f_{t}^{\scriptscriptstyle (1)}(0), f_{s}^{ \scriptscriptstyle (2)}(z) \right)\\
-& + \sum_{z_2 = -m+1}^{-1} \sum_{z_1=2-m}^{\scriptscriptstyle 0}\left(m+z_2\right)\left(m+z_1-1\right)\text{Cov}\left(f_{t}^{\scriptscriptstyle (1)}(0), f_{s}^{ \scriptscriptstyle (2)}(z) \right) 
+& + \sum_{z_2 = -m+1}^{-1} \sum_{z_1=2-m}^{\scriptscriptstyle 0}\left(m+z_2\right)\left(m+z_1-1\right)\text{Cov}\left(f_{t}^{\scriptscriptstyle (1)}(0), f_{s}^{ \scriptscriptstyle (2)}(z) \right) \\
+& = \sum_{z_1=2-m}^{m-1} \sum_{z_2 = 1-m}^{m-2} \left(m-|z_1| - \mathbbm{1}_{z_{1} \leq 0}\right)\left(m-|z_2|-\mathbbm{1}_{z_{2} \geq 0}\right)\text{Cov}\left(f_{t}^{\scriptscriptstyle (1)}(0), f_{s}^{ \scriptscriptstyle (2)}(z) \right)
 \end{align*}
 \end{proof}
-Getting the value of the covariance requires the computation of all the elements of the sum, let us first start with the term $\text{Cov}\left(f_{t}^{\scriptscriptstyle (1)}(0), f_{s}^{\scriptscriptstyle (1)}(0)\right)$,
+Getting the value of the covariance requires the computation of all the \linebreak elements~$\text{Cov}\left(f_{t}^{\scriptscriptstyle (j)}(0), f_{s}^{\scriptscriptstyle (i)}(x)\right)$, $i,j \in\{1,2\}$ which has a two, three and four cell structure. Let us first start with the two cell case, which appears in the computation of the term $\text{Cov}\left(f_{t}^{\scriptscriptstyle (1)}(0), f_{s}^{\scriptscriptstyle (1)}(0)\right)$, in order to compute it, we just have to apply the same strategy we used to compute the first moment in Proposition \ref{propFisrtmoment}. We get the next result.
 \begin{Lemma}
-The case $x=0$ is a special case, in order to compute it, we just have to apply the same strategy we used to compute the first moment in \ref{propFisrtmoment}, thus we get,
 \begin{align*}
 \text{Cov}\left(f_{t}^{\scriptscriptstyle (1)}(0), f_{s}^{\scriptscriptstyle (1)}(0)\right) & = \mathbb{E}\left(\mathbbm{1}_{\left\{\min(X_{\scriptscriptstyle 0}, X_{\scriptscriptstyle  e_1}) \leq t \leq \max(X_{\scriptscriptstyle 0}, X_{e_1})\right\}}\mathbbm{1}_{\left\{\min(X_{\scriptscriptstyle 0}, X_{ \scriptscriptstyle  e_1}) \leq s \leq \max(X_{\scriptscriptstyle 0}, X_{\scriptscriptstyle e_1}) \right\}}\right) \\
-& - \mathbb{E}\left(\mathbbm{1}_{\left\{\min(X_{\scriptscriptstyle 0}, X_{e_1}) \leq t \leq \max(X_{\scriptscriptstyle 0}, X_{e_1})\right\}}\right)\mathbb{E}\left(\mathbbm{1}_{\left\{\min(X_{\scriptscriptstyle 0}, X_{e_1}) \leq s \leq \max(X_{\scriptscriptstyle 0}, X_{e_1})\right\}}\right).
+& - \mathbb{E}\left(\mathbbm{1}_{\left\{\min(X_{\scriptscriptstyle 0}, X_{e_1}) \leq t \leq \max(X_{\scriptscriptstyle 0}, X_{e_1})\right\}}\right)\mathbb{E}\left(\mathbbm{1}_{\left\{\min(X_{\scriptscriptstyle 0}, X_{e_1}) \leq s \leq \max(X_{\scriptscriptstyle 0}, X_{e_1})\right\}}\right),
 \end{align*}
-And, 
+where, 
 {\small
 \begin{align*}
 \mathbb{E}\left(\mathbbm{1}_{\left\{\min(X_{\scriptscriptstyle 0}, X_{\scriptscriptstyle  e_1}) \leq t \leq \max(X_{\scriptscriptstyle 0}, X_{e_1})\right\}}\mathbbm{1}_{\left\{\min(X_{\scriptscriptstyle 0}, X_{ \scriptscriptstyle  e_1}) \leq s \leq \max(X_{\scriptscriptstyle 0}, X_{\scriptscriptstyle e_1}) \right\}}\right) & = \\
@@ -489,13 +458,21 @@ And,
 \end{align*}}
 with $Z \sim \mathcal{N}(0,1)$. 
 \end{Lemma}
-\subsection{Three and four cells configuration}
 Figure \ref{configurations} shows the four types of configurations that are encountered in the computation of $\text{Cov}\left(f_{t}^{\scriptscriptstyle (1)}(0), f_{s}^{ \scriptscriptstyle (i)}(x)\right)$ in Lemma \ref{CovLemma} depending on the orientation $i$ and position on the grid $x$. We will call \textit{three cells} and \textit{four cells} configuration depending on how many cells are involved. 
 \begin{figure}[H]
 \begin{center}
   \captionsetup[subfigure]{justification=centering}
   \begin{subfigure}[b]{0.25\textwidth} 
   \centering
+  \begin{tikzpicture}[scale = 1.5]
+\draw[step = 0.5cm, black, thick](0,0) grid (1.5,1.5);
+\draw[step = 2cm, line width =0.5mm, blue] (0.5,0) -- (0.5,0.5);
+\draw[step = 2cm, line width =0.5mm, blue] (1,0) -- (1,0.5);
+\draw[pattern=north east lines, pattern color=blue] (0,0) rectangle (0.5,0.5);
+\draw[pattern=north west lines, pattern color=green, opacity=1] (0, 0) rectangle (0.5,0.5);
+\draw[pattern=north east lines, pattern color=red] (0.5, 0) rectangle (1,0.5);
+\draw[pattern=north west lines, pattern color=cyan, opacity=1] (0.5, 0) rectangle (1,0.5);
+\end{tikzpicture}
 \begin{tikzpicture}[scale = 1.5]
 \draw[step = 0.5cm, black, thick](0,0) grid (1.5,1.5);
 \draw[step = 2cm, line width =0.5mm, blue] (0.5,0) -- (0.5,0.5);
@@ -610,7 +587,7 @@ $\left\{
    \alpha^{\scriptscriptstyle(i)}_{W}(x)& = & \sqrt{2(1 - \rho(e_{i})) - \alpha^{\scriptscriptstyle(i)}_{U}(x)^{2} - \alpha^{\scriptscriptstyle(i)}_{V}(x)^{2}} \\ 
    \pi^{\scriptscriptstyle(i)}_{U}(x) & = &  \frac{\Delta \rho(x) + \Delta \rho(x+e_i)}{\sigma_1} \\
     \pi^{\scriptscriptstyle(i)}_{V}(x) & = & \frac{S \rho(x) + S\rho(x+e_i)}{\sigma_{2}} \\
-   \pi^{\scriptscriptstyle(i)}_{W}(x) & = & \frac{\rho(x)^{2} - \rho(x+e_i)^{2} + \rho(x-e_1)^{2} - \rho(x + e_i - e_1)^{2} - 2\rho(e_1)\left(\rho(x)\rho(x-e_1) - \rho(x+e_i)\rho(x+e_i-e_1)\right)}{(1-\rho(e_1)^{2})\alpha^{\scriptscriptstyle(i)}_{W}(x)}\\
+   \pi^{\scriptscriptstyle(i)}_{W}(x) & = & \frac{- \left(\alpha^{\scriptscriptstyle(i)}_{U}(x)\pi^{\scriptscriptstyle(i)}_{U}(x) + \alpha^{\scriptscriptstyle(i)}_{V}(x)\pi^{\scriptscriptstyle(i)}_{V}(x)\right) }{\alpha^{\scriptscriptstyle(i)}_{W}(x)}\\
    \pi^{\scriptscriptstyle(i)}_{Z}(x)& = & \sqrt{2(1 + \rho(e_i)) - \pi^{\scriptscriptstyle(i)}_{U}(x)^{2} - \pi^{\scriptscriptstyle(i)}_{V}(x)^{2} - \pi^{\scriptscriptstyle(i)}_{W}(x)^{2}}
 \end{array}\right.$ 
 \begin{Proposition}
@@ -621,15 +598,11 @@ Considering the assumptions above, the two cases that we have to distinguish whe
   {\small 
 \begin{align}
 \label{Thisthofour}
-\mathbb{E}\left(\mathbbm{1}_{\left\{ \left|2t - S^{\scriptscriptstyle (1)}_{\scriptscriptstyle 0}\right| \leq \left|\Delta^{\scriptscriptstyle 1}_{\scriptscriptstyle 0}\right|\right\}}\mathbbm{1}_{\left\{ \left|2s - S^{\scriptscriptstyle i}_{\scriptscriptstyle x}\right| \leq \left|\Delta^{\scriptscriptstyle (i)}_x\right| \right\}}\right) & = \nonumber \\
-& \hspace{-5.4cm} \mathbb{E}\left(\mathbbm{1}_{\left\{ |t - \frac{\sigma_2V}{2}| \leq |\frac{\sigma_1U}{2}|\right\}} \left( \mathbbm{1}_{\left\{ \alpha^{\scriptscriptstyle(i)}_{U}(x)U +  \alpha^{\scriptscriptstyle(i)}_{V}(x) V +  \alpha^{\scriptscriptstyle(i)}_{W}(x) W \geq 0\right\}} \right. \right. \nonumber \\
-& \hspace{-5cm}\left. \left. \left(\Phi_{ \pi^{\scriptscriptstyle(i)}_{Z}(x)}\left( 2s - \frac{2\Delta \rho(x) }{\sigma_1} U - \frac{2S\rho(x)}{\sigma_{2}}V - \left( \pi^{\scriptscriptstyle(i)}_{W}(x) -  \alpha^{\scriptscriptstyle(i)}_{W}(x)\right) W \right)  \right. \right. \right. \nonumber \\
-& \hspace{-5cm}\left. \left. \left. - \Phi_{ \pi^{\scriptscriptstyle(i)}_{Z}(x)}\left( 2s - \frac{2\Delta \rho(x+e_i) }{\sigma_1}U - \frac{2S \rho(x+e_i) }{\sigma_{2}}V - \left( \pi^{\scriptscriptstyle(i)}_{W}(x) +  \alpha^{\scriptscriptstyle(i)}_{W}(x) \right)W \right)  \right) \right. \right. \nonumber \\
-&  \hspace{-5cm} \left. \left. + \mathbbm{1}_{\left\{ \alpha^{\scriptscriptstyle(i)}_{U}(x)U +  \alpha^{\scriptscriptstyle(i)}_{V}(x) V +  \alpha^{\scriptscriptstyle(i)}_{W}(x) W \leq 0\right\}} \right. \right. \nonumber\\
-& \left. \left. \hspace{-5cm}\left(\Phi_{ \pi^{\scriptscriptstyle(i)}_{Z}(x)}\left( 2s - \frac{2\Delta \rho(x+e_i) }{\sigma_1}U - \frac{2S \rho(x+e_i) }{\sigma_{2}}V - \left( \pi^{\scriptscriptstyle(i)}_{W}(x) +  \alpha^{\scriptscriptstyle(i)}_{W}(x) \right)W   \right)  \right. \right. \right. \nonumber \\
-& \hspace{-5cm}\left. \left. \left. - \Phi_{ \pi^{\scriptscriptstyle(i)}_{Z}(x)}\left( 2s - \frac{2\Delta \rho(x) }{\sigma_1} U - \frac{2S\rho(x)}{\sigma_{2}}V - \left( \pi^{\scriptscriptstyle(i)}_{W}(x) -  \alpha^{\scriptscriptstyle(i)}_{W}(x)\right) W\right)\right)\right)\right),
+\mathbb{E}\left(\mathbbm{1}_{\left\{ \left|2t - S^{\scriptscriptstyle (1)}_{\scriptscriptstyle 0}\right| \leq \left|\Delta^{\scriptscriptstyle 1}_{\scriptscriptstyle 0}\right|\right\}}\mathbbm{1}_{\left\{ \left|2s - S^{\scriptscriptstyle i}_{\scriptscriptstyle x}\right| \leq \left|\Delta^{\scriptscriptstyle (i)}_x\right| \right\}}\right) & = \mathbb{E}\left(\mathbbm{1}_{\left\{ |t - \frac{\sigma_2V}{2}| \leq |\frac{\sigma_1U}{2}|\right\}}\right. \\
+& \hspace{-6cm} \left. \left|\Phi_{ \pi^{\scriptscriptstyle(i)}_{Z}(x)}\left( 2s - \frac{2\Delta \rho(x) }{\sigma_1} U - \frac{2S\rho(x)}{\sigma_{2}}V - \left( \pi^{\scriptscriptstyle(i)}_{W}(x) -  \alpha^{\scriptscriptstyle(i)}_{W}(x)\right) W \right) \right. \right.  \nonumber \\
+& \hspace{-4cm}\left. \left.  - \Phi_{ \pi^{\scriptscriptstyle(i)}_{Z}(x)}\left( 2s - \frac{2\Delta \rho(x+e_i) }{\sigma_1}U - \frac{2S \rho(x+e_i) }{\sigma_{2}}V - \left( \pi^{\scriptscriptstyle(i)}_{W}(x) +  \alpha^{\scriptscriptstyle(i)}_{W}(x) \right)W \right)  \right| \right)
 \end{align}
-}with $\Phi_{\pi^{\scriptscriptstyle(i)}_{Z}(x)}$ the cumulative distribution function of $Z \sim \mathcal{N}(0, (\pi^{\scriptscriptstyle(i)}_{Z}(x))^{-2})$.
+}with $\Phi_{\pi^{\scriptscriptstyle(i)}_{Z}(x)}$ the cumulative distribution function of $Z \sim \mathcal{N}(0, (\pi^{\scriptscriptstyle(i)}_{Z}(x))^{2})$.
 \item else, if $\pi^{\scriptscriptstyle(i)}_{Z}(x) = 0$, and $\pi^{\scriptscriptstyle (i)}_{V}(x) > 0, S\rho(x) > 0$, $S\rho(x+e_i) > 0$ then, 
 {\tiny
 \begin{align}
