@@ -92,6 +92,7 @@
       (0,-2pt) -- (0,2pt);
   },
 }
+ \newcolumntype{C}[1]{>{\centering\arraybackslash$}p{#1}<{$}}
 \begin{document}
 \section{Introduction}
 \textbf{Cabana : Affine Processes: A test of isotropy based on level sets.} 
@@ -101,7 +102,7 @@ Weird assumptions imply that integrals such as $\mathscr{F}$ have a first and se
 \textbf{Molina and al. : A method for testing anisotropy and quantifying its direction in digital images.}\\
  \textit{The identification of appropriate spatial models require the previous knowledge of the process exploratory properties such as the existence of a directional component which determines an anisotropic behavior of the phenomenon. Techniques used for analyzing anistropy are limited (compared to techniques for exploring stationarity) and they are only devoted to examining "by eye" experimental variograms in
 different directions. (I do not know if that is true or not).} \\
-They try to detect anisothropy using a method based on second order bi variate \textit{circular statistics} this allows them also to quantify the direction in which it appears. They also present an application of the method to  the flow of seawater through the Strait of Gibraltar. Tools : a parametric procedure based on the calculation of standard and confidence ellipses, well how do they do that ? and what is that. Well, It's pretty weird, they start by considering a sub image $Z_{l,l}$ of the image $Z$ and $Z(s)$ the random variable (yep nothing more on this mystery variable ), from $Z_{l,l}$ they draw $N=\{z_{1}, \ldots, z_{m}\}$ a random sample of $m$ elements, nothing is being said about this random sample. $\overrightarrow{z_{i}z_{j}}$ represents a variation of $Z(s)$ with intensity $|z_{j} - z_{i}|$ in the direction $\gamma$, being 
+They try to detect anisothropy using a method based on second order bi variate \textit{circular statistics} this allows them also to quantify the direction in which it appears. They also present an application of the method to  the flow of seawater through the Strait of Gibraltar. Tools : a parametric procedure based on the calculation of standard and confidence ellipses. Well, It's pretty weird, they start by considering a sub image $Z_{l,l}$ of the image $Z$ and $Z(s)$ the random variable (yep nothing more on this mystery variable ), from $Z_{l,l}$ they draw $N=\{z_{1}, \ldots, z_{m}\}$ a random sample of $m$ elements, nothing is being said about this random sample. $\overrightarrow{z_{i}z_{j}}$ represents a variation of $Z(s)$ with intensity $|z_{j} - z_{i}|$ in the direction $\gamma$, being 
 \begin{equation*}
 \gamma = \begin{cases} \arctan{\frac{z_{jy} - z_{iy}}{z_{jx} - z_{ix}}}& \text{if} (z_{j} - z_{i}) > 0, \\
 0 & \text{if} (z_{j} - z_{i}) = 0, \\
@@ -116,19 +117,31 @@ where $(z_{ix}, z_{iy})$ are the coordinates of intensity $z_i$, same for the ot
 r=\sqrt{\hat{x}^{2} + \hat{y}^{2}}, \; \hspace{1cm} \; \hat{\Phi} = \begin{cases} \arctan{\frac{\hat{y}}{\hat{x}}} \hspace{0.5cm} \text{if} \; \hat{x} > 0 , \\
 180 + \arctan{\frac{\hat{y}}{\hat{x}}} \hspace{0.5cm} \text{if} \; \hat{x} < 0 
 \end{cases}
-\end{equation*}We debi
+\end{equation*}
 By using standard ellipse, they can compute the direction of maximum variability in a direction of angle $\theta$. So, they are able to describe the spatial behavior of the mean vectors, quantifying by the calculation of $\theta$ the direction of maximum variability
 
 \section{Mathematical framework}\label{section1}
 \subsection{Construction of the binary image}\label{construction}
 \paragraph{Square tiling}
-Let $m$ be an integer with $m \geq 2$. Without loss of generality, we consider our observation window as the unit square $S = [0,m]^{2}$ and  we divide our window into $m^{2}$ pairwise disjoint squares. We denote by $\mathbb{G}_{m} := \text{\larger[1]{$[$}}0, m \text{\larger[1]{$)$}}^{2} \cap \mathbb{Z}^{2} $ the set of point in $S$ with interger coordinates and for $x \in \mathbb{G}_{m}$, we define $C_{m}(x)$ as
-\begin{equation*}
-C_{m}(x) \, := \,x + \text{\larger[1]{$[$}}0, 1 \text{\larger[1]{$]$}}^{2} \subset S.
-\end{equation*}
-The $C_{m}(x)$ will be referred to as \textit{cells}, to ease up the notations we denote by $x = (x_1, x_2)$ with $x_1, x_2 \in \{0,\ldots, m-1\}$ and $e_1$, $e_{2}$ the element of the canonical base of $\mathbb{R}^{2}$.
-We denote by $\mathbb{E}^{(1)}_{m}, \; \mathbb{E}^{(2)}_{m} $ the set of vertical and horizontal edges in $\mathring{S} = (0,m)^{2}$, and $\mathbb{E}_{m} = \mathbb{E}^{(1)}_{m} \cup \mathbb{E}^{(2)}_{m}$ each $w \in \mathbb{E}_{m}$ is a segment of length $1$.
-Figure \ref{fig1} shows an example of a square tiling with $m = 4$.
+Let $m$ be an integer with $m \geq 2$. Without loss of generality, we consider our observation window as the unit square $S = [0,m]^{2}$ and  we divide our window into $m^{2}$ pairwise disjoint squares. We denote by 
+\begin{itemize}
+\item $\mathbb{G}_{m} := \text{\larger[1]{$[$}}0, m \text{\larger[1]{$)$}}^{2} \cap \mathbb{Z}^{2}$ the set of points in $S$
+\item $\mathbb{E}^{(1)}_{m}, \; \mathbb{E}^{(2)}_{m} $ the set of vertical and horizontal edges in $\mathring{S}$,
+\item for $x\in \mathbb{G}_{m}, \; C_{m}(x) \, := \,x + \text{\larger[1]{$[$}}0, 1 \text{\larger[1]{$]$}}^{2} \subset S.$
+\end{itemize}
+The $C_{m}(x)$ will be referred to as \textit{cells}. To ease up the notations we write $x = (x_1, x_2)$ with $x_1, x_2 \in \{0,\ldots, m-1\}$ for any $x\in \mathbb{G}_{m}$ and $e_1$, $e_{2}$ the elements of the canonical base of $\mathbb{R}^{2}$.
+Each $w \in \mathbb{E}^{(i)}_{m}$ is a segment of length $1$. 
+\begin{remark} The cardinality of the set $\mathbb{E}^{\scriptscriptstyle  (i)}_{m}$
+\label{cardEm}
+\begin{itemize}
+\item 
+$\left\{ x \in \mathbb{G}_{m}; w_{1}(x) \in \mathbb{E}^{\scriptscriptstyle  (1)}_{m}\right\} = \left\{x \in \llbracket 0, m-1 \rrbracket^{2}, (x, x+e_1)\subset (0,m)^{2} \right\} $\\ 
+ \hspace*{4.25cm}$ =  \left\{ 1, m - 1\right\}\times\left\{ 0, m-1 \right\},$
+\item$\left\{ x \in \mathbb{G}_{m}; w_{2}(x) \in \mathbb{E}^{\scriptscriptstyle  (2)}_{m}\right\}  = \left\{x \in \llbracket 0, m-1 \rrbracket^{2}, (x, x+e_2)\subset (0,m)^{2} \right\} $\\ 
+ \hspace*{4.25cm}$ = \left\{ 0, m-1 \right\} \times \left\{ 1, m - 1\right\},$
+\end{itemize}
+\end{remark}
+Figure \ref{fig1} shows an example of a square tiling with~$m = 4$.
 \begin{figure}[h]
 \begin{center}
 \begin{tikzpicture}[scale = 0.5]
@@ -146,7 +159,7 @@ Figure \ref{fig1} shows an example of a square tiling with $m = 4$.
 \caption{Tiling with squares for $m = 4$ and associated cells $C_{4}(0,0)$ and $C_{4}(2,1)$ (blue stripes) and red point of $\mathbb{G}_{m}$.}
 \label{fig1}
 \end{figure}
-
+\vspace{-0.5cm}
 \paragraph{Discrete setting}
 Using the previous square tiling, we write $S =  \underset{x \in \mathbb{G}_{m}}{\cup}  C_{m}(x)$. We assume to observe $\left(X_{\scriptscriptstyle x}\right)_{x \in \mathbb{G}_{m}}$, which we assume coincides with values of a stationary random field $\left(X_{\scriptscriptstyle x}\right)_{x \in \mathbb{Z}^{2}}$. The stationarity hypothesis means that for all $h \in \mathbb{Z}^{2}$, 
 $$\left(X_{x+h}; x \in \mathbb{Z}^{2} \right)\overset{fdd}{=} \left(X_{\scriptscriptstyle x}; x \in \mathbb{Z}^{2} \right),$$ where $fdd$ denotes finite-dimensional distributions. \\
@@ -157,12 +170,12 @@ We denote by $\rho(x) :=\text{Cov}\left(X_{\scriptscriptstyle 0}, X_{\scriptscri
     {\includegraphics[scale=0.25]{GaussianZUn.pdf}}
     {\includegraphics[scale=0.25]{GaussianZZZUn.pdf}}
     \vspace{-2cm}
- \caption{Generations of Gaussian random field with covariance $\rho(x) = e^{-\kappa||x||^{2}}$ with $m = 1024$, and different values for $\kappa$, from left to right $\kappa = 0.01, 0.1, 1$, using the Matlab function \textit{stationary Gaussian process} \cite{MATLAB}.}
+ \caption{Generations of Gaussian random fields with covariance $\rho(x) = e^{-\kappa||x||^{2}}$ with $m = 1024$, and different values for $\kappa$, from left to right $\kappa = 0.01, 0.1, 1$, using the Matlab function \textit{stationary Gaussian process} \cite{MATLAB}.}
 \label{fig22}
 \end{figure}
-Let us consider a threshold parameter $t \in \mathbb{R}$. We introduce the associated binary image $Z^{\scriptscriptstyle (m)}_{t} = \left(\mathbbm{1}_{\left\{X_x \geq t\right\}} \right)_{x \in \mathbb{G}_{m}}$, each cell $C_{m}(x)$ is associated to black or white according to whether $Z^{\scriptscriptstyle (m)}_{t} (x) = 0$ or $Z^{\scriptscriptstyle (m)}_{t}(x)~= 1$. 
+Considering a threshold parameter $t \in \mathbb{R}$, we introduce the associated binary image $Z^{\scriptscriptstyle (m)}_{t} = \left(\mathbbm{1}_{\left\{X_x \geq t\right\}} \right)_{x \in \mathbb{G}_{m}}$, each cell $C_{m}(x)$ is associated to black or white according to whether $Z^{\scriptscriptstyle (m)}_{t} (x) = 0$ or $Z^{\scriptscriptstyle (m)}_{t}(x)~= 1$. 
 \subsection{Perimeter of a binary image}\label{methods}
-For $t \in \mathbb{R}$,let $Z^{\scriptscriptstyle (m)} = Z^{\scriptscriptstyle (m)}_{t}$ be the  binary image  $Z^{\scriptscriptstyle (m)}$ at that given threshold $t \in \mathbb{R}$. Following  the approach  presented in \cite{HermineAgnes},  for each edge $w \in \mathbb{E}_{m}$, we aim to know if  $w$ contributes  to the perimeter of the black component of $Z$. Making use of the additive nature of the perimeter, one can start by computing the oriented perimeter given each direction, horizontal and vertical. Let us consider the edge $w_{i}(x) := \left(x, x+e_{i}\right)$ with $i \in \{1,2\}$, $w_{i}(x)$ belongs to $C_{m}(x) \cap C_{m}(x-e_{j})$ with $i,j \in \{1,2\}$ and $i \neq j$ as soon as $w_{i}(x) \subset  \text{\larger[1]{$($}}0, m \text{\larger[1]{$)$}}^{2}$.
+For $t \in \mathbb{R}$, let $Z^{\scriptscriptstyle (m)} = Z^{\scriptscriptstyle (m)}_{t}$ be the  binary image at that given threshold $t \in \mathbb{R}$. Following  the approach  presented in \cite{HermineAgnes},  for each edge $w \in \mathbb{E}_{m}$, we aim to know if  $w$ contributes  to the perimeter of the black component of $Z$. Making use of the additive nature of the perimeter, one can start by computing the oriented perimeter given each direction, horizontal and vertical. Let us consider the edge $w_{i}(x) := \left(x, x+e_{i}\right)$ with $i \in \{1,2\}$, $w_{i}(x)$ belongs to $C_{m}(x) \cap C_{m}(x-e_{j})$ with $i,j \in \{1,2\}$ and $i \neq j$ as soon as $w_{i}(x) \subset  \text{\larger[1]{$($}}0, m \text{\larger[1]{$)$}}^{2}$.
 \begin{figure}[H]
 \begin{center}
 \begin{tikzpicture}
@@ -212,7 +225,7 @@ For $t\in \mathbb{R},$ we denote by $\mathcal{P}_{m}^{\scriptscriptstyle (i)}(t)
 Let us start this study by investigating the first moment of the perimeter.
 \begin{Proposition}[First moment of the perimeter] 
 \label{propFisrtmoment}
-We assume that $\left(X_x \right)_{x \in \mathbb{G}_{m}}$ is a stationary Gaussian centered with unit variance random field let us denote \linebreak by  $\rho(e_i) = \text{Cov}\left(X_{\scriptscriptstyle 0}, X_{e_i}\right) \in~[-1, 1]$. The expected value of the perimeter in \eqref{eq:6} is  given \linebreak by $$\mathbb{E}\left(\mathcal{P}_{m}(t)\right) = m(m-1)\sum_{1}^{2}\mathbb{E}\left(f^{(i)}(t) \right)$$  and
+We assume that $\left(X_x \right)_{x \in \mathbb{G}_{m}}$ is a stationary Gaussian centered with unit variance random field. Let us denote \linebreak by  $\rho(e_i) = \text{Cov}\left(X_{\scriptscriptstyle 0}, X_{e_i}\right) \in~[-1, 1]$. The expected value of the perimeter in \eqref{eq:6} is  given \linebreak by $$\mathbb{E}\left(\mathcal{P}_{m}(t)\right) = m(m-1)\sum_{1}^{2}\mathbb{E}\left(f^{(i)}(t) \right)$$ where
 \begin{itemize}
   \item if $\rho(e_{i}) \in ]-1,1]$, 
     {\small
@@ -221,31 +234,24 @@ We assume that $\left(X_x \right)_{x \in \mathbb{G}_{m}}$ is a stationary Gaussi
   \mathbb{E}\left(f^{(i)}(t) \right) = \mathbb{E}\left(\Phi\left(\dfrac{2t + \sqrt{2(1-\rho(e_i))}|N|}{\sqrt{2(1+\rho(e_i))}}\right)  - \Phi\left(\dfrac{2t - \sqrt{2(1-\rho(e_i))}|N|}{\sqrt{2(1+\rho(e_i))}}\right)\right)
   \end{align}}
 with $N \sim \mathcal{N}(0,1)$. 
-\item if $\rho(e_i) = -1, \; \mathbb{E}\left(f^{(i)}(t) \right)= 2\left(1 - \Phi\left(\max\left(0,t\right)\right)\right).$
+\item if $\rho(e_i) = -1, \; \mathbb{E}\left(f^{(i)}(t) \right)= 2\left(1 - \Phi\left(|t|\right)\right).$
   \end{itemize}
 \end{Proposition}
 \begin{remark}
 Note that $\mathbb{E}\left(f^{(i)}(t) \right) = 0$ in the case where $\rho(e_i) = 1$ 
 \end{remark}
 \begin{proof}
-Let us assume that $\rho(e_{i}) \in ]-1,1]$. Considering the formula for $\mathcal{P}^{\scriptscriptstyle  (i)}_{m}(t)$ and applying the stationarity hypothesis, since
-\begin{align*}
-\left\{ x \in \mathbb{G}_{m}; w_{i}(x) \in \mathbb{E}^{\scriptscriptstyle  (i)}_{m}\right\} & = \left\{x \in \llbracket 0, m-1 \rrbracket^{2}, (x, x+e_i)\subset (0,m)^{2} \right\} \\ 
-& = \left\{ 0, m-1 \right\} \times \left\{ 1, m - 1\right\},
-\end{align*}
-one can write that, 
+Let us assume that $\rho(e_{i}) \in ]-1,1]$. Considering the formula for $\mathcal{P}^{\scriptscriptstyle  (i)}_{m}(t)$ and applying the stationarity hypothesis and Remark \ref{cardEm} one can write that, 
 \begin{equation*}
 \mathbb{E}\left(\mathcal{P}^{\scriptscriptstyle  (i)}_{m}(t) \right) = m(m-1)\mathbb{E}\left(f^{(i)}(t)\right).
 \label{covarianeproof}
 \end{equation*}
- with $\mathbb{E}\left(f^{(i)}(t)\right) = \mathbb{P}\left(\min\left(X_{\scriptscriptstyle 0}, X_{e_i}\right) < t \leq \max\left(X_{\scriptscriptstyle 0}, X_{e_i}\right)\right)$. \\
- We start by applying to the Gaussian vector $\left(X_{\scriptscriptstyle 0}, X_{e_i}\right)$ the following transformation \begin{equation*} \label{expressions} \Delta^{\scriptscriptstyle (i)}_{\scriptscriptstyle 0} := X_{e_i} - X_{\scriptscriptstyle 0}, \hspace{0.5cm} S^{\scriptscriptstyle (i)}_{\scriptscriptstyle 0} := X_{e_i} + X_{\scriptscriptstyle 0}\end{equation*}
-Let us introduce the following Lemma, 
-\begin{Lemma}
+ with $\mathbb{E}\left(f^{(i)}(t)\right) = \mathbb{P}\left(\min\left(X_{\scriptscriptstyle 0}, X_{e_i}\right) < t \leq \max\left(X_{\scriptscriptstyle 0}, X_{e_i}\right)\right)$. Before going any further, let us first make the following remark, 
+ \begin{remark}
 \label{lemmasommediff}
 Let $a,b,t \in \mathbb{R}$, then 
-$$\min(a,b) \leq t \leq \max(a,b) \iff\left|t - \frac{a+b}{2}\right| \leq \left| \frac{ b-a }{2}\right| $$
-\end{Lemma}
+$$\min(a,b) \leq t \leq \max(a,b) \iff\left|2t - (a+b))\right| \leq \left| b-a \right| $$
+\end{remark}
 \begin{proof}
 Let $a,b,t \in \mathbb{R}$,
 \begin{figure}[H]
@@ -270,38 +276,38 @@ Let $a,b,t \in \mathbb{R}$,
 \draw (0, 0.6) -- (0.25,0.7);
 \draw (8, 0.6) -- (7.75,0.7);
 \draw (8, 0.6) -- (7.75,0.5);
-\node[text width= 1.6cm, font=\large] at (4,1) {$\frac{|b-a|}{2}$};
+\node[text width= 1.6cm, font=\large] at (4,1) {$|b-a|$};
 \node[text width= 0.7cm, font=\large] at (3,-1) {$|t -~\frac{b+a}{2}|$};
 \end{tikzpicture}
 \end{figure}
-
 \end{proof}
-Thus, applying the Lemma we get 
-{\small
-\begin{align*}
-\mathbb{E}\left(f^{(i)}(t)\right) & = \mathbb{P}\left(\min\left(X_{\scriptscriptstyle 0}, X_{e_i}\right) < t \leq \max\left(X_{\scriptscriptstyle 0}, X_{e_i}\right)\right) \\
-& = \mathbb{E}\left(\mathbbm{1}_{\left\{\min(X_{\scriptscriptstyle 0}, X_{e_i}) \leq t \leq \max(X_{\scriptscriptstyle 0}, X_{e_i})\right\}}\right) \\
-& = \mathbb{E}\left(\mathbbm{1}_{\left\{ \left|2t - S^{\scriptscriptstyle (i)}_{\scriptscriptstyle 0}\right| \leq \left|\Delta^{\scriptscriptstyle (i)}_{\scriptscriptstyle 0}\right|\right\}}\right).
-\end{align*}}Besides, the covariance matrix of the new Gaussian vector $\left(\Delta^{\scriptscriptstyle (i)}_{\scriptscriptstyle 0}, S^{\scriptscriptstyle (i)}_{\scriptscriptstyle 0}\right)$ is given by ${\tilde{\Sigma}_{i}(0)~= M\Sigma_{i}(0) M^{\star}}$ with {\small $M = \begin{pmatrix}
+We start by applying to the Gaussian vector $\left(X_{\scriptscriptstyle 0}, X_{e_i}\right)$ the following transformation \begin{equation*} \label{expressions} \Delta^{\scriptscriptstyle (i)}_{\scriptscriptstyle 0} := X_{e_i} - X_{\scriptscriptstyle 0}, \hspace{0.5cm} S^{\scriptscriptstyle (i)}_{\scriptscriptstyle 0} := X_{e_i} + X_{\scriptscriptstyle 0}, \end{equation*} 
+the covariance matrix of the new Gaussian vector $\left(\Delta^{\scriptscriptstyle (i)}_{\scriptscriptstyle 0}, S^{\scriptscriptstyle (i)}_{\scriptscriptstyle 0}\right)$ is given by ${\tilde{\Sigma}_{i}(0)~= M\Sigma_{i}(0) M^{\star}}$ with {\small $M = \begin{pmatrix}
 -1 & 1 \\
 1 & 1  \\
 \end{pmatrix}$} and $\Sigma_{i}(0) = \begin{pmatrix} 1 & \rho(e_i) \\
 \rho(e_i) & 1  \\ 
 \end{pmatrix}.$ \\
-Thus, $\tilde{\Sigma}_{i}(0) = \begin{pmatrix}  2(1-\rho(e_i)) & 0 \\ 0 & 2(1+\rho(e_i)  \end{pmatrix}$, which directly  implies that the two variables~$\Delta^{\scriptscriptstyle (i)}_{\scriptscriptstyle 0}$ and $S^{\scriptscriptstyle (i)}_{\scriptscriptstyle 0}$ are independent, we get the following system 
+Thus, $\tilde{\Sigma}_{i}(0) = \begin{pmatrix}  2(1-\rho(e_i)) & 0 \\ 0 & 2(1+\rho(e_i)  \end{pmatrix}$, which directly  implies that the two variables~$\Delta^{\scriptscriptstyle (i)}_{\scriptscriptstyle 0}$ and $S^{\scriptscriptstyle (i)}_{\scriptscriptstyle 0}$ are independent. Hence, we can write
 $\left\{
  \begin{array}{rlc}
-  \Delta^{\scriptscriptstyle (i)}_{\scriptscriptstyle 0} & = & \sqrt{2(1-\rho(e_i))}U, \textcolor{white}{(1-\rho(e_i))U + }\\
-  S^{\scriptscriptstyle (i)}_{\scriptscriptstyle 0} & = & \textcolor{white}{(1-\rho(e_i))U + } \sqrt{2(1+\rho(e_i)}V, 
+  \Delta^{\scriptscriptstyle (i)}_{\scriptscriptstyle 0} & = & \sqrt{2(1-\rho(e_i))}U, \\
+  S^{\scriptscriptstyle (i)}_{\scriptscriptstyle 0} & = & \sqrt{2(1+\rho(e_i)}V, 
 \end{array}
-\right.$
+\right.$ \linebreak with~$(U, V) \sim \mathcal{N}\left(0, I_{2}\right)$. Thus, applying Remark \ref{lemmasommediff} above we get 
+{\small
+\begin{align*}
+\mathbb{E}\left(f^{(i)}(t)\right) & = \mathbb{P}\left(\min\left(X_{\scriptscriptstyle 0}, X_{e_i}\right) < t \leq \max\left(X_{\scriptscriptstyle 0}, X_{e_i}\right)\right) \\
+& = \mathbb{E}\left(\mathbbm{1}_{\left\{\min(X_{\scriptscriptstyle 0}, X_{e_i}) \leq t \leq \max(X_{\scriptscriptstyle 0}, X_{e_i})\right\}}\right) \\
+& = \mathbb{E}\left(\mathbbm{1}_{\left\{ \left|2t - S^{\scriptscriptstyle (i)}_{\scriptscriptstyle 0}\right| \leq \left|\Delta^{\scriptscriptstyle (i)}_{\scriptscriptstyle 0}\right|\right\}}\right).
+\end{align*}}
 {\small
 \begin{align*}
 \mathbb{E}\left(f^{(i)}(t)\right) & = \mathbb{E}\left(\mathbbm{1}_{\left\{ \left|2t - S^{\scriptscriptstyle (1)}_{\scriptscriptstyle 0}\right| \leq \left|\Delta^{\scriptscriptstyle (1)}_{\scriptscriptstyle 0}\right|\right\}}\right) \\
 & = \mathbb{E}\left(\mathbbm{1}_{\left\{ - \sqrt{2(1-\rho(e_i))}\left|U\right| \leq 2t - \sqrt{2(1+\rho(e_i)}V \leq \sqrt{2(1-\rho(e_i))}\left|U\right| \right\}}\right) \\
 & = \mathbb{E}\left(\mathbbm{1}_{\left\{\frac{2t - \sqrt{2(1-\rho(e_i))}|U|}{\sqrt{2(1+\rho(e_i))}}  \leq V \leq \frac{2t + \sqrt{2(1-\rho(e_i))}|U|}{\sqrt{2(1+\rho(e_i))}}\right\}}\right), 
 \end{align*}}  
-with $U, V \sim \mathcal{N}(0,I_{2})$, thus 
+with $(U, V) \sim \mathcal{N}(0,I_{2})$, thus 
 $$\mathbb{E}\left(f^{(i)}(t)\right) = \mathbb{E}\left(\Phi\left(\dfrac{2t + \sqrt{2(1-\rho(e_i))}|N|}{\sqrt{2(1+\rho(e_i))}}\right)  - \Phi\left(\dfrac{2t - \sqrt{2(1-\rho(e_i))}|N|}{\sqrt{2(1+\rho(e_i))}}\right)\right).$$
 Let us now consider the case where $\rho(e_i) = -1$. Then there exists $N \sim \mathcal{N}\left(0,1\right)$ such that $\left(X_{\scriptscriptstyle 0}, X_{e_i}\right) \overset{d}{=} \left(N, -N\right)$. Thus, 
 \begin{align*}
@@ -312,12 +318,12 @@ Let us now consider the case where $\rho(e_i) = -1$. Then there exists $N \sim \
 Note that this result extends those given in \cite{HermineAgnes} (Proposition 3) since we do not assume here that $\rho(e_i) > 0$. 
 \begin{remark}
 \label{iidCase}
-In the independent case, $\rho(e_i) = 0$, we can write
+In the independent case \textit{i.e.} $\text{Cov}\left(X_{0}, X_i\right) = 0$, we can write
 {\small
 \begin{align*}
 \mathbb{E}\left(\mathcal{P}^{\scriptscriptstyle  (i)}_{m}(t) \right) & = m(m-1)\mathbb{E}\left(\Phi\left(\sqrt{2}t + |Z|\right) - \Phi\left(\sqrt{2}t - |Z|\right)\right) = 2m(m-1)\Phi(t)\left(1-\Phi(t)\right) 
 \end{align*}}
-by applying a variable change {\small$\left\{\begin{array}{rcl}
+by applying the variable change {\small$\left\{\begin{array}{rcl}
 u & = & \frac{y - z}{\sqrt{2}} \\
 v & = & \frac{y+z}{\sqrt{2}} \\
 \end{array}\right.$}, we get the same result as in \cite{Psymetrie} (Proposition \textcolor{blue}{3.1}).
@@ -352,57 +358,35 @@ Using the result stated in Proposition \ref{propFisrtmoment}, we get that $\math
 Using this result, one can define an estimator for $\rho(e_i)$. 
 \end{remark}
 \begin{remark}
-\label{decreasingrho}
-Considering $\tilde{\rho}(e_i), \bar{\rho}(e_i)$ two covariance, we  have the following result concerning the expected perimeter of the nodal curve ($t=0$).
-\begin{equation*}
- \text{if} \hspace{0.5cm} \tilde{\rho}(e_i) < \bar{\rho}(e_i) \hspace{0.5cm} \text{then} \hspace{0.5cm}\mathbb{E}\left(\mathcal{P}^{\scriptscriptstyle (i)}_{m, \tilde{\rho}}(0)\right) > \mathbb{E}\left(\mathcal{P}^{\scriptscriptstyle (i)}_{m, \bar{\rho}}(0)\right),
-\end{equation*}
-where $\mathcal{P}^{\scriptscriptstyle (i)}_{m, \tilde{\rho}}$ is the perimeter with respect of the orientation $i$ associated to the Gaussian field of covariance $\tilde{\rho}$. 
-\end{remark}
-\begin{proof}
-One has $\mathbb{E}\left(f^{(i)}(0)\right) = \mathbb{E}\left(\frac{\sqrt{1-\rho(e_i)}}{\sqrt{1+\rho(e_i)}}|N|\right) - \mathbb{E}\left(-\frac{\sqrt{1-\rho(e_i)}}{\sqrt{1+\rho(e_i)}}|N|\right) = 2\mathbb{E}\left(\frac{\sqrt{1-\rho(e_i)}}{\sqrt{1+\rho(e_i)}}|N|\right) -~1$. Since $\rho \mapsto \frac{\sqrt{1-\rho}}{\sqrt{1+\rho}}$ is strictly decreasing, we see that $\rho \mapsto 2\mathbb{E}\left(\frac{\sqrt{1-\rho}}{\sqrt{1+\rho}}|N|\right) - 1 $ is also strictly decreasing. 
-\end{proof}
-\begin{remark}
 Considering $\tilde{\rho}(e_i), \bar{\rho}(e_i)$ two covariance, we  have the following result concerning the expected perimeter at level $t$:
 \begin{equation*}
- \text{if} \hspace{0.5cm} \tilde{\rho}(e_i) \leq \bar{\rho}(e_i) \hspace{0.5cm} \text{then} \hspace{0.5cm}\mathbb{E}\left(\mathcal{P}^{\scriptscriptstyle (i)}_{m, \tilde{\rho}}(t)\right) \geq \mathbb{E}\left(\mathcal{P}^{\scriptscriptstyle (i)}_{m, \bar{\rho}}(t)\right).
+ \text{if} \hspace{0.5cm} \tilde{\rho}(e_i) < \bar{\rho}(e_i) \hspace{0.5cm} \text{then} \hspace{0.5cm}\mathbb{E}\left(\mathcal{P}^{\scriptscriptstyle (i)}_{m, \tilde{\rho}}(t)\right) > \mathbb{E}\left(\mathcal{P}^{\scriptscriptstyle (i)}_{m, \bar{\rho}}(t)\right).
 \end{equation*}
 Where $\mathcal{P}^{\scriptscriptstyle (i)}_{m, \tilde{\rho}}$ is the perimeter with respect of the orientation $i$ associated to the Gaussian field of covariance $\tilde{\rho}$. 
 \end{remark}
 \begin{proof}
-Let $t \in \mathbb{R}$ and $X$, $Y$ two centered with unit variance Gaussian random fields on $\mathbb{Z}^{2}$ of covariance stucture respectively $\tilde{\rho}$ and $\bar{\rho}$. We assume that $\tilde{\rho}(e_i) \leq \bar{\rho}(e_i)$, and consider the Gaussian vectors $\left(X_{0}, X_{e_1}\right)$ and $\left(Y_{0}, Y_{e_1}\right)$, $\tilde{\rho}(e_i) \leq \bar{\rho}(e_i)$ implies that $\mathbb{E}\left(X_{0}X_{e_1}\right) < \mathbb{E}\left(Y_{0}Y_{e_1}\right)$, we can write that
+Let $t \in \mathbb{R}$ we can prove this result by considering  the function $$h:x\mapsto \mathbb{E}\left(\Phi\left(\dfrac{2t + \sqrt{2(1-x)}|N|}{\sqrt{2(1+x)}}\right) - \Phi\left(\dfrac{2t - \sqrt{2(1-x)}|N|}{\sqrt{2(1+x)}}\right)\right).
+$$
+with $N \sim \mathcal{N}\left(0,1\right)$, its derivative is equal to 
 \begin{align*}
-\mathbb{P}\left(Y_{\scriptscriptstyle 0} < t \leq  Y_{e_1}\right) = \mathbb{P}\left(Y_{\scriptscriptstyle 0} < t\right) - \mathbb{P}\left(Y_{\scriptscriptstyle 0} < t,  Y_{e_1} < t\right),
+h'(x) &= \frac{2\exp(-t^2/(1+x))}{2\sqrt{2\pi}(1-x)^{1/2}(1+x)^{3/2}}\\
+& \int_{0}^{\infty}\exp\left(-\frac{N^{2}}{(1+x)}\right)\left(-4N\cosh\left(\frac{t\sqrt{2(1-x)}}{1+x}\right) + 2t\sqrt{2(1-x)}\sinh\left( \frac{t\sqrt{2(1-x)}}{1+x}\right)\right)dN \\
+& = \frac{-2\exp(-t^2/(1+x))(1+x)}{\sqrt{2\pi}(1-x)^{1/2}(1+x)^{3/2}}\\
+& = \frac{-2}{\sqrt{2\pi(1-x^2)}}\exp(-t^2/(1+x)),
 \end{align*}
-according to Slepian's lemma, $\mathbb{P}\left(X_{\scriptscriptstyle 0} < t,  X_{e_1} < t\right) \leq \mathbb{P}\left(Y_{\scriptscriptstyle 0} < t,  Y_{e_1} < t\right)$, \linebreak besides,~$\mathbb{P}\left(Y_{\scriptscriptstyle 0} < t\right)=\mathbb{P}\left(X_{\scriptscriptstyle 0} < t\right)$ thus, 
-\begin{align*}
-\mathbb{P}\left(Y_{\scriptscriptstyle 0} < t \leq  Y_{e_1}\right) \leq \mathbb{P}\left(X_{\scriptscriptstyle 0} < t \leq  X_{e_1}\right)
-\end{align*}
-and,
-\begin{align*}
-\mathbb{P}\left(\min\left(Y_{\scriptscriptstyle 0}, Y_{e_1}\right) < t \leq \max\left(Y_{\scriptscriptstyle 0}, Y_{e_1}\right)\right)  \leq \mathbb{P}\left(\min\left(X_{\scriptscriptstyle 0}, X_{e_1}\right) < t \leq \max\left(X_{\scriptscriptstyle 0}, X_{e_1}\right)\right) 
-\end{align*}
-thus, 
-\begin{align*}
-\mathbb{E}\left(\mathcal{P}^{\scriptscriptstyle (i)}_{m, \tilde{\rho}}(t)\right) \geq \mathbb{E}\left(\mathcal{P}^{\scriptscriptstyle (i)}_{m, \bar{\rho}}(t)\right).
-\end{align*}
+for all $|x| < 1, \; h'(x) < 0$, thus, $h$ is a strictly decreasing function. 
 \end{proof}
-\begin{remark}
-Considering the contraposition of this result, we get the following 
-\begin{equation*}
- \text{if} \hspace{0.5cm}\mathbb{E}\left(\mathcal{P}^{\scriptscriptstyle (i)}_{m, \tilde{\rho}}(t)\right) \neq \mathbb{E}\left(\mathcal{P}^{\scriptscriptstyle (i)}_{m, \bar{\rho}}(t)\right)   \hspace{0.5cm} \text{then}  \hspace{0.5cm} \tilde{\rho}(e_i) \neq \bar{\rho}(e_i) \hspace{0.5cm}.
-\end{equation*} 
-\end{remark}
 \subsection{Covariance of the perimeter for two thresholds}
-Let $s, t \in \mathbb{R}$ such that $t \leq s$. Let us consider a stationary Gaussian random field $\left(X_{\scriptscriptstyle x}\right)_{x \in \mathbb{Z}^{2}}$ with zero mean and unit variance whose covariance structure is given by $\rho(x) = \text{Cov}\left(X_{\scriptscriptstyle 0}, X_{\scriptscriptstyle x}\right)$.
+Let us consider a stationary Gaussian random field $\left(X_{\scriptscriptstyle x}\right)_{x \in \mathbb{Z}^{2}}$ with zero mean and unit variance whose covariance structure is given by $\rho(x) = \text{Cov}\left(X_{\scriptscriptstyle 0}, X_{\scriptscriptstyle x}\right)$.
 \begin{Lemma} 
+Let $s, t \in \mathbb{R}$, 
 \label{CovLemma}
 \begin{align}
-\text{Cov}(\mathcal{P}_{m}(t), \mathcal{P}_{m}(s))  & = \text{Cov}(\mathcal{P}_{m}^{\scriptscriptstyle (1)}(t), \mathcal{P}_{m}^{\scriptscriptstyle (1)}(s)) + \text{Cov}(\mathcal{P}_{m}^{\scriptscriptstyle (1)}(t), \mathcal{P}_{m}^{\scriptscriptstyle (2)}(s)) + \text{Cov}(\mathcal{P}_{m}^{\scriptscriptstyle (2)}(t), \mathcal{P}_{m}^{\scriptscriptstyle (1)}(s)) \\
-& + \text{Cov}(\mathcal{P}_{m}^{\scriptscriptstyle (2)}(t), \mathcal{P}_{m}^{\scriptscriptstyle (2)}(s)) .
+\text{Cov}(\mathcal{P}_{m}(t), \mathcal{P}_{m}(s))  & = \text{Cov}(\mathcal{P}_{m}^{\scriptscriptstyle (1)}(t), \mathcal{P}_{m}^{\scriptscriptstyle (1)}(s)) + \text{Cov}(\mathcal{P}_{m}^{\scriptscriptstyle (1)}(t), \mathcal{P}_{m}^{\scriptscriptstyle (2)}(s)) + \text{Cov}(\mathcal{P}_{m}^{\scriptscriptstyle (2)}(t), \mathcal{P}_{m}^{\scriptscriptstyle (1)}(s)) \nonumber \\
+& + \text{Cov}(\mathcal{P}_{m}^{\scriptscriptstyle (2)}(t), \mathcal{P}_{m}^{\scriptscriptstyle (2)}(s)),
 \label{covariance}
 \end{align} 
-With 
+with 
 \begin{align*}
 \text{Cov}\left(\mathcal{P}_{m}^{\scriptscriptstyle (i)}(t),\mathcal{P}_{m}^{\scriptscriptstyle (i)}(s) \right) 
 & = \sum_{x_{\scriptscriptstyle j}=\left(1-m\right)}^{m-1}\sum_{x_{\scriptscriptstyle i}=\left(2-m\right)}^{m-2}\left(m -|x_{j}|\right)\left(m - 1- |x_{i}|\right) \text{Cov}\left(f_{t}^{\scriptscriptstyle (i)}(0), f_{s}^{\scriptscriptstyle (i)}(x) \right) 
@@ -410,13 +394,11 @@ With
 for $i,j \in\{1,2\}, i\neq j$, and 
 \begin{align*}
 \text{Cov}\left(\mathcal{P}_{m}^{\scriptscriptstyle (1)}(t),\mathcal{P}_{m}^{\scriptscriptstyle (2)}(s) \right) 
-& = \sum_{x_1=2-m}^{m-1} \sum_{x_2 = 1-m}^{m-2} \left(m-|x_1| - \mathbbm{1}_{x_{1} \leq 0}\right)\left(m-|x_2|-\mathbbm{1}_{x_{2} \geq 0}\right)\text{Cov}\left(f_{t}^{\scriptscriptstyle (1)}(0), f_{s}^{ \scriptscriptstyle (2)}(x) \right)
+& = \sum_{x_1=2-m}^{m-1} \sum_{x_2 = 1-m}^{m-2} \left(m-|x_1| - \mathbbm{1}_{x_{1} \leq 0}\right)\left(m-|x_2|-\mathbbm{1}_{x_{2} \geq 0}\right)\text{Cov}\left(f_{t}^{\scriptscriptstyle (1)}(0), f_{s}^{ \scriptscriptstyle (2)}(x) \right).
 \end{align*}
 \end{Lemma}
-
-
 \begin{proof}
-Let us start with the computation of $\text{Cov}(\mathcal{P}_{m}^{\scriptscriptstyle (1)}(t), \mathcal{P}_{m}^{\scriptscriptstyle (1)}(s))$, $i = 1$for $t \leq s$. 
+Let us start with the computation of $\text{Cov}(\mathcal{P}_{m}^{\scriptscriptstyle (1)}(t), \mathcal{P}_{m}^{\scriptscriptstyle (1)}(s))$. 
 \begin{align*}
 \text{Cov}(\mathcal{P}_{m}^{\scriptscriptstyle (1)}(t), \mathcal{P}_{m}^{\scriptscriptstyle (1)}(s))& = \sum_{x, w_{1}(x) \in \mathbb{E}^{\scriptscriptstyle (1)}_{m}} \sum_{y, w_{1}(y) \in \mathbb{E}^{\scriptscriptstyle (1)}_{m}} \text{Cov}\left(f_{t}^{\scriptscriptstyle (1)}(x), f_{s}^{\scriptscriptstyle (1)}(y) \right).
 \end{align*}
@@ -455,9 +437,9 @@ Similarly for $z_2 = y_2 - x_2$ and $x_2 \in [0, m-1]$
 \end{align*}
 Thus,
 \begin{align*}
-\text{Cov}\left(\mathcal{P}_{m}^{\scriptscriptstyle (1)}(t),\mathcal{P}_{m}^{\scriptscriptstyle (1)}(s) \right) &  = \sum_{z_{\scriptscriptstyle 1} = \left(2-m\right)}^{m-2}\sum_{z_{\scriptscriptstyle 2}=\left(1-m\right)}^{m-1}\left(m -1 -|z_{1}|\right)\left(m - |z_{2}|\right) \text{Cov}\left(f_{t}^{\scriptscriptstyle (1)}(0), f_{s}^{\scriptscriptstyle (1)}(z) \right) 
+\text{Cov}\left(\mathcal{P}_{m}^{\scriptscriptstyle (1)}(t),\mathcal{P}_{m}^{\scriptscriptstyle (1)}(s) \right) &  = \sum_{z_{\scriptscriptstyle 1} = \left(2-m\right)}^{m-2}\sum_{z_{\scriptscriptstyle 2}=\left(1-m\right)}^{m-1}\left(m -1 -|z_{1}|\right)\left(m - |z_{2}|\right) \text{Cov}\left(f_{t}^{\scriptscriptstyle (1)}(0), f_{s}^{\scriptscriptstyle (1)}(z) \right). 
 \end{align*}
-For the second part of \eqref{covariance}, we have still by stationarity
+For the last part of \eqref{covariance}, we have still by stationarity
 \begin{align*}
 \text{Cov}\left(\mathcal{P}_{m}^{\scriptscriptstyle (1)}(t),\mathcal{P}_{m}^{\scriptscriptstyle (2)}(s) \right) & = \sum_{x, w_{1}(x) \subset \text{\larger[1]{$($}}0, m \text{\larger[1]{$)$}}^{2}} \sum_{y, w_{2}(y) \subset \text{\larger[1]{$($}}0, m \text{\larger[1]{$)$}}^{2}} \text{Cov}\left(f_{t}^{\scriptscriptstyle (1)}(0), f_{s}^{ \scriptscriptstyle (2)}(y-x) \right)\\
 & =  \sum_{x_1 = 0}^{m-2}\sum_{x_2 = 0}^{m-1}\sum_{y_1 = 0}^{m-1}\sum_{y_2 = 0}^{m-2}\text{Cov}\left(f_{t}^{\scriptscriptstyle (1)}(0), f_{s}^{ \scriptscriptstyle (2)}(y-x) \right)
@@ -471,8 +453,8 @@ Again, considering $z_1 = y_1 - x_1$ and, $z_{2} = y_{2}-x_{2}$, we get
 & = \sum_{z_1=2-m}^{m-1} \sum_{z_2 = 1-m}^{m-2} \left(m-|z_1| - \mathbbm{1}_{z_{1} \leq 0}\right)\left(m-|z_2|-\mathbbm{1}_{z_{2} \geq 0}\right)\text{Cov}\left(f_{t}^{\scriptscriptstyle (1)}(0), f_{s}^{ \scriptscriptstyle (2)}(z) \right)
 \end{align*}
 \end{proof}
-Getting the value of the covariance requires the computation of all the \linebreak elements~$\text{Cov}\left(f_{t}^{\scriptscriptstyle (j)}(0), f_{s}^{\scriptscriptstyle (i)}(x)\right)$, $i,j \in\{1,2\}$ which has a two, three and four cell structure. 
-Figure \ref{configurations} below shows the five types of configurations depending on the orientation $i$ and position on the grid $x$. 
+Getting the value of the covariance $\text{Cov}\left(\mathcal{P}_{m}(t),\mathcal{P}_{m}(s)\right)$ requires the computation of all the \linebreak elements~$\text{Cov}\left(f_{t}^{\scriptscriptstyle (j)}(0), f_{s}^{\scriptscriptstyle (i)}(x)\right)$, $i,j \in\{1,2\}$ which has a two, three or four cells structure, depending on the cardinality of the set $\{C_{m}(0), C_{m}(e_1), C_{m}(x), C_{m}(x+e_i)\}$. 
+Figure \ref{configurations} below shows the five types of configurations depending on the orientation $i$ and the position of $x$ on the grid. 
 \begin{figure}[H]
 \begin{center}
   \begin{subfigure}[b]{0.25\textwidth} 
@@ -540,10 +522,10 @@ Figure \ref{configurations} below shows the five types of configurations dependi
 \caption{$i = 2, z = (2,1)$}
 \end{subfigure}
 \end{center}
-\caption{Illustration of the two three and four cells configuration involved in the study of $\text{Cov}\left(f_{t}^{\scriptscriptstyle (1)}(0), f_{s}^{ \scriptscriptstyle (i)}(x)\right)$ in Lemma \ref{CovLemma}.}
+\caption{Illustration of the two, three and four cells configuration involved in the computation of $\text{Cov}\left(f_{t}^{\scriptscriptstyle (1)}(0), f_{s}^{ \scriptscriptstyle (i)}(x)\right)$ in Lemma \ref{CovLemma}.}
 \label{configurations}
 \end{figure}
-Let us first start with the two cell case, which appears in the computation of the term $\text{Cov}\left(f_{t}^{\scriptscriptstyle (1)}(0), f_{s}^{\scriptscriptstyle (1)}(0)\right)$, in order to compute it, we just have to apply the same strategy we used to compute the first moment in Proposition \ref{propFisrtmoment}. Thus, We get the next result. \\
+Let us first start with the two cells case, which appears in the computation of the term $\text{Cov}\left(f_{t}^{\scriptscriptstyle (1)}(0), f_{s}^{\scriptscriptstyle (1)}(0)\right)$. Applying the same strategy we used to compute the first moment in Proposition \ref{propFisrtmoment}, we get the next result. \\
 \begin{Lemma}
 \begin{align*}
 \text{Cov}\left(f_{t}^{\scriptscriptstyle (1)}(0), f_{s}^{\scriptscriptstyle (1)}(0)\right) & = \mathbb{E}\left(\mathbbm{1}_{\left\{\min(X_{\scriptscriptstyle 0}, X_{\scriptscriptstyle  e_1}) \leq t \leq \max(X_{\scriptscriptstyle 0}, X_{e_1})\right\}}\mathbbm{1}_{\left\{\min(X_{\scriptscriptstyle 0}, X_{ \scriptscriptstyle  e_1}) \leq s \leq \max(X_{\scriptscriptstyle 0}, X_{\scriptscriptstyle e_1}) \right\}}\right) \\
@@ -558,12 +540,47 @@ where,
 \end{align*}}
 with $Z \sim \mathcal{N}(0,1)$. 
 \end{Lemma}
+\begin{Proposition}
+\label{PropositionFourCell}
+Let us consider a stationary Gaussian random field $\left(X_{\scriptscriptstyle x}\right)_{x \in \mathbb{Z}^{2}}$ with zero mean and unit variance of covariance sturcture given by $\rho$, such that $|\rho(e_i)| < 1$
+\vspace{-0.5cm} 
+ {\small 
+\begin{align}
+\label{Thisthofour}
+\mathbb{E}\left(\mathbbm{1}_{\left\{ \left|2t - S^{\scriptscriptstyle (1)}_{\scriptscriptstyle 0}\right| \leq \left|\Delta^{\scriptscriptstyle (1)}_{\scriptscriptstyle 0}\right|\right\}}\mathbbm{1}_{\left\{ \left|2s - S^{\scriptscriptstyle i}_{\scriptscriptstyle x}\right| \leq \left|\Delta^{\scriptscriptstyle (i)}_x\right| \right\}}\right) & = \mathbb{E}\left(\mathbbm{1}_{\left\{ |2t - \sigma^{\scriptscriptstyle (+)}_{1}V| \leq |\sigma^{\scriptscriptstyle (-)}_{1}U|\right\}}\right. \nonumber\\
+& \hspace{-6cm} \left. \left|\Phi_{ \pi^{\scriptscriptstyle(+, i)}_{Z}(x)}\left( 2s - \frac{2\Delta \rho(x) }{\sigma^{\scriptscriptstyle (-)}_{1}} U - \frac{2S\rho(x)}{\sigma^{\scriptscriptstyle (+)}_{1}}V - \left( \pi^{\scriptscriptstyle(+, i)}_{W}(x) -  \pi^{\scriptscriptstyle(-, i)}_{W}(x)\right) W \right) \right. \right.  \nonumber \\
+& \hspace{-4cm}\left. \left.  - \Phi_{ \pi^{\scriptscriptstyle(+, i)}_{Z}(x)}\left( 2s - \frac{2\Delta \rho(x+e_i) }{\sigma^{\scriptscriptstyle (-)}_{1}}U - \frac{2S \rho(x+e_i) }{\sigma^{\scriptscriptstyle (+)}_{1}}V - \left( \pi^{\scriptscriptstyle(+, i)}_{W}(x) +  \pi^{\scriptscriptstyle(-, i)}_{W}(x) \right)W \right)  \right| \right)
+\end{align}
+}with $\Phi_{\pi^{\scriptscriptstyle(+, i)}_{Z}(x)}$ the cumulative distribution function of $Z \sim \mathcal{N}(0, (\pi^{\scriptscriptstyle(+, i)}_{Z}(x))^{2})$, and \\ 
+$\left\{
+ \begin{array}{rlc}
+ \sigma^{\scriptscriptstyle (-)}_{1} & = &  \sqrt{2(1-\rho(e_1))} \\
+ \sigma^{\scriptscriptstyle (+)}_{1} & = & \sqrt{2(1+\rho(e_1))} \\
+ \end{array}\right.$ \\
+ $\left\{
+ \begin{array}{rlc}
+   \pi^{\scriptscriptstyle(-, i)}_{U}(x) & = & \frac{1}{\sigma^{\scriptscriptstyle (-)}_{1}}\left(\Delta \rho(x+e_i) -\Delta \rho(x)\right) \\
+   \pi^{\scriptscriptstyle(-, i)}_{V}(x) & = &  \frac{1}{\sigma^{\scriptscriptstyle (+)}_{1}}\left(S\rho(x+e_i)-S\rho(x)\right)  \\
+   \pi^{\scriptscriptstyle(-, i)}_{W}(x)& = & \left(2(1 - \rho(e_{i})) - \pi^{\scriptscriptstyle(-, i)}_{U}(x)^{2} - \pi^{\scriptscriptstyle(-, i)}_{V}(x)^{2}\right)^{\scriptscriptstyle (1/2)} \end{array}\right.$ \\
+    $\left\{
+ \begin{array}{rlc}
+   \pi^{\scriptscriptstyle(+, i)}_{U}(x) & = &  \frac{1}{\sigma^{\scriptscriptstyle (-)}_{1}}\left(\Delta \rho(x) + \Delta \rho(x+e_i)\right) \\
+    \pi^{\scriptscriptstyle(+, i)}_{V}(x) & = & \frac{1}{\sigma^{\scriptscriptstyle (+)}_{1}}\left(S \rho(x) + S\rho(x+e_i)\right) \\
+     \pi^{\scriptscriptstyle(+, i)}_{W}(x) & = & \frac{-1}{\pi^{\scriptscriptstyle(-, i)}_{W}(x)}\left(\pi^{\scriptscriptstyle(-, i)}_{U}(x)\pi^{\scriptscriptstyle(+, i)}_{U}(x) + \pi^{\scriptscriptstyle(-, i)}_{V}(x)\pi^{\scriptscriptstyle(+, i)}_{V}(x)\right) \\
+   \pi^{\scriptscriptstyle(+, i)}_{Z}(x)& = & \left(2(1 + \rho(e_i)) - \pi^{\scriptscriptstyle(+, i)}_{U}(x)^{2} - \pi^{\scriptscriptstyle(+, i)}_{V}(x)^{2} - \pi^{\scriptscriptstyle(+, i)}_{W}(x)^{2}\right)^{\scriptscriptstyle (1/2)}
+\end{array}\right.$ 
+
+\end{Proposition}
+\begin{proof}(Proof of Proposition \ref{PropositionFourCell})
 Let us consider the Gaussian vector $\left(X_{\scriptscriptstyle 0}, X_{e_1}, X_{\scriptscriptstyle x}, X_{x+e_i}\right)$ of covariance matrix given by $$\Sigma_{i}(x) = \begin{pmatrix} 1 & \rho(e_1) & \rho(x) & \rho(x+e_i)\\
 \rho(e_1) & 1 & \rho(x-e_1) &  \rho(x+e_i- e_1) \\ 
 \rho(x) & \rho(x-e_1) & 1 & \rho(e_i) \\
 \rho(x+e_i) & \rho(x+e_i-e_1) & \rho(e_i) & 1 \end{pmatrix}.$$ 
-Let us define the following quantity  \begin{equation} \label{expressions} \Delta^{\scriptscriptstyle (i)}_{\scriptscriptstyle x} := X_{x+e_i} - X_{\scriptscriptstyle x}, \hspace{0.5cm} S^{\scriptscriptstyle (i)}_{\scriptscriptstyle x} := X_{x+e_i} + X_{\scriptscriptstyle x},\end{equation}
-$\Delta \rho(x) = \rho(x-e_1)-\rho(x)$ and $S\rho(x)  =  \rho(x-e_1)+\rho(x)$. The covariance matrix of the Gaussian vector $\left(\Delta^{\scriptscriptstyle (1)}_{\scriptscriptstyle 0}, S^{\scriptscriptstyle (1)}_{\scriptscriptstyle 0}, \Delta^{\scriptscriptstyle (i)}_{\scriptscriptstyle x}, S^{\scriptscriptstyle (i)}_{\scriptscriptstyle x}\right)$ is equal to ${\tilde{\Sigma}_{i}(x)~= M\Sigma_{i}(x) M^{\star}}$ with {\small $M = \begin{pmatrix}
+Let us define the following quantities   \begin{equation} \label{expressions} \Delta^{\scriptscriptstyle (i)}_{\scriptscriptstyle x} := X_{x+e_i} - X_{\scriptscriptstyle x}, \hspace{0.5cm} S^{\scriptscriptstyle (i)}_{\scriptscriptstyle x} := X_{x+e_i} + X_{\scriptscriptstyle x},\end{equation}
+\begin{center}
+$\Delta \rho(x) = \rho(x-e_1)-\rho(x)$ and $S\rho(x)  =  \rho(x-e_1)+\rho(x)$.
+\end{center}
+The covariance matrix of the Gaussian vector $\left(\Delta^{\scriptscriptstyle (1)}_{\scriptscriptstyle 0}, S^{\scriptscriptstyle (1)}_{\scriptscriptstyle 0}, \Delta^{\scriptscriptstyle (i)}_{\scriptscriptstyle x}, S^{\scriptscriptstyle (i)}_{\scriptscriptstyle x}\right)$ is equal to ${\tilde{\Sigma}_{i}(x)~= M\Sigma_{i}(x) M^{\star}}$ with {\small $M = \begin{pmatrix}
 -1 & 1 & 0 &  0 \\
 1 & 1 & 0 &  0 \\
 0& 0 & -1 &  1 \\
@@ -584,11 +601,15 @@ $A_{i} = \begin{pmatrix} 2(1-\rho(e_i)) & 0 \\ 0 & 2(1+\rho(e_i))\end{pmatrix}$ 
 \begin{align*}
 \mathbb{E}\left(\mathbbm{1}_{\left\{\min(X_{\scriptscriptstyle 0}, X_{e_1}) \leq t \leq \max(X_{\scriptscriptstyle 0}, X_{e_1})\right\}}\mathbbm{1}_{\left\{\min(X_{\scriptscriptstyle x}, X_{x+e_i}) \leq s \leq \max(X_{\scriptscriptstyle x}, X_{x+e_i}) \right\}}\right)\\
 & \hspace{-3cm}= \mathbb{E}\left(\mathbbm{1}_{\left\{ \left|2t - S^{\scriptscriptstyle (1)}_{\scriptscriptstyle 0}\right| \leq \left|\Delta^{\scriptscriptstyle (1)}_{\scriptscriptstyle 0}\right|\right\}}\mathbbm{1}_{\left\{ \left|2s - S^{\scriptscriptstyle (i)}_{\scriptscriptstyle x}\right| \leq \left|\Delta^{\scriptscriptstyle (i)}_x\right| \right\}}\right).
-\end{align*}}Let us assume that $|\rho(e_1)| < 1$, the Cholesky decomposition of $\tilde{\Sigma}_{i}(x)$ allows us to get the expression of the Gaussian vector $\left(\Delta^{\scriptscriptstyle (1)}_{\scriptscriptstyle 0},S^{\scriptscriptstyle (1)}_{\scriptscriptstyle 0},\Delta^{\scriptscriptstyle (i)}_{\scriptscriptstyle x},S^{\scriptscriptstyle (i)}_{\scriptscriptstyle x} \right)$ in a new basis $\left(U,V,W,Z\right)$ with $\left(U, V, W, Z\right) \sim \mathcal{N}\left(0,I_{4}\right)$. We get the following decomposition \\ 
+\end{align*}} We know that $|\rho(e_1)| < 1$, the Cholesky decomposition of $\tilde{\Sigma}_{i}(x)$ allows us to get the expression of the Gaussian vector $\left(\Delta^{\scriptscriptstyle (1)}_{\scriptscriptstyle 0},S^{\scriptscriptstyle (1)}_{\scriptscriptstyle 0},\Delta^{\scriptscriptstyle (i)}_{\scriptscriptstyle x},S^{\scriptscriptstyle (i)}_{\scriptscriptstyle x} \right)$ in a new basis $\left(U,V,W,Z\right)$ with $\left(U, V, W, Z\right) \sim \mathcal{N}\left(0,I_{4}\right)$. We get the following decomposition \\ 
 $\left\{
   \begin{array}{rlc}
-  \Delta^{\scriptscriptstyle (1)}_{\scriptscriptstyle 0} & = & \sigma^{\scriptscriptstyle (-)}_{1}U,  \textcolor{white}{+  \pi^{\scriptscriptstyle(+, i)}_{V}(x) V +  \pi^{\scriptscriptstyle(+, i)}_{W}(x) W +  \pi^{\scriptscriptstyle(+, i)}_{Z}(x)Z, } \\
-  S^{\scriptscriptstyle (1)}_{\scriptscriptstyle 0} & = & \textcolor{white}{\sigma^{\scriptscriptstyle (-)}_{1}U,} \sigma^{\scriptscriptstyle (+)}_{1}V, \textcolor{white}{+  \pi^{\scriptscriptstyle(+, i)}_{W}(x) W +  \pi^{\scriptscriptstyle(+, i)}_{Z}(x)Z, } \\
+  \Delta^{\scriptscriptstyle (1)}_{\scriptscriptstyle 0} & = & \sigma^{\scriptscriptstyle (-)}_{1}U,  \textcolor{white}{+  \pi^{\scriptscriptstyle(+, i)}_{V}(x) V  } \\
+  S^{\scriptscriptstyle (1)}_{\scriptscriptstyle 0} & = & \textcolor{white}{\sigma^{\scriptscriptstyle (-)}_{1}U,} \sigma^{\scriptscriptstyle (+)}_{1}V,
+  \end{array}\right.$
+  \hspace{-0.9cm} and 
+  $\left\{
+  \begin{array}{rlc}
   \Delta^{\scriptscriptstyle (i)}_{\scriptscriptstyle  x}& = &  \pi^{\scriptscriptstyle(-, i)}_{U}(x)U +  \pi^{\scriptscriptstyle(-, i)}_{V}(x) V +  \pi^{\scriptscriptstyle(-, i)}_{W}(x) W, \textcolor{white}{ + \pi^{\scriptscriptstyle(+, i)}_{Z}(x)Z, } \\
   S^{\scriptscriptstyle (i)}_{\scriptscriptstyle x} & = &    \pi^{\scriptscriptstyle(+, i)}_{U}(x)U +  \pi^{\scriptscriptstyle(+, i)}_{V}(x) V +  \pi^{\scriptscriptstyle(+, i)}_{W}(x) W +  \pi^{\scriptscriptstyle(+, i)}_{Z}(x)Z, 
 \end{array}\right.$ \\
@@ -597,7 +618,7 @@ $\left\{
  \begin{array}{rlc}
  \sigma^{\scriptscriptstyle (-)}_{1} & = &  \sqrt{2(1-\rho(e_1))} \\
  \sigma^{\scriptscriptstyle (+)}_{1} & = & \sqrt{2(1+\rho(e_1))} \\
- \end{array}\right.$ 
+ \end{array}\right.$ \\
  $\left\{
  \begin{array}{rlc}
    \pi^{\scriptscriptstyle(-, i)}_{U}(x) & = & \frac{1}{\sigma^{\scriptscriptstyle (-)}_{1}}\left(\Delta \rho(x+e_i) -\Delta \rho(x)\right) \\
@@ -608,22 +629,9 @@ $\left\{
    \pi^{\scriptscriptstyle(+, i)}_{U}(x) & = &  \frac{1}{\sigma^{\scriptscriptstyle (-)}_{1}}\left(\Delta \rho(x) + \Delta \rho(x+e_i)\right) \\
     \pi^{\scriptscriptstyle(+, i)}_{V}(x) & = & \frac{1}{\sigma^{\scriptscriptstyle (+)}_{1}}\left(S \rho(x) + S\rho(x+e_i)\right) \\
      \pi^{\scriptscriptstyle(+, i)}_{W}(x) & = & \frac{-1}{\pi^{\scriptscriptstyle(-, i)}_{W}(x)}\left(\pi^{\scriptscriptstyle(-, i)}_{U}(x)\pi^{\scriptscriptstyle(+, i)}_{U}(x) + \pi^{\scriptscriptstyle(-, i)}_{V}(x)\pi^{\scriptscriptstyle(+, i)}_{V}(x)\right) \\
-   \pi^{\scriptscriptstyle(+, i)}_{Z}(x)& = & \left(2(1 + \rho(e_i)) - \pi^{\scriptscriptstyle(+, i)}_{U}(x)^{2} - \pi^{\scriptscriptstyle(+, i)}_{V}(x)^{2} - \pi^{\scriptscriptstyle(+, i)}_{W}(x)^{2}\right)^{\scriptscriptstyle (1/2)}
-\end{array}\right.$ 
-\begin{Proposition}
-\label{PropositionFourCell}
-Considering the assumptions above we get 
-{\small 
-\begin{align}
-\label{Thisthofour}
-\mathbb{E}\left(\mathbbm{1}_{\left\{ \left|2t - S^{\scriptscriptstyle (1)}_{\scriptscriptstyle 0}\right| \leq \left|\Delta^{\scriptscriptstyle (1)}_{\scriptscriptstyle 0}\right|\right\}}\mathbbm{1}_{\left\{ \left|2s - S^{\scriptscriptstyle i}_{\scriptscriptstyle x}\right| \leq \left|\Delta^{\scriptscriptstyle (i)}_x\right| \right\}}\right) & = \mathbb{E}\left(\mathbbm{1}_{\left\{ |t - \frac{\sigma^{\scriptscriptstyle (+)}_{1}V}{2}| \leq |\frac{\sigma^{\scriptscriptstyle (-)}_{1}U}{2}|\right\}}\right. \nonumber\\
-& \hspace{-6cm} \left. \left|\Phi_{ \pi^{\scriptscriptstyle(+, i)}_{Z}(x)}\left( 2s - \frac{2\Delta \rho(x) }{\sigma^{\scriptscriptstyle (-)}_{1}} U - \frac{2S\rho(x)}{\sigma^{\scriptscriptstyle (+)}_{1}}V - \left( \pi^{\scriptscriptstyle(+, i)}_{W}(x) -  \pi^{\scriptscriptstyle(-, i)}_{W}(x)\right) W \right) \right. \right.  \nonumber \\
-& \hspace{-4cm}\left. \left.  - \Phi_{ \pi^{\scriptscriptstyle(+, i)}_{Z}(x)}\left( 2s - \frac{2\Delta \rho(x+e_i) }{\sigma^{\scriptscriptstyle (-)}_{1}}U - \frac{2S \rho(x+e_i) }{\sigma^{\scriptscriptstyle (+)}_{1}}V - \left( \pi^{\scriptscriptstyle(+, i)}_{W}(x) +  \pi^{\scriptscriptstyle(-, i)}_{W}(x) \right)W \right)  \right| \right)
-\end{align}
-}with $\Phi_{\pi^{\scriptscriptstyle(+, i)}_{Z}(x)}$ the cumulative distribution function of $Z \sim \mathcal{N}(0, (\pi^{\scriptscriptstyle(+, i)}_{Z}(x))^{2})$.
-\end{Proposition}
-\begin{proof}(Proof of Proposition \ref{PropositionFourCell})
-Let us first consider the following indicator function
+   \pi^{\scriptscriptstyle(+, i)}_{Z}(x)& = & \left(2(1 + \rho(e_i)) - \pi^{\scriptscriptstyle(+, i)}_{U}(x)^{2} - \pi^{\scriptscriptstyle(+, i)}_{V}(x)^{2} - \pi^{\scriptscriptstyle(+, i)}_{W}(x)^{2}\right)^{\scriptscriptstyle (1/2)}.
+\end{array}\right.$ \\
+Developing the indicator function, we get the following expression
 {\small
 \begin{align*}
 \mathbbm{1}_{\left\{ |2s - S^{i}_{\scriptscriptstyle x}| \leq |\Delta^{\scriptscriptstyle(i)}_ {\scriptscriptstyle x}| \right\}}
@@ -634,20 +642,20 @@ Let us first consider the following indicator function
 \mathbb{E}\left(\mathbbm{1}_{\left\{ |2t - S^{\scriptscriptstyle (1)}_{\scriptscriptstyle 0}| \leq |\Delta^{\scriptscriptstyle (1)}_{\scriptscriptstyle 0}|\right\}}\mathbbm{1}_{\left\{ |2s - S^{\scriptscriptstyle (i)}_{\scriptscriptstyle x}| \leq |\Delta^{\scriptscriptstyle (i)}_ {\scriptscriptstyle x}| \right\}}\right)\\
 &\hspace{-6.5cm} = \mathbb{E}\left(\mathbbm{1}_{\left\{ |2t - S^{\scriptscriptstyle (1)}_{\scriptscriptstyle 0}| \leq |\Delta^{\scriptscriptstyle (1)}_{\scriptscriptstyle 0}|\right\}}\mathbbm{1}_{\big\{ 2s -  \pi^{\scriptscriptstyle(+, i)}_{U}(x)U -  \pi^{\scriptscriptstyle(+, i)}_{V}(x) V -  \pi^{\scriptscriptstyle(+, i)}_{W}(x) W  - |\Delta^{\scriptscriptstyle(i)}_ {\scriptscriptstyle x}| \leq \pi^{\scriptscriptstyle(+, i)}_{Z}(x)Z} \right.  \\  
 & \hspace{3cm}\left. _{\leq 2s -  \pi^{\scriptscriptstyle(+, i)}_{U}(x)U -  \pi^{\scriptscriptstyle(+, i)}_{V}(x) V -  \pi^{\scriptscriptstyle(+, i)}_{W}(x) W + |\Delta^{\scriptscriptstyle(i)}_ {\scriptscriptstyle x}| \big\}}\right)\\
-& \hspace{-6.5cm} \text{The variable}\; Z \sim \mathcal{N}\left(0, \pi^{\scriptscriptstyle(+, i)}_{Z}(x)^{2}\right) \text{and} \; \text{$\Phi_{\pi^{\scriptscriptstyle(+, i)}_{Z}(x)}$ being an increasing function,}\\
-& \hspace{-6.5cm} = \mathbb{E}\left(\mathbbm{1}_{\left\{ |t - \frac{\sigma^{\scriptscriptstyle (+)}_{1}V}{2}| \leq |\frac{\sigma^{\scriptscriptstyle (-)}_{1}U}{2}|\right\}}\right. \\
+& \hspace{-6.5cm} \text{The variable}\; \pi^{\scriptscriptstyle(+, i)}_{Z}Z \; \text{follows a} \; \mathcal{N}\left(0, \pi^{\scriptscriptstyle(+, i)}_{Z}(x)^{2}\right) \text{and} \; \text{$\Phi_{\pi^{\scriptscriptstyle(+, i)}_{Z}(x)}$ being an increasing function, we get}\\
+& \hspace{-6.5cm} = \mathbb{E}\left(\mathbbm{1}_{\left\{ |2t - \sigma^{\scriptscriptstyle (+)}_{1}V| \leq |\sigma^{\scriptscriptstyle (-)}_{1}U|\right\}}\right. \\
 &\hspace{-4cm} \left. \left|\Phi_{ \pi^{\scriptscriptstyle(+, i)}_{Z}(x)}\left( 2s -  \pi^{\scriptscriptstyle(+, i)}_{U}(x)U -  \pi^{\scriptscriptstyle(+, i)}_{V}(x) V -  \pi^{\scriptscriptstyle(+, i)}_{W}(x) W  + \Delta^{\scriptscriptstyle(i)}_ {\scriptscriptstyle x}  \right) \right. \right.  \nonumber \\
 & \hspace{-4cm}\left. \left.  - \Phi_{ \pi^{\scriptscriptstyle(+, i)}_{Z}(x)}\left( 2s -  \pi^{\scriptscriptstyle(+, i)}_{U}(x)U -  \pi^{\scriptscriptstyle(+, i)}_{V}(x) V -  \pi^{\scriptscriptstyle(+, i)}_{W}(x) W  - \Delta^{\scriptscriptstyle(i)}_ {\scriptscriptstyle x} \right)  \right| \right) \\
-& \hspace{-6.5cm} = \mathbb{E}\left(\mathbbm{1}_{\left\{ |t - \frac{\sigma^{\scriptscriptstyle (+)}_{1}V}{2}| \leq |\frac{\sigma^{\scriptscriptstyle (-)}_{1}U}{2}|\right\}}\right. \\
+& \hspace{-6.5cm} = \mathbb{E}\left(\mathbbm{1}_{\left\{ |2t - \sigma^{\scriptscriptstyle (+)}_{1}V| \leq |\sigma^{\scriptscriptstyle (-)}_{1}U|\right\}}\right. \\
 &\hspace{-6.2cm} \left. \left|\Phi_{ \pi^{\scriptscriptstyle(+, i)}_{Z}(x)}\left( 2s + \left( \pi^{\scriptscriptstyle(-, i)}_{U}(x)- \pi^{\scriptscriptstyle(+, i)}_{U}(x)\right) U + \left(\pi^{\scriptscriptstyle(-, i)}_{V}(x)- \pi^{\scriptscriptstyle(+, i)}_{V}(x)\right)V + \left(\pi^{\scriptscriptstyle(-, i)}_{W}(x) - \pi^{\scriptscriptstyle(+, i)}_{W}(x)\right) W \right) \right. \right.  \nonumber \\
 & \hspace{-6.5cm}\left. \left.  - \Phi_{ \pi^{\scriptscriptstyle(+, i)}_{Z}(x)}\left( 2s - \left( \pi^{\scriptscriptstyle(-, i)}_{U}(x)+ \pi^{\scriptscriptstyle(+, i)}_{U}(x)\right) U - \left(\pi^{\scriptscriptstyle(-, i)}_{V}(x)+ \pi^{\scriptscriptstyle(+, i)}_{V}(x)\right)V   - \left( \pi^{\scriptscriptstyle(+, i)}_{W}(x) +  \pi^{\scriptscriptstyle(-, i)}_{W}(x) \right)W \right)  \right| \right)
 \end{align*}
 \end{proof}
-\begin{remark} In the third cell configuration,the matrix $\Sigma_{i}(x)$ is not positive-definite, thus the Cholesky decomposition does not apply, we have to proceed a differently, but this case is not relevant to the establishment of the Central Limit Theorem, therefor its computations will be presented in the Appendix.  
+\begin{remark} In the three cells configuration, the matrix $\Sigma_{i}(x)$ is not positive-definite, thus the Cholesky decomposition does not apply, we have to proceed a differently, but this case is not relevant to the establishment of the Central Limit Theorem, therefor its computations will be presented in the Appendix.  
 \end{remark}
 \subsubsection{Spatial independent case} 
-Let us start by considering the four cell configuration and let us see what happens when ${\rho(x) = \rho(x+e_i) = \rho(x-e_i) = \rho(x + e_i - e_1) = 0}$, supposedly when $x > > 0$. Then
-$\pi^{\scriptscriptstyle(-, i)}_{W}(x) = \sqrt{2(1-\rho(e_i))}$, $\pi^{\scriptscriptstyle(+, i)}_{W}(x) = 0$ and $\pi^{\scriptscriptstyle(+, i)}_{Z}(x) = \sqrt{2(1+\rho(e_i))}.$ Thus, Equation \eqref{Thistho} becomes 
+Let us start by considering the four cells configuration and let us see what happens when ${\rho(x) = \rho(x+e_i) = \rho(x-e_i) = \rho(x + e_i - e_1) = 0}$, supposedly when $x > > 0$. Then
+$\pi^{\scriptscriptstyle(-, i)}_{W}(x) = \sqrt{2(1-\rho(e_i))}$, $\pi^{\scriptscriptstyle(+, i)}_{W}(x) = 0$ and $\pi^{\scriptscriptstyle(+, i)}_{Z}(x) = \sqrt{2(1+\rho(e_i))}.$ Thus, Equation \eqref{Thisthofour} becomes 
 {\small
 \begin{align*}
 \mathbb{E}\left(\mathbbm{1}_{\left\{\min(X_{\scriptscriptstyle 0}, X_{e_1}) \leq t \leq \max(X_{\scriptscriptstyle 0}, X_{e_1})\right\}}\mathbbm{1}_{\left\{\min(X_{\scriptscriptstyle x}, X_{x+e_i}) \leq s \leq \max(X_{\scriptscriptstyle x}, X_{x+e_i}) \right\}}\right) \nonumber \\
@@ -661,7 +669,7 @@ $\pi^{\scriptscriptstyle(-, i)}_{W}(x) = \sqrt{2(1-\rho(e_i))}$, $\pi^{\scriptsc
 \subsubsection{Behavior at large distance.}
 Considering the case where the size of the window $S$ goes to infinity, and assuming that $\rho(x) \to 0$ when $||x||_{2} \to \infty$, we would like to study the decay of $\text{Cov}\left(f_{t}^{\scriptscriptstyle(1)}(0), f_{s}^{\scriptscriptstyle(i)}(x) \right)$ for~$||x||_{2} >> 1$,  
 \begin{Lemma}
-Let $r(x) = \max\left(|\rho(x)|, |\rho(x + e_i)|, |\rho(x-e_1)|, |\rho(x +e_i - e_1)| \right)$, there exist a constant $C \in \mathbb{R}^{+}$, for all $x \in \mathbb{G}_{m}$
+Let $r(x) = \max\left(|\rho(x)|, |\rho(x + e_i)|, |\rho(x-e_1)|, |\rho(x +e_i - e_1)| \right)$, there exist a constant $C \in \mathbb{R}^{+}$, such that for all $x \in \mathbb{G}_{m}$, we get
 \begin{align*}
 &  |\text{Cov}\left(f_{t}^{\scriptscriptstyle(1)}(0), f_{s}^{\scriptscriptstyle(i)}(x) \right)| \leq Cr(x). 
 \end{align*}
@@ -669,22 +677,31 @@ Besides, if $\sum_{x \in \mathbb{Z}^{2}} r(x) <~\infty$, then
 $\lim_{m \to \infty}\text{Cov}\left(\frac{1}{m}\mathcal{P}_{m}^{\scriptscriptstyle (1)}(t), \frac{1}{m}\mathcal{P}_{m}^{\scriptscriptstyle (i)}(s) \right)$ exists. 
 \end{Lemma}
 \begin{proof}
-Let us begin by reconsidering the previous quantities and 
-\begin{table}[H]
-\centering 
-\begin{tabularx}{\textwidth}{|P{3.5cm}|P{11.85cm}|}
-\hline
-Variable & upper bound \\ \hline
-$\left|\pi^{\scriptscriptstyle(-, i)}_{U}(x)\right|$ & $\frac{4r(x)}{\sigma^{\scriptscriptstyle (-)}_{1}}$ \\  \hline
-$\left|\pi^{\scriptscriptstyle(-, i)}_{V}(x)\right|$ & $\frac{4r(x)}{\sigma^{\scriptscriptstyle (+)}_{1}}$  \\  \hline
-$\left|\pi^{\scriptscriptstyle(-, i)}_{W}(x) - \sigma^{(-)}_{i}\right|$ & $ \frac{16r^{2}(x)}{\sigma^{(-)}_{i}}\left(\frac{1}{(\sigma^{(-)}_{i})^{2}} + \frac{1}{(\sigma^{(+)}_{i})^{2}} \right)$ \\ 
-\hline
-$|\pi^{\scriptscriptstyle(+, i)}_{U}(x)|$ &  $\frac{4r(x)}{\sigma^{\scriptscriptstyle (-)}_{1}}$   \\ \hline
-$|\pi^{\scriptscriptstyle(+, i)}_{V}(x)|$ &   $\frac{4r(x)}{\sigma^{\scriptscriptstyle (+)}_{1}}$  \\ \hline 
-$ \left|\pi^{\scriptscriptstyle(+, i)}_{W}(x)\right| $ & $16r(x)^{2}\left(\sigma^{(-)}_{i} -  \frac{16r^{2}(x)}{\sigma^{(-)}_{i}}\left(\frac{1}{(\sigma^{(-)}_{i})^{2}} + \frac{1}{(\sigma^{(+)}_{i})^{2}} \right)\right)^{-1}\left(\frac{1}{(\sigma^{(-)}_{i})^{2}} + \frac{1}{(\sigma^{(+)}_{i})^{2}} \right)$\\ \hline
-$\left|\pi^{\scriptscriptstyle(+, i)}_{Z}(x) - \sigma^{(+)}_{i}\right|$ & $\frac{16r^{2}(x)}{\sigma^{(+)}_{i}}\left(\frac{1}{(\sigma^{(-)}_{i})^{2}} + \frac{1}{(\sigma^{(+)}_{i})^{2}} +  \frac{\pi^{\scriptscriptstyle(+, i)}_{W}(x)^{2}}{16r^{2}(x)} \right)$\\\hline
-\end{tabularx}
-\end{table}
+Let us begin by reconsidering the previous quantities, 
+\begin{itemize}
+  \item if $r(x) = 0$, then, $\pi^{\scriptscriptstyle(-, i)}_{U}(x) = \pi^{\scriptscriptstyle(+, i)}_{U}(x) = \pi^{\scriptscriptstyle(-, i)}_{V}(x) = \pi^{\scriptscriptstyle(+, i)}_{V}(x) = 0$, $\pi^{\scriptscriptstyle(-, i)}_{W}(x) = \sigma^{(-)}_{i}$ and~$\pi^{\scriptscriptstyle(+, i)}_{W}(x) = \sigma^{(+)}_{i}$. 
+  \item else, reconsidering the expressions above recalling that \linebreak and $r(x) = \max\left(|\rho(x)|, |\rho(x + e_i)|, |\rho(x-e_1)|, |\rho(x +e_i - e_1)| \right)$ we get 
+  \begin{align}
+  \label{nine}
+   \left|\pi^{\scriptscriptstyle(\pm, i)}_{U}(x)\right| \leq \frac{4r(x)}{\sigma^{\scriptscriptstyle (-)}_{1}}, \hspace{0.5cm} \left|\pi^{\scriptscriptstyle(-, i)}_{V}(x)\right| \leq \frac{4r(x)}{\sigma^{\scriptscriptstyle (+)}_{1}},
+   \end{align}
+   substracting $\sigma^{(-)}_{i}$ and applying inequality \eqref{nine} we get, 
+   \begin{align}
+   \label{ten}
+   \left|\pi^{\scriptscriptstyle(-, i)}_{W}(x) - \sigma^{(-)}_{i}\right| & \leq \sigma^{(-)}_{i}\left| \left(1 - \frac{\pi^{\scriptscriptstyle(-, i)}_{U}(x)^{2}}{\left(\sigma^{(-)}_{i}\right)^{2}} - \frac{\pi^{\scriptscriptstyle(-, i)}_{V}(x)^{2}}{\left(\sigma^{(-)}_{i}\right)^{2}}\right)^{\scriptscriptstyle (1/2)} - 1  \right| \nonumber \\
+   & \leq \frac{16r^{2}(x)}{\sigma^{(-)}_{i}}\left(\frac{1}{(\sigma^{(-)}_{i})^{2}} + \frac{1}{(\sigma^{(+)}_{i})^{2}} \right)
+   \end{align}
+   from \eqref{nine} and \eqref{ten}, we also get
+   \begin{align}
+   \label{eleven}
+  \left|\pi^{\scriptscriptstyle(+, i)}_{W}(x)\right| & = \frac{-1}{\pi^{\scriptscriptstyle(-, i)}_{W}(x)}\left(\pi^{\scriptscriptstyle(-, i)}_{U}(x)\pi^{\scriptscriptstyle(+, i)}_{U}(x) + \pi^{\scriptscriptstyle(-, i)}_{V}(x)\pi^{\scriptscriptstyle(+, i)}_{V}(x)\right) \nonumber \\
+  &\leq 16r(x)^{2}\left(\frac{1}{(\sigma^{(-)}_{i})^{2}} + \frac{1}{(\sigma^{(+)}_{i})^{2}} \right)\left(\sigma^{(-)}_{i} -  \frac{16r^{2}(x)}{\sigma^{(-)}_{i}}\left(\frac{1}{(\sigma^{(-)}_{i})^{2}} + \frac{1}{(\sigma^{(+)}_{i})^{2}} \right)\right)^{-1}
+  \end{align}
+ finally, from \eqref{nine} and \eqref{eleven}
+  \begin{align}
+  \left|\pi^{\scriptscriptstyle(+, i)}_{Z}(x) - \sigma^{(+)}_{i}\right| \leq \frac{16r^{2}(x)}{\sigma^{(+)}_{i}}\left(\frac{1}{(\sigma^{(-)}_{i})^{2}} + \frac{1}{(\sigma^{(+)}_{i})^{2}} +  \frac{\pi^{\scriptscriptstyle(+, i)}_{W}(x)^{2}}{16r^{2}(x)} \right)
+  \end{align}
+\end{itemize} 
 Let, $R_{1}(x) = \frac{2s + \left( \pi^{\scriptscriptstyle(-, i)}_{U}(x)- \pi^{\scriptscriptstyle(+, i)}_{U}(x)\right) U + \left(\pi^{\scriptscriptstyle(-, i)}_{V}(x)- \pi^{\scriptscriptstyle(+, i)}_{V}(x)\right)V + \left(\pi^{\scriptscriptstyle(-, i)}_{W}(x) - \pi^{\scriptscriptstyle(+, i)}_{W}(x)\right) W}{\pi^{\scriptscriptstyle(+, i)}_{Z}(x)} - \frac{2s + \sigma^{\scriptscriptstyle (-)}_{i}W}{\sigma^{\scriptscriptstyle (+)}_{i}}$ and $ R_{2}(x) = \frac{2s - \left( \pi^{\scriptscriptstyle(-, i)}_{U}(x)+\pi^{\scriptscriptstyle(+, i)}_{U}(x)\right) U - \left(\pi^{\scriptscriptstyle(-, i)}_{V}(x)+\pi^{\scriptscriptstyle(+, i)}_{V}(x)\right)V - \left(\pi^{\scriptscriptstyle(-, i)}_{W}(x) +\pi^{\scriptscriptstyle(+, i)}_{W}(x)\right) W}{\pi^{\scriptscriptstyle(+, i)}_{Z}(x)} - \frac{2s - \sigma^{\scriptscriptstyle (-)}_{i}W}{\sigma^{\scriptscriptstyle (+)}_{i}} $. Considering $R_{1}(x)$
 {\small
 \begin{align*}
@@ -696,15 +713,15 @@ Let, $R_{1}(x) = \frac{2s + \left( \pi^{\scriptscriptstyle(-, i)}_{U}(x)- \pi^{\
 \end{align*}}
 Also, there exist $C_2$ such that $R_{2}(x) \leq C_{2}r(x)\left(|U| + |V| + |W|\right)$. 
 Reconsidering Equation~(\ref{Thisthofour}) we get,
+\pagebreak
 {\small
 \begin{align*}
- \text{Cov}\left(f_{t}^{\scriptscriptstyle(1)}(0), f_{s}^{\scriptscriptstyle(i)}(x) \right) & =  \\ 
- & \hspace{-2.5cm} \mathbb{E}\left(\mathbbm{1}_{\left\{ |t - \frac{\sigma^{\scriptscriptstyle (+)}_{1}V}{2}| \leq |\frac{\sigma^{\scriptscriptstyle (-)}_{1}U}{2}|\right\}}\right. \\
-&\hspace{-2.5cm} \left. \left|\Phi_{ \pi^{\scriptscriptstyle(+, i)}_{Z}(x)}\left( 2s + \left( \pi^{\scriptscriptstyle(-, i)}_{U}(x)- \pi^{\scriptscriptstyle(+, i)}_{U}(x)\right) U + \left(\pi^{\scriptscriptstyle(-, i)}_{V}(x)- \pi^{\scriptscriptstyle(+, i)}_{V}(x)\right)V + \left(\pi^{\scriptscriptstyle(-, i)}_{W}(x) - \pi^{\scriptscriptstyle(+, i)}_{W}(x)\right) W \right) \right. \right.  \nonumber \\
-& \hspace{-2.5cm}\left. \left.  - \Phi_{ \pi^{\scriptscriptstyle(+, i)}_{Z}(x)}\left( 2s - \left( \pi^{\scriptscriptstyle(-, i)}_{U}(x)+ \pi^{\scriptscriptstyle(+, i)}_{U}(x)\right) U - \left(\pi^{\scriptscriptstyle(-, i)}_{V}(x)+ \pi^{\scriptscriptstyle(+, i)}_{V}(x)\right)V   - \left( \pi^{\scriptscriptstyle(+, i)}_{W}(x) +  \pi^{\scriptscriptstyle(-, i)}_{W}(x) \right)W \right)  \right| \right) \\
-& \hspace{-2.5cm} - \mathbb{E}\left(\mathbbm{1}_{\left\{ |t - \frac{\sigma^{\scriptscriptstyle (+)}_{1}V}{2}| \leq |\frac{\sigma^{\scriptscriptstyle (-)}_{1}U}{2}|\right\}}\left|\Phi\left(\frac{2s + \sigma^{\scriptscriptstyle (-)}_{i}W}{\sigma^{\scriptscriptstyle (+)}_{i}} \right) - \Phi\left(\frac{2s -\sigma^{\scriptscriptstyle (-)}_{i}W }{\sigma^{\scriptscriptstyle (+)}_{i}} \right)\right|\right)\\
-& \hspace{-2.5cm} = \mathbb{E}\left(\mathbbm{1}_{\left\{ |t - \frac{\sigma^{\scriptscriptstyle (+)}_{1}V}{2}| \leq |\frac{\sigma^{\scriptscriptstyle (-)}_{1}U}{2}|\right\}} \left(\left|\Phi\left(\frac{2s + \sigma^{\scriptscriptstyle (-)}_{i}W}{\sigma^{\scriptscriptstyle (+)}_{i}} + R_{1}(x)) \right) - \Phi\left(\frac{2s -\sigma^{\scriptscriptstyle (-)}_{i}W }{\sigma^{\scriptscriptstyle (+)}_{i}} + R_{2}(x))\right)\right| \right. \right. \\
-& \hspace{4.75cm} \left.\left. -  \left|\Phi\left(\frac{2s + \sigma^{\scriptscriptstyle (-)}_{i}W}{\sigma^{\scriptscriptstyle (+)}_{i}} \right) - \Phi\left(\frac{2s -\sigma^{\scriptscriptstyle (-)}_{i}W }{\sigma^{\scriptscriptstyle (+)}_{i}} \right)\right| \right)\right),
+ \text{Cov}\left(f_{t}^{\scriptscriptstyle(1)}(0), f_{s}^{\scriptscriptstyle(i)}(x) \right) & =  \mathbb{E}\left(\mathbbm{1}_{\left\{ |2t - \sigma^{\scriptscriptstyle (+)}_{1}V| \leq |\sigma^{\scriptscriptstyle (-)}_{1}U|\right\}}\right. \\
+&\hspace{-3cm} \left. \left|\Phi_{ \pi^{\scriptscriptstyle(+, i)}_{Z}(x)}\left( 2s + \left( \pi^{\scriptscriptstyle(-, i)}_{U}(x)- \pi^{\scriptscriptstyle(+, i)}_{U}(x)\right) U + \left(\pi^{\scriptscriptstyle(-, i)}_{V}(x)- \pi^{\scriptscriptstyle(+, i)}_{V}(x)\right)V + \left(\pi^{\scriptscriptstyle(-, i)}_{W}(x) - \pi^{\scriptscriptstyle(+, i)}_{W}(x)\right) W \right) \right. \right.  \nonumber \\
+& \hspace{-3cm}\left. \left.  - \Phi_{ \pi^{\scriptscriptstyle(+, i)}_{Z}(x)}\left( 2s - \left( \pi^{\scriptscriptstyle(-, i)}_{U}(x)+ \pi^{\scriptscriptstyle(+, i)}_{U}(x)\right) U - \left(\pi^{\scriptscriptstyle(-, i)}_{V}(x)+ \pi^{\scriptscriptstyle(+, i)}_{V}(x)\right)V   - \left( \pi^{\scriptscriptstyle(+, i)}_{W}(x) +  \pi^{\scriptscriptstyle(-, i)}_{W}(x) \right)W \right)  \right| \right) \\
+& \hspace{2cm} - \mathbb{E}\left(\mathbbm{1}_{\left\{ |2t - \sigma^{\scriptscriptstyle (+)}_{1}V| \leq |\sigma^{\scriptscriptstyle (-)}_{1}U|\right\}}\left|\Phi\left(\frac{2s + \sigma^{\scriptscriptstyle (-)}_{i}W}{\sigma^{\scriptscriptstyle (+)}_{i}} \right) - \Phi\left(\frac{2s -\sigma^{\scriptscriptstyle (-)}_{i}W }{\sigma^{\scriptscriptstyle (+)}_{i}} \right)\right|\right)\\
+& \hspace{-3cm} = \mathbb{E}\left(\mathbbm{1}_{\left\{ |2t - \sigma^{\scriptscriptstyle (+)}_{1}V| \leq |\sigma^{\scriptscriptstyle (-)}_{1}U|\right\}} \left(\left|\Phi\left(\frac{2s + \sigma^{\scriptscriptstyle (-)}_{i}W}{\sigma^{\scriptscriptstyle (+)}_{i}} + R_{1}(x)) \right) - \Phi\left(\frac{2s -\sigma^{\scriptscriptstyle (-)}_{i}W }{\sigma^{\scriptscriptstyle (+)}_{i}} + R_{2}(x))\right)\right| \right. \right. \\
+& \hspace{4cm} \left.\left. -  \left|\Phi\left(\frac{2s + \sigma^{\scriptscriptstyle (-)}_{i}W}{\sigma^{\scriptscriptstyle (+)}_{i}} \right) - \Phi\left(\frac{2s -\sigma^{\scriptscriptstyle (-)}_{i}W }{\sigma^{\scriptscriptstyle (+)}_{i}} \right)\right| \right)\right),
 \end{align*}
 }
 thus, 
@@ -713,31 +730,31 @@ thus,
  |\text{Cov}\left(f_{t}^{\scriptscriptstyle(1)}(0), f_{s}^{\scriptscriptstyle(i)}(x) \right)| & \leq \\
  &  \mathbb{E}\left(\left|\Phi\left(\frac{2s + \sigma^{\scriptscriptstyle (-)}_{i}W}{\sigma^{\scriptscriptstyle (+)}_{i}} + R_{1}(x) \right)  - \Phi\left(\frac{2s + \sigma^{\scriptscriptstyle (-)}_{i}W}{\sigma^{\scriptscriptstyle (+)}_{i}} \right) \right. \right. \\
  & \hspace{2cm} \left. \left.+ \Phi\left(\frac{2s - \sigma^{\scriptscriptstyle (-)}_{i}W}{\sigma^{\scriptscriptstyle (+)}_{i}} \right) - \Phi\left(\frac{2s -\sigma^{\scriptscriptstyle (-)}_{i}W }{\sigma^{\scriptscriptstyle (+)}_{i}} + R_{2}(x))\right)\right|\right) \\
- & \leq \mathbb{E}\left(\left|\Phi\left(\frac{2s + \sigma^{\scriptscriptstyle (-)}_{i}W}{\sigma^{\scriptscriptstyle (+)}_{i}} + |R_{1}(x)| \right)  - \Phi\left(\frac{2s + \sigma^{\scriptscriptstyle (-)}_{i}W}{\sigma^{\scriptscriptstyle (+)}_{i}} \right) \right| \right. \\
+ & \leq \mathbb{E}\left(\left|\Phi\left(\frac{2s + \sigma^{\scriptscriptstyle (-)}_{i}W}{\sigma^{\scriptscriptstyle (+)}_{i}} + R_{1}(x) \right)  - \Phi\left(\frac{2s + \sigma^{\scriptscriptstyle (-)}_{i}W}{\sigma^{\scriptscriptstyle (+)}_{i}} \right) \right| \right. \\
  & \hspace{2cm} \left. + \left| \Phi\left(\frac{2s - \sigma^{\scriptscriptstyle (-)}_{i}W}{\sigma^{\scriptscriptstyle (+)}_{i}} \right) - \Phi\left(\frac{2s -\sigma^{\scriptscriptstyle (-)}_{i}W }{\sigma^{\scriptscriptstyle (+)}_{i}} + R_{2}(x))\right)\right|\right),
  \end{align*}}
 Applying the mean value theorem, there exist a constant $C \in \mathbb{R}^{+}$ such that 
 \begin{align*}
- |\text{Cov}\left(f_{t}^{\scriptscriptstyle(1)}(0), f_{s}^{\scriptscriptstyle(i)}(x) \right)| & \leq C\mathbb{E}\left(|R_{1}(x)| + |R_{2}(x)|\right) \\
+ |\text{Cov}\left(f_{t}^{\scriptscriptstyle(1)}(0), f_{s}^{\scriptscriptstyle(i)}(x) \right)| & \leq C\mathbb{E}\left(|R_{1}(x)| + |R_{2}(x)|\right). \\
 & \leq Cr(x)
 \end{align*}
-Considering the series $\sum_{x \in \mathbb{Z}^{2}}\left(\mathbbm{1}_{x_{1} \in [2-m, m-2]}\mathbbm{1}_{x_{2} \in [1-m, m-1]} \frac{(m-|x_2|)(m-|x_1| -1)}{m^2} \text{Cov}\left(f_{t}^{\scriptscriptstyle(1)}(0), f_{s}^{\scriptscriptstyle(i)}(x) \right) \right)$
-The limit of the general term as $m$ goes to infinity is
+We will prove the result for $i =1$, the other cases can be proven using the same arguments, let $x \in \mathbb{Z}^{2}$, considering the serie $\sum_{x \in \mathbb{Z}^{2}}\left(\mathbbm{1}_{|x_{1}| \leq m-2]}\mathbbm{1}_{|x_{2}| \leq m-1} \frac{(m-|x_2|)(m-|x_1| -1)}{m^2} \text{Cov}\left(f_{t}^{\scriptscriptstyle(1)}(0), f_{s}^{\scriptscriptstyle(1)}(x) \right) \right)$,
+the limit of the general term as $m$ goes to infinity is
 \begin{align*}
-\lim_{m \to \infty}\frac{(m-|x_2|)(m-|x_1| -1)}{m^2} \text{Cov}\left(f_{t}^{\scriptscriptstyle(1)}(0), f_{s}^{\scriptscriptstyle(i)}(x) \right)\mathbbm{1}_{x_{1} \in [2-m, m-2]\cap \mathbb{Z}}\mathbbm{1}_{x_{2} \in [1-m, m-1]\cap \mathbb{Z}} \\
-& \hspace{-7cm} =\text{Cov}\left(f_{t}^{\scriptscriptstyle(1)}(0), f_{s}^{\scriptscriptstyle(i)}(x) \right)\mathbbm{1}_{x \in \mathbb{Z}^{2}} 
+\lim_{m \to \infty}\cfrac{(m-|x_2|)(m-|x_1| -1)}{m^2} \text{Cov}\left(f_{t}^{\scriptscriptstyle(1)}(0), f_{s}^{\scriptscriptstyle(i)}(x) \right)\mathbbm{1}_{|x_{1}| \leq m-2]}\mathbbm{1}_{|x_{2}| \leq m-1}  \\
+& \hspace{-7cm} =\text{Cov}\left(f_{t}^{\scriptscriptstyle(1)}(0), f_{s}^{\scriptscriptstyle(1)}(x) \right)
 \end{align*}
-Besides, we just proved that for $m \in \mathbb{N}$, for all $x\in \mathbb{Z}^{2}$, $\text{Cov}\left(f_{t}^{\scriptscriptstyle(1)}(0), f_{s}^{\scriptscriptstyle(i)}(x)\right) \leq Cr(x)$, thus applying the dominated convergence theorem, $\lim_{m \to \infty}\text{Cov}\left(\frac{1}{m}\mathcal{P}_{m}^{\scriptscriptstyle (1)}(t), \frac{1}{m}\mathcal{P}_{m}^{\scriptscriptstyle (i)}(s) \right)$ exists.
+Besides, we just proved that for $m \in \mathbb{N}$, for all $x\in \mathbb{Z}^{2}$, $\left|\text{Cov}\left(f_{t}^{\scriptscriptstyle(1)}(0), f_{s}^{\scriptscriptstyle(i)}(x)\right)\right| \leq Cr(x)$, thus applying the dominated convergence theorem, $\lim_{m \to \infty}\text{Cov}\left(\frac{1}{m}\mathcal{P}_{m}^{\scriptscriptstyle (1)}(t), \frac{1}{m}\mathcal{P}_{m}^{\scriptscriptstyle (1)}(s) \right)$ exists.
 \end{proof}
-Now that we know more about how the covariance behaves, we can construct a Multi-directional multivariate CLT that will lead us to an isotropy test.
-\vspace{-0.5cm}{}
+Now that we know more about the second moment of the perimeter, we can construct a Multi-directional multivariate CLT that will lead us to an isotropy test, the following Central Limit Theorem is proved with a lesser condition on the covariance of the field.
+\vspace{-0.5cm}
 \subsection{Isotropy test using the oriented perimeter}
 In order to get the CLT we have to add some assumptions on the covariance structure of the field, we will need the following  assumptions 
 \begin{itemize}
 \item \textbf{$(A_{1})$} $\lim_{n \to \infty} m^{-2}\sum_{x, y \in \mathbb{G}_{m}}\rho(x-y)$ exists.
 \item \textbf{$(A_{2})$} $\lim_{n \to \infty} m^{-2}\sum_{x, y \in \mathbb{G}_{m}}\rho(x-~y)^{2}$ exists.
 \end{itemize} 
-\begin{Theorem}\label{TCL}(Multi-directional multivariate CLT for r-threshold). We consider taht $X_{x \in \mathbb{G}_{m}}$ a centered stationary standard Gaussian, let $r$ be a positive integer, $m \geq 2$ and $t_{1}, \cdots,t_{r} \in \mathbb{R}$, then, under \textbf{$(A_{1})$} and \textbf{$(A_{2})$},
+\begin{Theorem}\label{TCL}(Multi-directional multivariate CLT for r-threshold). We consider that $X_{x \in \mathbb{G}_{m}}$ a centered stationary standard Gaussian, let $r$ be a positive integer, $m \geq 2$ and $t_{1}, \cdots,t_{r} \in \mathbb{R}$, then, under \textbf{$(A_{1})$} and \textbf{$(A_{2})$},
 \begin{equation*}
 \frac{1}{m}\left(\begin{pmatrix} \mathcal{P}^{\scriptscriptstyle (1)}_{m}(t_{1}) \\  \vdots \\ \mathcal{P}^{\scriptscriptstyle (1)}_{m}(t_{r}) \\ \mathcal{P}^{\scriptscriptstyle (2)}_{m}(t_{2}) \\  \vdots \\ \mathcal{P}^{\scriptscriptstyle (2)}_{m}(t_{r})  \end{pmatrix} - \begin{pmatrix} \mathbb{E}(\mathcal{P}^{\scriptscriptstyle (1)}_{m}(t_{1}))  \\ \vdots \\ \mathbb{E}(\mathcal{P}^{\scriptscriptstyle (1)}_{m}(t_{r}))\\\mathbb{E}(\mathcal{P}^{\scriptscriptstyle (2)}_{m}(t_{1})) \\ \vdots \\ \mathbb{E}(\mathcal{P}^{\scriptscriptstyle (2)}_{m}(t_{r})) \end{pmatrix}\right) \xrightarrow[m \to \infty]{d} \mathcal{N}\left(0,\,\Sigma_{2r}^{\star}\right),
 \end{equation*}
@@ -802,9 +819,9 @@ $$ \frac{1}{m\sqrt{\hat{\sigma}(t)}}\left(R_{m}(t) - 1 \right) = \frac{1}{\sqrt{
 Take a confidence level $\alpha \in (0,1)$ and set $q_{1-\frac{\alpha}{2}}$ such that $\mathbb{P}\left(|\mathcal{N}\left(0,1\right)| \leq  q_{1-\frac{\alpha}{2}} \right) = 1 - \frac{\alpha}{2}$. We define the symmetric accessible test $\hat{\phi}_{m}(t)$ with asymptotic level $\alpha$ as 
 \begin{equation}
 \label{phihat}
-\hat{\phi}_{m}(t)= \mathbbm{1}_{\left\{ \frac{1}{\sqrt{\hat{\mathbb{V}\left(R_{m}(t)\right)}}}\left|\left(R_{m}(t) - 1 \right)\right| \geq q_{1- \frac{\alpha}{2}} \right\}}
+\hat{\phi}_{m}(t)= \mathbbm{1}_{\left\{ \frac{1}{\sqrt{\hat{\mathbb{V}\left(R_{m}(t)\right)}}}\left|R_{m}(t) - 1 \right| \geq q_{1- \frac{\alpha}{2}} \right\}}
 \end{equation}
-\begin{remark}(Power of the statistical test for the level $t = 0$) In Remark \ref{decreasingrho} we showed that the function $\rho \mapsto 2\mathbb{E}\left(\frac{\sqrt{1-\rho}}{\sqrt{1+\rho}}|N|\right) - 1 $ is strictly decreasing, thus, if $\rho(e_1) \neq \rho(e_2)$ thus $\frac{\mathbb{E}\left(\mathcal{P}^{1}(0)\right)}{\mathbb{E}\left(\mathcal{P}^{2}(0)\right)} \neq 1$. 
+\begin{remark}(Power of the statistical test at a level $t$) In Remark \ref{decreasingrho} we showed that the function $\rho \mapsto \mathbb{E}\left(\mathcal{P}^{\scriptscriptstyle (i)}_{m, \rho}(t)\right)$ is strictly decreasing, thus, if $\rho(e_1) \neq \rho(e_2)$ thus $\frac{\mathbb{E}\left(\mathcal{P}^{1}(t)\right)}{\mathbb{E}\left(\mathcal{P}^{2}(t)\right)} \neq 1$. 
 \end{remark}
 \section{Numerical studies}
 \subsection{Numerical studies of moments of the estimated perimeter}
@@ -865,6 +882,26 @@ with $a, b \in \mathbb{R}^{2}$ and $\theta \in [0, \pi)$, the field $Y$ is also 
 
 \begin{figure}[H]
   \centering
+    {\includegraphics[scale=0.4]{TestaniRatiopvalue.pdf}}
+    \hspace{0.2cm} 
+ \caption{We represent $p_{\text{value}}$  of the test see Equation \eqref{phihat} in blue color computed for a Montecarlo $= 2000$, for different values of $b = 1, 1.1, 1.2, 1.5, 2$ and $C = 40$.}
+\label{fig2}
+\end{figure}
+\begin{displaymath}
+  \renewcommand{\arraystretch}{1.5}
+\begin{array}{|C{0.4cm}|C{1cm}|C{1cm}|C{1cm}|C{1cm}|C{1cm}|C{1cm}|C{1cm}|C{1cm}|C{1cm}|C{1cm}|C{1cm}|}
+\hline
+b & 0.1190 &  0.3571 &  0.5952 &  0.8333 &  1.0714 &  1.3095 &  1.5476 &  1.7857 &  2.0238 &  2.2619 &  2.5 \\ \hline
+1  & 0.9971 &  0.9879 &  0.9547 &  0.9956 &  0.9800 &  0.9973 &  0.9997 &  0.9897 &  0.9737 &  0.9858 &  0.9816  \\ \hline
+1.1 & 0 &  0 &  0 &  0 &  0 &  0 &  0 &  0.0007 &  0.0052 &  0.0325 &  0.1036 \\ \hline
+1.2 & 0 &  0 &  0 &  0 &  0 &  0 &  0 &  0 &  0 &  0.0001 &  0.0035 \\ \hline 
+1.5 &  0 &  0 &  0 &  0 &  0 &  0 &  0 &  0 &  0 &  0 &  0 \\ \hline
+2 &  0 &  0 &  0 &  0 &  0 &  0 &  0 &  0 &  0 &  0 &  0 \\ \hline
+\end{array}
+\end{displaymath}
+
+\begin{figure}[H]
+  \centering
     {\includegraphics[scale=0.4]{TestaniPhi0.pdf}}
     \hspace{0.2cm} 
  \caption{We represent the values of $\hat{\Phi}_{m}$ see Equation \eqref{phihat}, computed as a function of $b$ and a fixed value $t=0$ in blue color for a Montecarlo $= 2000$, and $C = 40$.}
@@ -910,20 +947,16 @@ with $a, b \in \mathbb{R}^{2}$ and $\theta \in [0, \pi)$, the field $Y$ is also 
 \label{fig2}
 \end{figure}
 \appendix 
-\section{Computation of the covariance for the three cell configuration}
-Let us consider the particular case where $x \in \left\{-e_1, e_1, -e_2, e_2 \right\}$, and consider the Gaussian vector $\left(X_{0}, X_{e_1}, X_{x}, X_{x+e_i} \right)$ and its associated transformation $\left(\Delta^{\scriptscriptstyle (1)}_{\scriptscriptstyle 0}, S^{\scriptscriptstyle (1)}_{\scriptscriptstyle 0}, S^{\scriptscriptstyle (i)}_{x} \right)$ of covariance matrix $\tilde{\Sigma}_{3}(x)$ again assuming that $|\rho(e_1)| < 1$, the Cholesky decomposition of $\tilde{\sigma}_{3}(x)$ allows us to get the expression of the Gaussian vector $\left(\Delta^{\scriptscriptstyle (1)}_{\scriptscriptstyle 0},S^{\scriptscriptstyle (1)}_{\scriptscriptstyle 0},X_{x} \right)$ in a new basis $\left(U,V,W,Z\right)$ with $\left(U, V, W\right) \sim \mathcal{N}\left(0,I_{3}\right)$. We get the following decomposition \\ 
+\section{Computation of the covariance for the three cells configuration}
+Let us consider the particular case where $\left\{ X_{0}, X_{e_1}\right\} \cap \left\{ X_{x}, X_{x+e_i}\right\} \neq \emptyset $,
+ % $x \in \left\{-e_1, e_1, -e_2, e_2, (1,-1) \right\}$, 
+ we associate to the Gaussian vector $\left(X_{0}, X_{e_1}, X_{x}, X_{x+e_i} \right)$ and the transformed vector $\left(\Delta^{\scriptscriptstyle (1)}_{\scriptscriptstyle 0}, S^{\scriptscriptstyle (1)}_{\scriptscriptstyle 0}, S^{\scriptscriptstyle (i)}_{x} \right)$ of covariance matrix $\tilde{\Sigma}_{3}(x)$ again assuming that $|\rho(e_1)| < 1$, the Cholesky decomposition of $\tilde{\Sigma}_{3}(x)$ allows us to get the expression of the Gaussian vector $\left(\Delta^{\scriptscriptstyle (1)}_{\scriptscriptstyle 0},S^{\scriptscriptstyle (1)}_{\scriptscriptstyle 0},X_{x} \right)$ in a new basis $\left(U,V,W,Z\right)$ with $\left(U, V, W\right) \sim \mathcal{N}\left(0,I_{3}\right)$. We get the following decomposition \\ 
 $\left\{
 \begin{array}{rlc}
 \Delta^{\scriptscriptstyle (1)}_{\scriptscriptstyle 0} & = & \sigma^{\scriptscriptstyle (-)}_{1}U,  \textcolor{white}{+  \pi^{\scriptscriptstyle(+, i)}_{V}(x) V +  \pi^{\scriptscriptstyle(+, i)}_{W}(x) W +  \pi^{\scriptscriptstyle(+, i)}_{Z}(x)Z, } \\
 S^{\scriptscriptstyle (1)}_{\scriptscriptstyle 0} & = & \textcolor{white}{\sigma^{\scriptscriptstyle (-)}_{1}U,} \sigma^{\scriptscriptstyle (+)}_{1}V, \textcolor{white}{+  \pi^{\scriptscriptstyle(+, i)}_{W}(x) W +  \pi^{\scriptscriptstyle(+, i)}_{Z}(x)Z, } \\
 S^{\scriptscriptstyle (i)}_{\scriptscriptstyle  x} & = &  \pi^{\scriptscriptstyle(i)}_{U}(x)U +  \pi^{\scriptscriptstyle(i)}_{V}(x) V +  \pi^{\scriptscriptstyle(i)}_{W}(x) W, \textcolor{white}{ + \pi^{\scriptscriptstyle(+, i)}_{Z}(x)Z, } \\
 \end{array}\right.$ \\
-% with 
-%  $\left\{
-%  \begin{array}{rlc}
-%  \pi_{U}(x) & = & \frac{1}{\sigma^{\scriptscriptstyle (-)}_{1}}\left(\rho(x-e_1) - \rho(x)\right) \\
-%  \pi_{V}(x) & = &  \frac{1}{\sigma^{\scriptscriptstyle (+)}_{1}}\left(\rho(x-e_1) + \rho(x)\right)  \\
-%  \pi_{W}(x)& = & \left(1 - \pi_{U}(x)^{2} - \pi_{V}(x)^{2}\right)^{\scriptscriptstyle (1/2)} \end{array}\right.$ 
 Considering the first part of the previous equation, and applying Lemma \ref{lemmasommediff}
 {\small
 \begin{align*}
@@ -936,34 +969,17 @@ besides,
 \begin{align*}
 \mathbbm{1}_{\left\{ \left|2s + \Delta^{(1)}_{0} -  S^{\scriptscriptstyle (1)}_{x}  \right| \leq \left|S^{\scriptscriptstyle (1)}_{x} - S^{\scriptscriptstyle (1)}_{0}\right|\right\}} &= \mathbbm{1}_{\left\{  S^{\scriptscriptstyle (1)}_{0} \leq 2s + \Delta^{(1)}_{0}\right\}} \mathbbm{1}_{\left\{ S_{x} \geq  \max\left(s+ \frac{1}{2}S^{\scriptscriptstyle (1)}_{0} + \frac{1}{2}\Delta^{\scriptscriptstyle (1)}_{0}, S^{\scriptscriptstyle (1)}_{0}\right) \right\}} \\
 & + \mathbbm{1}_{\left\{  2s + \Delta^{(1)}_{0} \leq S^{\scriptscriptstyle (1)}_{0} \right\}} \mathbbm{1}_{\left\{ S_{x} \leq  \min\left(s+ \frac{1}{2}S^{\scriptscriptstyle (1)}_{0} + \frac{1}{2}\Delta^{\scriptscriptstyle (1)}_{0}, S^{\scriptscriptstyle (1)}_{0}\right) \right\}} \\
-&= \mathbbm{1}_{\left\{  S^{\scriptscriptstyle (1)}_{0} \leq 2s + \Delta^{(1)}_{0}\right\}} \mathbbm{1}_{\left\{ S_{x} \geq s+ \frac{1}{2}S^{\scriptscriptstyle (1)}_{0} + \frac{1}{2}\Delta^{\scriptscriptstyle (1)}_{0}\right\}} + \mathbbm{1}_{\left\{  2s + \Delta^{(1)}_{0} \leq S^{\scriptscriptstyle (1)}_{0} \right\}} \mathbbm{1}_{\left\{ S_{x} \leq  S^{\scriptscriptstyle (1)}_{0} \right\}} \\
+&= \mathbbm{1}_{\left\{  S^{\scriptscriptstyle (1)}_{0} \leq 2s + \Delta^{(1)}_{0}\right\}} \mathbbm{1}_{\left\{ S_{x} \geq s+ \frac{1}{2}S^{\scriptscriptstyle (1)}_{0} + \frac{1}{2}\Delta^{\scriptscriptstyle (1)}_{0}\right\}} + \mathbbm{1}_{\left\{  2s + \Delta^{(1)}_{0} \leq S^{\scriptscriptstyle (1)}_{0} \right\}} \mathbbm{1}_{\left\{ S_{x} \leq  s+ \frac{1}{2}S^{\scriptscriptstyle (1)}_{0} + \frac{1}{2}\Delta^{\scriptscriptstyle (1)}_{0} \right\}} \\
 \end{align*} 
-% \begin{align*}
-% \mathbbm{1}_{\left\{ S^{\scriptscriptstyle (1)}_{x} - S^{\scriptscriptstyle (1)}_{0} \geq 0 \right\}} \mathbbm{1}_{\left\{  - S^{\scriptscriptstyle (1)}_{x} + S^{\scriptscriptstyle (1)}_{0} \leq 2s + \Delta^{(1)}_{0} -  S^{\scriptscriptstyle (1)}_{x}  \leq S^{\scriptscriptstyle (1)}_{x} - S^{\scriptscriptstyle (1)}_{0}\right\}} & =\\
-% & \hspace{-4.5cm} \mathbbm{1}_{\left\{ S^{\scriptscriptstyle (1)}_{x}  \geq S^{\scriptscriptstyle (1)}_{0}\right\}} \mathbbm{1}_{\left\{  S^{\scriptscriptstyle (1)}_{0} \leq 2s + \Delta^{(1)}_{0}\right\}}\mathbbm{1}_{\left\{ 2s + \Delta^{(1)}_{0}  + S^{\scriptscriptstyle (1)}_{0} \leq 2S^{\scriptscriptstyle (1)}_{x} \right\}}\\
-% & \hspace{-5cm} = \mathbbm{1}_{\left\{  S^{\scriptscriptstyle (1)}_{0} \leq 2s + \Delta^{(1)}_{0}\right\}} \mathbbm{1}_{\left\{\pi^{\scriptscriptstyle(i)}_{W}(x) W \geq  - \pi^{\scriptscriptstyle(i)}_{U}(x)U + \left(\sigma^{(+)}_{1} - \pi^{\scriptscriptstyle(i)}_{V}(x)\right)V\right\}}\\
-% & \hspace{1cm} \mathbbm{1}_{\left\{ 2s + \left(\sigma^{(-)}_{1} - 2\pi^{\scriptscriptstyle(i)}_{U}(x)\right)U  +  \left(\sigma^{(+)}_{1} - 2\pi^{\scriptscriptstyle(i)}_{V}(x)\right) \leq 2\pi^{\scriptscriptstyle(i)}_{W}(x) W \right\}} \\
-% & \hspace{-5cm} = \mathbbm{1}_{\left\{  S^{\scriptscriptstyle (1)}_{0} \leq 2s + \Delta^{(1)}_{0}\right\}} \\
-% & \hspace{-4cm} \mathbbm{1}_{\left\{\pi^{\scriptscriptstyle(i)}_{W}(x) W  \geq  \max(- \pi^{\scriptscriptstyle(i)}_{U}(x)U + \left(\sigma^{(+)}_{1} - \pi^{\scriptscriptstyle(i)}_{V}(x)\right)V, s + \left(\frac{1}{2}\sigma^{(-)}_{1}- \pi^{\scriptscriptstyle(i)}_{U}(x)\right)U  +  \left(\frac{1}{2}\sigma^{(+)}_{1}- \pi^{\scriptscriptstyle(i)}_{V}(x)\right) \right\}}\\
-% \end{align*}
-
-% \begin{align*}
-% \mathbbm{1}_{\left\{ S^{\scriptscriptstyle (1)}_{x} - S^{\scriptscriptstyle (1)}_{0} \leq 0 \right\}} \mathbbm{1}_{\left\{  S^{\scriptscriptstyle (1)}_{x} - S^{\scriptscriptstyle (1)}_{0} \leq 2s + \Delta^{(1)}_{0} -  S^{\scriptscriptstyle (1)}_{x}  \leq -S^{\scriptscriptstyle (1)}_{x} + S^{\scriptscriptstyle (1)}_{0}\right\}} & =\\
-% & \hspace{-4.5cm} \mathbbm{1}_{\left\{ S^{\scriptscriptstyle (1)}_{x}  \leq S^{\scriptscriptstyle (1)}_{0}\right\}} \mathbbm{1}_{\left\{  S^{\scriptscriptstyle (1)}_{0} \geq 2s + \Delta^{(1)}_{0}\right\}}\mathbbm{1}_{\left\{ 2s + \Delta^{(1)}_{0}  + S^{\scriptscriptstyle (1)}_{0} \geq 2S^{\scriptscriptstyle (1)}_{x} \right\}}\\
-% & \hspace{-5cm} = \mathbbm{1}_{\left\{  S^{\scriptscriptstyle (1)}_{0} \geq 2s + \Delta^{(1)}_{0}\right\}} \mathbbm{1}_{\left\{\pi^{\scriptscriptstyle(i)}_{W}(x) W \leq  - \pi^{\scriptscriptstyle(i)}_{U}(x)U + \left(\sigma^{(+)}_{1} - \pi^{\scriptscriptstyle(i)}_{V}(x)\right)V\right\}}\\
-% & \hspace{-1.7cm} \mathbbm{1}_{\left\{ 2s + \left(\sigma^{(-)}_{1} - 2\pi^{\scriptscriptstyle(i)}_{U}(x)\right)U  +  \left(\sigma^{(+)}_{1} - 2\pi^{\scriptscriptstyle(i)}_{V}(x)\right) \geq 2\pi^{\scriptscriptstyle(i)}_{W}(x) W \right\}} \\
-% & \hspace{-5cm} = \mathbbm{1}_{\left\{  S^{\scriptscriptstyle (1)}_{0} \geq 2s + \Delta^{(1)}_{0}\right\}} \\
-% & \hspace{-4cm} \mathbbm{1}_{\left\{\pi^{\scriptscriptstyle(i)}_{W}(x) W \leq  \min(- \pi^{\scriptscriptstyle(i)}_{U}(x)U + \left(\sigma^{(+)}_{1} - \pi^{\scriptscriptstyle(i)}_{V}(x)\right)V, s + \left(\frac{1}{2}\sigma^{(-)}_{1}- \pi^{\scriptscriptstyle(i)}_{U}(x)\right)U  +  \left(\frac{1}{2}\sigma^{(+)}_{1}- \pi^{\scriptscriptstyle(i)}_{V}(x)\right) \right\}}\\
-% \end{align*}
 Thus, putting everything together, we get 
 {\small 
 \begin{align*}
 \mathbb{E}\left(\mathbbm{1}_{\left\{\min(X_{\scriptscriptstyle 0}, X_{e_1}) \leq t \leq \max(X_{\scriptscriptstyle 0}, X_{e_1})\right\}}\mathbbm{1}_{\left\{\min(X_{x}, X_{0}) \leq s \leq \max(X_{x}, X_{0}) \right\}}\right) = \\
-& \hspace{-10cm} \mathbb{E}\left(\mathbbm{1}_{\left\{|2t - \sigma^{(+)}_{1}V \leq  \sigma^{(-)}_{1}U|\right\}}\mathbbm{1}_{\left\{ \sigma^{(+)}_{1}V  \leq 2s + \sigma^{(-)}_{1}U\right\}} \left(1 - \Phi_{\pi^{\scriptscriptstyle(i)}_{W}(x) }\left(s + \left(\frac{1}{2}\sigma^{(+)}_{1}- \pi^{\scriptscriptstyle(i)}_{U}(x)\right)U  +  \left(\frac{1}{2}\sigma^{(+)}_{1}- \pi^{\scriptscriptstyle(i)}_{V}(x)\right)V\right)\right)\right)\\
-& \hspace{-10cm}+ \mathbb{E}\left(\mathbbm{1}_{\left\{|2t - \sigma^{(+)}_{1}V \leq  \sigma^{(-)}_{1}U|\right\}}\mathbbm{1}_{\left\{ \sigma^{(+)}_{1}V  \geq 2s + \sigma^{(-)}_{1}U\right\}}\Phi_{\pi^{\scriptscriptstyle(i)}_{W}(x) }\left(- \pi^{\scriptscriptstyle(i)}_{U}(x)U + \left(\sigma^{(+)}_{1} - \pi^{\scriptscriptstyle(i)}_{V}(x)\right)V\right) \right)\\\
+& \hspace{-10cm} \mathbb{E}\left(\mathbbm{1}_{\left\{|2t - \sigma^{(+)}_{1}V\right| \leq  \left|\sigma^{(-)}_{1}U|\right\}}\mathbbm{1}_{\left\{ \sigma^{(+)}_{1}V  \leq 2s + \sigma^{(-)}_{1}U\right\}} \left(1 - \Phi_{\pi^{\scriptscriptstyle(i)}_{W}(x) }\left(s + \left(\frac{1}{2}\sigma^{(-)}_{1}- \pi^{\scriptscriptstyle(i)}_{U}(x)\right)U  +  \left(\frac{1}{2}\sigma^{(+)}_{1}- \pi^{\scriptscriptstyle(i)}_{V}(x)\right)V\right)\right)\right)\\
+& \hspace{-10cm}+ \mathbb{E}\left(\mathbbm{1}_{\left\{\left|2t - \sigma^{(+)}_{1}V\right|\leq  \left|\sigma^{(-)}_{1}U\right|\right\}}\mathbbm{1}_{\left\{ \sigma^{(+)}_{1}V  \geq 2s + \sigma^{(-)}_{1}U\right\}}\Phi_{\pi^{\scriptscriptstyle(i)}_{W}(x) }\left(s + \left(\frac{1}{2}\sigma^{(-)}_{1}- \pi^{\scriptscriptstyle(i)}_{U}(x)\right)U  +  \left(\frac{1}{2}\sigma^{(+)}_{1}- \pi^{\scriptscriptstyle(i)}_{V}(x)\right)V\right) \right)\\\
 \end{align*}
 }
-The second configuration would be to have
+For the second configuration, we would then have,
 {\small
 \begin{align*}
 \mathbb{E}\left(\mathbbm{1}_{\left\{\min(X_{\scriptscriptstyle 0}, X_{e_1}) \leq t \leq \max(X_{\scriptscriptstyle 0}, X_{e_1})\right\}}\mathbbm{1}_{\left\{\min(X_{\scriptscriptstyle x}, X_{e_1}) \leq s \leq \max(X_{\scriptscriptstyle x}, X_{e_1}) \right\}}\right)\\
@@ -971,24 +987,21 @@ The second configuration would be to have
 & \hspace{-6cm} = \mathbb{E}\left(\mathbbm{1}_{\left\{ \left|2t - S^{\scriptscriptstyle (1)}_{\scriptscriptstyle 0}\right| \leq \left|\Delta^{\scriptscriptstyle (1)}_{\scriptscriptstyle 0}\right|\right\}}\mathbbm{1}_{\left\{\min(S^{(1)}_{x}, S^{(1)}_{0}) \leq s + \frac{S^{(1)}_{0} - \Delta^{(1)}_{0}}{2}\leq \max(S^{(1)}_{x}, S^{(1)}_{0}) \right\}}\right) \\
 & \hspace{-6cm} = \mathbb{E}\left(\mathbbm{1}_{\left\{ \left|2t - S^{\scriptscriptstyle (1)}_{\scriptscriptstyle 0}\right| \leq \left|\Delta^{\scriptscriptstyle (1)}_{\scriptscriptstyle 0}\right|\right\}}\mathbbm{1}_{\left\{ \left|2s - \Delta^{(1)}_{0} -  S^{\scriptscriptstyle (1)}_{x}  \right| \leq \left|S^{\scriptscriptstyle (1)}_{x} - S^{\scriptscriptstyle (1)}_{0}\right|\right\}}\right). 
 \end{align*}}
-besides, 
-besides, 
+besides,  
 \begin{align*}
 \mathbbm{1}_{\left\{ \left|2s - \Delta^{(1)}_{0} -  S^{\scriptscriptstyle (1)}_{x}  \right| \leq \left|S^{\scriptscriptstyle (1)}_{x} - S^{\scriptscriptstyle (1)}_{0}\right|\right\}} 
-&= \mathbbm{1}_{\left\{  S^{\scriptscriptstyle (1)}_{0} \leq 2s - \Delta^{(1)}_{0}\right\}} \mathbbm{1}_{\left\{ S_{x} \geq s+ \frac{1}{2}S^{\scriptscriptstyle (1)}_{0} - \frac{1}{2}\Delta^{\scriptscriptstyle (1)}_{0}\right\}} + \mathbbm{1}_{\left\{  2s - \Delta^{(1)}_{0} \leq S^{\scriptscriptstyle (1)}_{0} \right\}} \mathbbm{1}_{\left\{ S_{x} \leq  S^{\scriptscriptstyle (1)}_{0} \right\}} \\
+&= \mathbbm{1}_{\left\{  S^{\scriptscriptstyle (1)}_{0} \leq 2s - \Delta^{(1)}_{0}\right\}} \mathbbm{1}_{\left\{ S_{x} \geq s+ \frac{1}{2}S^{\scriptscriptstyle (1)}_{0} - \frac{1}{2}\Delta^{\scriptscriptstyle (1)}_{0}\right\}} + \mathbbm{1}_{\left\{  2s - \Delta^{(1)}_{0} \leq S^{\scriptscriptstyle (1)}_{0} \right\}} \mathbbm{1}_{\left\{ S_{x} \leq  s+ \frac{1}{2}S^{\scriptscriptstyle (1)}_{0} - \frac{1}{2}\Delta^{\scriptscriptstyle (1)}_{0} \right\}} \\
 \end{align*} 
 Thus, putting everything together, we get 
 {\small 
 \begin{align*}
-\mathbb{E}\left(\mathbbm{1}_{\left\{\min(X_{\scriptscriptstyle 0}, X_{e_1}) \leq t \leq \max(X_{\scriptscriptstyle 0}, X_{e_1})\right\}}\mathbbm{1}_{\left\{\min(X_{x}, X_{0}) \leq s \leq \max(X_{x}, X_{0}) \right\}}\right) = \\
-& \hspace{-10cm}\mathbb{E}\left(\mathbbm{1}_{\left\{|2t - \sigma^{(+)}_{1}V \leq  \sigma^{(-)}_{1}U|\right\}}\mathbbm{1}_{\left\{ \sigma^{(+)}_{1}V  \leq 2s - \sigma^{(-)}_{1}U\right\}}\right. \\
-& \hspace{-10cm}\left. \left(1 - \Phi_{\pi^{\scriptscriptstyle(i)}_{W}(x) }\left(\max\left(- \pi^{\scriptscriptstyle(i)}_{U}(x)U + \left(\sigma^{(+)}_{1} - \pi^{\scriptscriptstyle(i)}_{V}(x)\right)V, s - \left(\frac{1}{2}\sigma^{(-)}_{1}+ \pi^{\scriptscriptstyle(i)}_{U}(x)\right)U  +  \left(\frac{1}{2}\sigma^{(+)}_{1}- \pi^{\scriptscriptstyle(i)}_{V}(x)\right)V\right)\right) \right)\right)\\
-& \hspace{-10cm}+ \mathbb{E}\left(\mathbbm{1}_{\left\{|2t - \sigma^{(+)}_{1}V \leq  \sigma^{(-)}_{1}U|\right\}}\mathbbm{1}_{\left\{ \sigma^{(+)}_{1}V  \geq 2s + \sigma^{(-)}_{1}U\right\}}\right. \\
-& \hspace{-10cm}\left. \Phi_{\pi^{\scriptscriptstyle(i)}_{W}(x) }\left(\min\left(- \pi^{\scriptscriptstyle(i)}_{U}(x)U + \left(\sigma^{(+)}_{1} - \pi^{\scriptscriptstyle(i)}_{V}(x)\right)V, s - \left(\frac{1}{2}\sigma^{(-)}_{1}+ \pi^{\scriptscriptstyle(i)}_{U}(x)\right)U  +  \left(\frac{1}{2}\sigma^{(+)}_{1}- \pi^{\scriptscriptstyle(i)}_{V}(x)\right)V\right)\right) \right)\\\
+\mathbb{E}\left(\mathbbm{1}_{\left\{\min(X_{\scriptscriptstyle 0}, X_{e_1}) \leq t \leq \max(X_{\scriptscriptstyle 0}, X_{e_1})\right\}}\mathbbm{1}_{\left\{\min(X_{x}, X_{e_1}) \leq s \leq \max(X_{x}, X_{e_1}) \right\}}\right) = \\
+& \hspace{-10cm} \mathbb{E}\left(\mathbbm{1}_{\left\{|2t - \sigma^{(+)}_{1}V\right| \leq  \left|\sigma^{(-)}_{1}U|\right\}}\mathbbm{1}_{\left\{ \sigma^{(+)}_{1}V  \leq 2s - \sigma^{(-)}_{1}U\right\}} \left(1 - \Phi_{\pi^{\scriptscriptstyle(i)}_{W}(x) }\left(s - \left(\frac{1}{2}\sigma^{(-)}_{1} + \pi^{\scriptscriptstyle(i)}_{U}(x)\right)U  +  \left(\frac{1}{2}\sigma^{(+)}_{1} - \pi^{\scriptscriptstyle(i)}_{V}(x)\right)V\right)\right)\right)\\
+& \hspace{-10cm}+ \mathbb{E}\left(\mathbbm{1}_{\left\{\left|2t - \sigma^{(+)}_{1}V\right|\leq  \left|\sigma^{(-)}_{1}U\right|\right\}}\mathbbm{1}_{\left\{ \sigma^{(+)}_{1}V  \geq 2s - \sigma^{(-)}_{1}U\right\}}\Phi_{\pi^{\scriptscriptstyle(i)}_{W}(x) }\left(s - \left(\frac{1}{2}\sigma^{(-)}_{1} + \pi^{\scriptscriptstyle(i)}_{U}(x)\right)U  +  \left(\frac{1}{2}\sigma^{(+)}_{1}- \pi^{\scriptscriptstyle(i)}_{V}(x)\right)V\right) \right)\\\
 \end{align*}
 }
 
-Regarding the three cell configuration, one would have to reconsider the expression from the beginning and integrate the third variable $W$ that has a non vanishing variance in the independent regime \textit{i.e.} $\rho(e_1) = \rho(2e_1)=0$. Thus, those computations would give us the following expression,
+Regarding the three cells configuration, one would have to reconsider the expression from the beginning and integrate the third variable $W$ that has a non vanishing variance in the independent regime \textit{i.e.} $\rho(e_1) = \rho(2e_1)=0$. Thus, those computations would give us the following expression,
 {\tiny
 \begin{align}
 \label{IIDCase}
