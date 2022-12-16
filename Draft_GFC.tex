@@ -30,6 +30,7 @@
 \usepackage{float}
 \usepackage{color}
 \usepackage{relsize}
+\usepackage{diagbox}
 \newcommand{\modif}[1]{{\begin{modification}#1\end{modification}}}
 \newcommand{\ele}[1]{{\color{red}#1}}
 %\UseRawInputEncoding
@@ -71,6 +72,11 @@
 \fi
 \usepackage{epstopdf}
 \usepackage{array}
+\usepackage{enumitem}
+\newcounter{Ax}
+\newcommand{\itemA}{%
+    \addtocounter{Ax}{1}
+    \item[A\theAx.]}
 \newcolumntype{P}[1]{>{\centering\arraybackslash}p{#1}}
 
 \newcommand{\overbar}[1]{\mkern 1.5mu\overline{\mkern-1.5mu#1\mkern-1.5mu}\mkern 1.5mu}
@@ -213,19 +219,20 @@ f_{t}^{\scriptscriptstyle (i)}(x) := \mathbbm{1}_{\left\{\min\left(X_{x}, X_{\sc
 \label{fi}
 \end{equation}
 to compute the contribution of the edge $w_i(x)$ to the perimeter of the black component of $Z^{\scriptscriptstyle (m)}$.
-\begin{Definition}[Perimeter of a binary image $Z^{\scriptscriptstyle (m)}$]\label{defPerimetre}~\\
-For $t\in \mathbb{R},$ we denote by $\mathcal{P}_{m}^{\scriptscriptstyle (i)}(t) =~\sum_{\scriptscriptstyle x: w_{i}(x) \in \mathbb{E}^{\scriptscriptstyle (i)}_{m}} f_{t}^{\scriptscriptstyle (i)}(x)$ the  sum of all vertical contributions for $i = 1$ and horizontal ones for $i = 2$. Then, the perimeter of the binary image $Z$ is given by
+\begin{Definition}[Directional perimeter of a binary image $Z^{\scriptscriptstyle (m)}$]\label{defPerimetre}~\\
+For $t\in \mathbb{R},$ we denote by $\mathcal{P}_{m}^{\scriptscriptstyle (i)}(t)$ the sum of all contributions over the $i$th direction (vertical and horizontal). Then, the directional perimeter of the binary image $Z^{\scriptscriptstyle (m)}$ is given by
 \begin{equation}
-\mathcal{P}_{m}(t) := \mathcal{P}_{m}^{\scriptscriptstyle (1)}(t) + \mathcal{P}_{m}^{\scriptscriptstyle (2)}(t).
+\mathcal{P}_{m}^{\scriptscriptstyle (i)}(t) =~\sum_{\scriptscriptstyle x: w_{i}(x) \in \mathbb{E}^{\scriptscriptstyle (i)}_{m}} f_{t}^{\scriptscriptstyle (i)}(x).
  \label{eq:6}
 \end{equation}
+Then, the perimeter of $Z^{\scriptscriptstyle (m)}$ is given by $\mathcal{P}_{m}(t) := \mathcal{P}_{m}^{\scriptscriptstyle (1)}(t) + \mathcal{P}_{m}^{\scriptscriptstyle (2)}(t)$.
 \end{Definition}
-\section{Statistics of the perimeter} 
+\section{Statistics of the oriented perimeter} 
 \subsection{First moment}
-Let us start this study by investigating the first moment of the perimeter.
-\begin{Proposition}[First moment of the perimeter] 
+Let us start this study by investigating the first moment of the oriented perimeter.
+\begin{Proposition}[First moment of the directional perimeter] 
 \label{propFisrtmoment}
-We assume that $\left(X_x \right)_{x \in \mathbb{G}_{m}}$ is a stationary Gaussian centered with unit variance random field. Let us denote \linebreak by  $\rho(e_i) = \text{Cov}\left(X_{\scriptscriptstyle 0}, X_{e_i}\right) \in~[-1, 1]$. The expected value of the perimeter in \eqref{eq:6} is  given \linebreak by $$\mathbb{E}\left(\mathcal{P}_{m}(t)\right) = m(m-1)\sum_{1}^{2}\mathbb{E}\left(f^{(i)}(t) \right)$$ where
+We assume that $\left(X_x \right)_{x \in \mathbb{G}_{m}}$ is a stationary Gaussian centered with unit variance random field. Let $i \in \{1,2\}$ and let us denote by  $\rho(e_i) = \text{Cov}\left(X_{\scriptscriptstyle 0}, X_{e_i}\right) \in [-1, 1]$. The expected value of the perimeter in \eqref{eq:6} is  given by $$\mathbb{E}\left(\mathcal{P}_{m}^{\scriptscriptstyle (i)}(t)\right) = m(m-1)\mathbb{E}\left(f^{(i)}(t) \right)$$ where
 \begin{itemize}
   \item if $\rho(e_{i}) \in ]-1,1]$, 
     {\small
@@ -299,15 +306,11 @@ $\left\{
 \begin{align*}
 \mathbb{E}\left(f^{(i)}(t)\right) & = \mathbb{P}\left(\min\left(X_{\scriptscriptstyle 0}, X_{e_i}\right) < t \leq \max\left(X_{\scriptscriptstyle 0}, X_{e_i}\right)\right) \\
 & = \mathbb{E}\left(\mathbbm{1}_{\left\{\min(X_{\scriptscriptstyle 0}, X_{e_i}) \leq t \leq \max(X_{\scriptscriptstyle 0}, X_{e_i})\right\}}\right) \\
-& = \mathbb{E}\left(\mathbbm{1}_{\left\{ \left|2t - S^{\scriptscriptstyle (i)}_{\scriptscriptstyle 0}\right| \leq \left|\Delta^{\scriptscriptstyle (i)}_{\scriptscriptstyle 0}\right|\right\}}\right).
-\end{align*}}
-{\small
-\begin{align*}
-\mathbb{E}\left(f^{(i)}(t)\right) & = \mathbb{E}\left(\mathbbm{1}_{\left\{ \left|2t - S^{\scriptscriptstyle (1)}_{\scriptscriptstyle 0}\right| \leq \left|\Delta^{\scriptscriptstyle (1)}_{\scriptscriptstyle 0}\right|\right\}}\right) \\
-& = \mathbb{E}\left(\mathbbm{1}_{\left\{ - \sqrt{2(1-\rho(e_i))}\left|U\right| \leq 2t - \sqrt{2(1+\rho(e_i)}V \leq \sqrt{2(1-\rho(e_i))}\left|U\right| \right\}}\right) \\
+& = \mathbb{E}\left(\mathbbm{1}_{\left\{ \left|2t - S^{\scriptscriptstyle (i)}_{\scriptscriptstyle 0}\right| \leq \left|\Delta^{\scriptscriptstyle (i)}_{\scriptscriptstyle 0}\right|\right\}}\right). \\
+& = \mathbb{E}\left(\mathbbm{1}_{\left\{ - \sqrt{2(1-\rho(e_i))}\left|U\right| \leq  \sqrt{2(1+\rho(e_i)}V -2t \leq \sqrt{2(1-\rho(e_i))}\left|U\right| \right\}}\right) \\
 & = \mathbb{E}\left(\mathbbm{1}_{\left\{\frac{2t - \sqrt{2(1-\rho(e_i))}|U|}{\sqrt{2(1+\rho(e_i))}}  \leq V \leq \frac{2t + \sqrt{2(1-\rho(e_i))}|U|}{\sqrt{2(1+\rho(e_i))}}\right\}}\right), 
 \end{align*}}  
-with $(U, V) \sim \mathcal{N}(0,I_{2})$, thus 
+thus,
 $$\mathbb{E}\left(f^{(i)}(t)\right) = \mathbb{E}\left(\Phi\left(\dfrac{2t + \sqrt{2(1-\rho(e_i))}|N|}{\sqrt{2(1+\rho(e_i))}}\right)  - \Phi\left(\dfrac{2t - \sqrt{2(1-\rho(e_i))}|N|}{\sqrt{2(1+\rho(e_i))}}\right)\right).$$
 Let us now consider the case where $\rho(e_i) = -1$. Then there exists $N \sim \mathcal{N}\left(0,1\right)$ such that $\left(X_{\scriptscriptstyle 0}, X_{e_i}\right) \overset{d}{=} \left(N, -N\right)$. Thus, 
 \begin{align*}
@@ -329,9 +332,10 @@ v & = & \frac{y+z}{\sqrt{2}} \\
 \end{array}\right.$}, we get the same result as in \cite{Psymetrie} (Proposition \textcolor{blue}{3.1}).
 \end{remark}
 \begin{remark}
-In order to have convergence when $m$ goes to infinity, one has to normalize the perimeter with the area of the window ($m^2$), considering $\frac{1}{m^2}\mathcal{P}_{m}(t)$.
+To have convergence when $m$ goes to infinity, one has to normalize the perimeter with the area of the window $S$, ($m^2$), thus considering $\frac{1}{m^2}\mathcal{P}_{m}(t)$.
 \end{remark}
-The total variation of an image $u \in L^{1}_{loc}(\Omega)$ is given by $\int_{\Omega}|\nabla u|dx$ which is equal by the coarea formula to $\int_{\mathbb{R}}\mathcal{P}(t)dt$ with $\mathcal{P}(t)$ being the perimeter associated to the level set of the image $u$ at level $t$ .
+\textcolor{red}{
+It is possible to link the total variation of an image $u \in L^{1}_{loc}(\Omega)$ which is given by $\int_{\Omega}|\nabla u|dx$ to its perimeter, by applying the coarea formula, $\int_{\Omega}|\nabla u|dx = \int_{\mathbb{R}}\mathcal{P}(t)dt$ with $\mathcal{P}(t)$ being the perimeter associated to the level set of the image $u$ at level $t$.}
 \begin{Proposition}
 Under the assumptions stated in Proposition \ref{propFisrtmoment}, we get 
 \begin{equation}
@@ -357,35 +361,253 @@ Using the result stated in Proposition \ref{propFisrtmoment}, we get that $\math
 \begin{remark}
 Using this result, one can define an estimator for $\rho(e_i)$. 
 \end{remark}
+\textcolor{red}{Let us now study the monotonic properties of the function $\rho \mapsto \mathbb{E}\left(\mathcal{P}^{\scriptscriptstyle (i)}_{m, \rho}(t)\right)$ where $\mathcal{P}^{\scriptscriptstyle (i)}_{m, \rho}$ is the perimeter with respect of the orientation $i$ associated to the Gaussian field of covariance~$\rho$.}
 \begin{remark}
-Considering $\tilde{\rho}(e_i), \bar{\rho}(e_i)$ two covariance, we  have the following result concerning the expected perimeter at level $t$:
+\label{powertest}
+\textcolor{red}{Let $\overline{X}, \tilde{X}$ be two stationary centered Gaussian random fields with unit variance, and $\bar{\rho}, \tilde{\rho}$ their respective covariance structure, we  have the following result regarding their associated expected oriented perimeter at level $t$:}
 \begin{equation*}
  \text{if} \hspace{0.5cm} \tilde{\rho}(e_i) < \bar{\rho}(e_i) \hspace{0.5cm} \text{then} \hspace{0.5cm}\mathbb{E}\left(\mathcal{P}^{\scriptscriptstyle (i)}_{m, \tilde{\rho}}(t)\right) > \mathbb{E}\left(\mathcal{P}^{\scriptscriptstyle (i)}_{m, \bar{\rho}}(t)\right).
 \end{equation*}
-Where $\mathcal{P}^{\scriptscriptstyle (i)}_{m, \tilde{\rho}}$ is the perimeter with respect of the orientation $i$ associated to the Gaussian field of covariance $\tilde{\rho}$. 
 \end{remark}
 \begin{proof}
-Let $t \in \mathbb{R}$ we can prove this result by considering  the function $$h:x\mapsto \mathbb{E}\left(\Phi\left(\dfrac{2t + \sqrt{2(1-x)}|N|}{\sqrt{2(1+x)}}\right) - \Phi\left(\dfrac{2t - \sqrt{2(1-x)}|N|}{\sqrt{2(1+x)}}\right)\right).
-$$
+Let $t \in \mathbb{R}$ we can prove this result by considering  the function \begin{align*} 
+h: (-1,1) &\longrightarrow \mathbb{R}, \\
+x & \longmapsto \mathbb{E}\left(\Phi\left(\dfrac{2t + \sqrt{2(1-x)}|N|}{\sqrt{2(1+x)}}\right) - \Phi\left(\dfrac{2t - \sqrt{2(1-x)}|N|}{\sqrt{2(1+x)}}\right)\right),
+\end{align*}
 with $N \sim \mathcal{N}\left(0,1\right)$, its derivative is equal to 
 \begin{align*}
-h'(x) &= \frac{2\exp(-t^2/(1+x))}{2\sqrt{2\pi}(1-x)^{1/2}(1+x)^{3/2}}\\
-& \int_{0}^{\infty}\exp\left(-\frac{N^{2}}{(1+x)}\right)\left(-4N\cosh\left(\frac{t\sqrt{2(1-x)}}{1+x}\right) + 2t\sqrt{2(1-x)}\sinh\left( \frac{t\sqrt{2(1-x)}}{1+x}\right)\right)dN \\
-& = \frac{-2\exp(-t^2/(1+x))(1+x)}{\sqrt{2\pi}(1-x)^{1/2}(1+x)^{3/2}}\\
-& = \frac{-2}{\sqrt{2\pi(1-x^2)}}\exp(-t^2/(1+x)),
+h'(x) & = \mathbb{E}\left( \left(\frac{2t + |N|\sqrt{2(1-x)}}{\sqrt{2(1+x)}}\right)'\Phi'\left(\frac{2t + |N|\sqrt{2(1-x)}}{\sqrt{2(1+x)}}\right)\right. \\
+& \hspace{5cm} \left. - \left(\frac{2t - |N|\sqrt{2(1-x)}}{\sqrt{2(1+x)}}\right)'\Phi'\left(\frac{2t - |N|\sqrt{2(1-x)}}{\sqrt{2(1+x)}}\right) \right)\\
+& = \mathbb{E}\left(\frac{-2|N| -t\sqrt{2(1-x)}}{2(1+x)\sqrt{1-x^2}}\Phi'\left(\frac{2t + |N|\sqrt{2(1-x)}}{\sqrt{2(1+x)}}\right) \right. \\
+& \hspace{6cm}  \left. - \frac{2|N| - t\sqrt{2(1-x)}}{2(1+x)\sqrt{1-x^2}}\Phi'\left(\frac{2t - |N|\sqrt{2(1-x)}}{\sqrt{2(1+x)}}\right) \right) \\
+& = \frac{1}{2(1+x)\sqrt{1-x^2}}\mathbb{E}\left(\left(-2|N| -t\sqrt{2(1-x)}\right)\Phi'\left(\frac{2t + |N|\sqrt{2(1-x)}}{\sqrt{2(1+x)}}\right) \right. \\
+& \hspace{5.5cm}  \left. - \left(2|N| - t\sqrt{2(1-x)}\right)\Phi'\left(\frac{2t - |N|\sqrt{2(1-x)}}{\sqrt{2(1+x)}}\right) \right) \\
+& = \frac{\exp(-t^2/(1+x))}{2\sqrt{2\pi}(1+x)\sqrt{1-x^2}}\\
+&\hspace{0.5cm} \mathbb{E}\left(\left(-2|N| -t\sqrt{2(1-x)}\right)\exp\left(\frac{-t|N|\sqrt{2(1-x)}}{1+x}\right)\exp\left(\frac{-N^{2}(1-x)}{2(1+x)}\right)\right. \\
+&\hspace{2cm}\left. - \left(2|N| - t\sqrt{2(1-x)}\right)\exp\left(\frac{t|N|\sqrt{2(1-x)}}{1+x}\right)\exp\left(\frac{-N^{2}(1-x)}{2(1+x)}\right)\right) \\
+& = \frac{\exp(-t^2/(1+x))}{4\pi(1+x)\sqrt{1-x^2}}\\
+&\hspace{0.5cm} \int_{-\infty}^{\infty}\exp\left(-\frac{y^2}{1+x}\right)\left(\left(-2|y| -t\sqrt{2(1-x)}\right)\exp\left(\frac{-t|y|\sqrt{2(1-x)}}{1+x}\right)\right. \\
+&\hspace{5cm}\left. - \left(2|y| - t\sqrt{2(1-x)}\right)\exp\left(\frac{t|y|\sqrt{2(1-x)}}{1+x}\right)\right)dy \\ 
+& = \frac{\exp(-t^2/(1+x))}{2\pi(1+x)\sqrt{1-x^2}}\exp\left(\frac{t^2(1-x)}{2(1+x)}\right)\\
+&\hspace{0.5cm} \int_{0}^{\infty}\left(\left(-2|y| -t\sqrt{2(1-x)}\right)\exp\left(-\frac{\left(y+t\sqrt{2(1-x)}/2\right)^{2}}{1+x}\right)\right. \\
+&\hspace{5cm}\left. - \left(2|y| - t\sqrt{2(1-x)}\right)\exp\left(-\frac{\left(y-t\sqrt{2(1-x)}/2\right)^{2}}{1+x}\right)\right)dy \\
+& = \frac{\exp(-t^2/(1+x))}{2\pi(1-x)^{1/2}(1+x)^{3/2}}\exp\left(\frac{t^2(1-x)}{2(1+x)}\right)\\
+& \hspace{2cm} \left(\int_{\frac{t}{2}\sqrt{2(1-x)}}^{\infty}-2z\exp\left(-\frac{z^2}{1+x}\right)dz + \int_{-\frac{t}{2}\sqrt{2(1-x)}}^{\infty}-2z\exp\left(-\frac{z^2}{1+x}\right)dz \right)\\
+& = \frac{-2\exp(-t^2/(1+x))(1+x)}{2\pi(1-x)^{1/2}(1+x)^{3/2}}\\
+& = \frac{-\exp(-t^2/(1+x))}{\pi\sqrt{(1-x^2)}},
 \end{align*}
-for all $|x| < 1, \; h'(x) < 0$, thus, $h$ is a strictly decreasing function. 
+for all $|x| < 1, \; h'(x) < 0$ thus, $h$ is a strictly decreasing function. 
 \end{proof}
-\subsection{Covariance of the perimeter for two thresholds}
+\textcolor{red}{Thus, the function $\rho \mapsto \mathbb{E}\left(\mathcal{P}^{\scriptscriptstyle (i)}_{m, \rho}(t)\right)$ is strictly decreasing, in particular if $\rho(e_1) \neq \rho(e_2) $\linebreak then~$\mathbb{E}\left(\mathcal{P}^{\scriptscriptstyle (1)}_{m}(t)\right) \neq \mathbb{E}\left(\mathcal{P}^{\scriptscriptstyle (2)}_{m}(t)\right)$.\\ 
+Now, if the field $X$ is isotropic, one consequence would be that $\rho(e_{1}) = \rho(e_{2})$ which implies~$\frac{\mathbb{E}\left(\mathcal{P}^{\scriptscriptstyle (1)}_{m}(t)\right)}{\mathbb{E}\left(\mathcal{P}^{\scriptscriptstyle (2)}_{m}(t)\right)} = 1$. Thus, having a Central Limit Theorem for the variable $\mathcal{P}^{\scriptscriptstyle (i)}_{m}(t)$  would allow us to construct an isotropy test using the oriented perimeter of the field $X$.}
+\subsection{Isotropy test using the oriented perimeter}
+In order to establish the CLT, we need to add some assumptions on $\rho$ the covariance structure of the field $X$.
+\begin{enumerate}
+  \itemA 
+ $\begin{aligned}[t]
+ \label{conditionTCL1}
+\lim_{m \to \infty} m^{-2}\sum_{x, y \in \mathbb{G}_{m}}\rho(x-y)\; \text{exists}.
+\end{aligned}$
+\itemA $\begin{aligned}[t]
+ \lim_{m \to \infty} m^{-2}\sum_{x, y \in \mathbb{G}_{m}}\rho(x-~y)^{2}\; \text{exists}.
+\end{aligned}$
+\end{enumerate} 
+\textcolor{red}{TCL}
+\begin{Theorem}\label{TCL}(Multi-directional multivariate CLT for r-threshold). We consider that $X_{x \in \mathbb{G}_{m}}$ a centered stationary standard Gaussian, let $r$ be a positive integer, $m \geq 2$ and $t_{1}, \cdots,t_{r} \in \mathbb{R}$, then, under \textbf{$(A_{1})$} and \textbf{$(A_{2})$},
+\begin{equation*}
+\frac{1}{m}\left(\begin{pmatrix} \mathcal{P}^{\scriptscriptstyle (1)}_{m}(t_{1}) \\  \vdots \\ \mathcal{P}^{\scriptscriptstyle (1)}_{m}(t_{r}) \\ \mathcal{P}^{\scriptscriptstyle (2)}_{m}(t_{2}) \\  \vdots \\ \mathcal{P}^{\scriptscriptstyle (2)}_{m}(t_{r})  \end{pmatrix} - \begin{pmatrix} \mathbb{E}(\mathcal{P}^{\scriptscriptstyle (1)}_{m}(t_{1}))  \\ \vdots \\ \mathbb{E}(\mathcal{P}^{\scriptscriptstyle (1)}_{m}(t_{r}))\\\mathbb{E}(\mathcal{P}^{\scriptscriptstyle (2)}_{m}(t_{1})) \\ \vdots \\ \mathbb{E}(\mathcal{P}^{\scriptscriptstyle (2)}_{m}(t_{r})) \end{pmatrix}\right) \xrightarrow[m \to \infty]{d} \mathcal{N}\left(0,\,\Sigma_{2r}^{\star}\right),
+\end{equation*}
+where $\xrightarrow[]{d}$ holds for the convergence in distribution and $\mathcal{N}\left(0,\,\Sigma_{2r}^{\star}\right)$ for the $2r$-dimensional centered Gaussian distribution with covariance matrix $\Sigma^\star_{2r}$ given by
+\begin{align*}
+\Sigma^{\star}_{2r}(l,i,k,j) & : = \lim_{m \to \infty}\text{Cov}\left(\frac{1}{m}\mathcal{P}^{\scriptscriptstyle (i)}_{m}(t_{l}),  \frac{1}{m}\mathcal{P}^{\scriptscriptstyle (j)}_{m}(t_{k}) \right)
+\end{align*}
+\end{Theorem}
+\begin{proof} For the sake of simplicity, we will prove the CLT for $r=1$, the generalized case is made by following the same procedure. Using the Cramèr-Wold method, we need to prove that for each $(a_1, a_2) \in \mathbb{R}^{2}$, we have 
+\begin{align*}
+\frac{a_{1}}{m}\left(\mathcal{P}^{\scriptscriptstyle (1)}(t) - \mathbb{E}\left(\mathcal{P}^{\scriptscriptstyle (1)}(t)\right)\right) + \frac{a_{2}}{m}\left(\mathcal{P}^{\scriptscriptstyle (2)}(t) - \mathbb{E}\left(\mathcal{P}^{\scriptscriptstyle (2)}(t)\right)\right) \xrightarrow[m \to \infty]{d} \mathcal{N}\left(0,\,\sigma^{2}(t)\right) 
+\end{align*}
+with $\sigma^{2}(t) = \lim_{m \to \infty} \mathbb{V}\left( \frac{a_{1}}{m}\mathcal{P}^{\scriptscriptstyle (1)}(t) + \frac{a_{2}}{m}\mathcal{P}^{\scriptscriptstyle (2)}(t) \right)$.
+We first need to recall some notations that were introduced in the first section \eqref{fi}. We denote by $\mathbb{G}_{m} := \text{\larger[1]{$[$}}0, m \text{\larger[1]{$)$}}^{2} \cap \mathbb{Z}^{2}$ and let~$a_{1}, a_{2}, t \in \mathbb{R}$, $x=(x_{1}, x_{2}) \in \mathbb{G}_{m}$ and $i \in \{1,2\}$.  We recall as introduced in \eqref{fi}
+\begin{align*}
+f_{t}^{\scriptscriptstyle (i)}(x) := \mathbbm{1}_{\left\{\min\left(X_{x+e_{i}}, X_{\scriptscriptstyle x}\right) < t \leq \max\left(X_{x+e_{i}}, X_{\scriptscriptstyle x}\right)\right\}}
+\end{align*}
+Let us denote the 4-dimensional Gaussian vector by $\mathbb{X}_{x_1, x_2} = (X_{x_1, x_2}, X_{x_1 + 1, x_2}, X_{x_2, x_1+1}, X_{x_2, x_1} )$ and $g_{t} : \mathbb{R}^{4} \to \mathbb{R}$, 
+\begin{align*}
+g_{t}\left(\mathbb{X}_{x_1, x_2}\right) & := a_{1}\mathbbm{1}_{\left\{\min\left(X_{x_1, x_2}, X_{\scriptscriptstyle x_1 +  1, \scriptscriptstyle x_2}\right) < t \leq \max\left(X_{x_1, x_2}, X_{\scriptscriptstyle x_1 +  1, \scriptscriptstyle x_2}\right)\right\}} \\
+& \hspace{1cm} + a_{2}\mathbbm{1}_{\left\{\min\left(X_{x_2, x_1}, X_{\scriptscriptstyle x_2, x_1 + 1}\right) < t \leq \max\left(X_{x_2, x_1}, X_{\scriptscriptstyle x_2, x_1 + 1}\right)\right\}}
+\end{align*}
+Note that $0 \leq f_{t}^{\scriptscriptstyle (i)}(0) \leq 1$ \textit{a.s.}, thus, \textit{a.s.},$\mathbb{E}\left(g_{t}\left(\mathbb{X}_{\scriptscriptstyle  0, 0}\right)^{2}\right) < (a_{1} + a_{2})^{2}$. In order to apply Theorem $2$ in \cite{arcones} and get the convergence, \\
+\big[\textcolor{blue}{ $r^{(p,q )}(k) = \mathbb{E}\left(X^{p}_{m} X^{q}_{m+k}\right)$for $k\in Z$ and $1 < p, q < d$, where $m$ is any integer so large that $m, m + k > 1$. Suppose that \\
+$\lim_{n \to \infty} n^{-1} \sum_{j,k = 1}^{n}r^{(p,q )}(j-k) < \infty$ and $\lim_{m \to \infty} n^{-1}\sum_{j,k = 1}^{n}(r^{(p,q )}(j-k))^{2} < \infty$}\big]\\
+we should insure that 
+\begin{align*}
+\lim_{m \to \infty} m^{-2} \sum_{x \in \mathbb{G}_{m}}\sum_{y \in \mathbb{G}_{m}} \mathbb{E}\left(\mathbb{X}^{(p)}_{x}\mathbb{X}^{(q)}_{y}\right) < \infty \; \text{and} \; \lim_{m \to \infty} m^{-2} \sum_{x \in \mathbb{G}_{m}}\sum_{y \in \mathbb{G}_{m}} \left(\mathbb{E}\left(\mathbb{X}^{(p)}_{x}\mathbb{X}^{(q)}_{y}\right)\right)^{2} < \infty,
+\end{align*} 
+with $\mathbb{X}^{(p)}_{x}$ being the $p$-coordinate of the $4$-dimensional vector $\mathbb{X}_{x}$, then applying the stationarity hypothesis it amounts to the following
+\begin{align*}
+\lim_{m \to \infty} m^{-2}\sum_{x, y \in \mathbb{G}_{m}}\rho(x-y) < \infty \;  \text{and} \; \lim_{m \to \infty} m^{-2}\sum_{x, y \in \mathbb{G}_{m}}\rho(x-~y)^{2} < \infty.
+\end{align*} 
+Under $(A1)$ and $(A2)$, we can apply Theorem $2$ in \cite{arcones} we get that 
+\begin{align*}
+m^{-1} \sum_{(x_1, x_2) \in \mathbb{G}_{m}} g_{\scriptscriptstyle t}\left(\mathbb{X}_{x_1, x_2}\right) - \mathbb{E}\left(g_{\scriptscriptstyle t}\left(\mathbb{X}_{x_1, x_2}\right)\right) \xrightarrow[m \to \infty]{d} \mathcal{N}\left(0,\,\sigma^{2}(t)\right),
+\end{align*}
+with 
+\begin{align*}
+\sigma^{2}(t) := \mathbb{E}\left(\big[g_{t}(\mathbb{X}_{0}) - \mathbb{E}\left(g_{t}(\mathbb{X}_{0})\right)\big]^{2}\right) \\
+& \hspace{-4cm}+ 2 \sum_{x_{1}, x_{2} = 1}^{\infty} \mathbb{E}\left(\big[g_{t}(\mathbb{X}_{0}) - \mathbb{E}\left(g_{t}(\mathbb{X}_{0})\right)\big]\big[g_{t}(\mathbb{X}_{x_1,x_2}) - \mathbb{E}\left(g_{t}(\mathbb{X}_{x_1, x_2})\right)\big]\right)
+\end{align*}
+Re-writing the sum we get
+\begin{align*} 
+\sum_{(x_1, x_2) \in \mathbb{G}_{m}} g_{t}\left(\mathbb{X}_{x_1, x_2}\right) - \mathbb{E}\left(g_{t}\left(\mathbb{X}_{x_1, x_2}\right)\right) & = \sum_{x_1 = 0}^{m-2}\sum_{x_2 = 0}^{m-1} g_{t}\left(\mathbb{X}_{x_1, x_2}\right) - \mathbb{E}\left(g_{t}\left(\mathbb{X}_{x_1, x_2}\right)\right) \\
+&=  a_{1}\left(\mathcal{P}^{\scriptscriptstyle (1)}(t) - \mathbb{E}\left(\mathcal{P}^{\scriptscriptstyle (1)}(t)\right)\right) - a_{2}\left(\mathcal{P}^{\scriptscriptstyle (2)}(t) - \mathbb{E}\left(\mathcal{P}^{\scriptscriptstyle (2)}(t)\right)\right),
+\end{align*}
+Thus
+\begin{align*}
+\frac{a_{1}}{m}\left(\mathcal{P}^{\scriptscriptstyle (1)}(t) - \mathbb{E}\left(\mathcal{P}^{\scriptscriptstyle (1)}(t)\right)\right) + \frac{a_{2}}{m}\left(\mathcal{P}^{\scriptscriptstyle (2)}(t) - \mathbb{E}\left(\mathcal{P}^{\scriptscriptstyle (2)}(t)\right)\right) \xrightarrow[m \to \infty]{d} \mathcal{N}\left(0,\,\sigma^{2}(t)\right) 
+\end{align*}
+\end{proof}
+\paragraph{A test statistic} Following the idea  in \cite{bierme2019}  we propose a method to test the isotropy of the field $X$.
+Let us consider the null hypothesis
+\begin{center}
+  $H_{0}$ \, :\; The field $X$ is isotropic,
+\end{center}
+and the following normality asymptotic result that is obtained by applying the delta method to Theorem (\textcolor{blue}{\ref{TCL}}).
+\begin{Proposition}[Ratio of oriented perimeters]\label{deltamethodgeneralprop} 
+Let  $t \in \mathbb{R}$, and $\mathcal{P}^{\scriptscriptstyle  (i) }(t)$ be the oriented perimeter over direction $i$, introduced in Definition \ref{defPerimetre} computed at level $t$ let us denote by $\mu_{i}(t)) = \mathbb{E}\left(\Phi\left(\dfrac{2t + \sqrt{2(1-\rho(e_i))}|N|}{\sqrt{2(1+\rho(e_i))}}\right)  - \Phi\left(\dfrac{2t - \sqrt{2(1-\rho(e_i))}|N|}{\sqrt{2(1+\rho(e_i))}}\right)\right)$. Then, it holds that,
+\begin{equation*}
+\frac{1}{m}\left(\cfrac{\mathcal{P}^{\scriptscriptstyle  (1) }_{m}(t)}{\mathcal{P}^{\scriptscriptstyle  (2)}_{m}(t)} - \cfrac{\mathbb{E}\left(\mathcal{P}^{\scriptscriptstyle  (1) }_{m}(t)\right)}{\mathbb{E}\left(\mathcal{P}^{\scriptscriptstyle  (2)}_{m}(t)\right)} \right)  \xrightarrow[m \to \infty]{d} \mathcal{N}\left(0,  \tilde{\sigma}^{2}(t) \right),
+\end{equation*}
+with $\tilde{\sigma}^{2}(t) = \frac{(\tilde{\sigma}_{\scriptscriptstyle 1,1}(t)\mu_{2}(t))^{2} - 2\mu_{2}(t)\mu_{1}(t)\tilde{\sigma}_{\scriptscriptstyle 1,2}(t)^{2} +(\tilde{\sigma}_{\scriptscriptstyle 2,2}(t)\mu_{1}(t))^{2}}{\mu_{2}(t)^4} \in (0, \infty)$. \\
+Let $t \in \mathbb{R}$  and  $R_{m}(t) := \cfrac{\mathcal{P}^{\scriptscriptstyle  (1) }_{m}(t)}{\mathcal{P}^{\scriptscriptstyle  (2) }_{m}(t)}$. Then, under $H_{0}$, it holds that
+\begin{equation}\label{ratiounderH0}
+\frac{1}{m}\left(R_{m}(t) - 1 \right)  \xrightarrow[m \to \infty]{d, H_0} \mathcal{N}\left(0,  \tilde{\sigma}^{2}(t)  \right),
+\end{equation} 
+and $\tilde{\sigma}^{2}(t) = \frac{2\left(\tilde{\sigma}_{\scriptscriptstyle 1,1}^{2}(t) \, - \, \tilde{\sigma}_{\scriptscriptstyle 1,2}^{2}(t)\right)}{\mu_{2}(t)^2}$.
+\end{Proposition}
+Consider the consistent empirical estimator $\hat{\sigma}_{m,n}(t):= \frac{1}{m^2}\hat{\mathbb{V}\left(R_{m}(t)\right)}$ of $\tilde{\sigma}^{2}(t)$, where $\hat{\mathbb{V}\left(R_{m, n}(t)\right)}$ is the empirical variance of the considered ratio computed with Montecarlo $= n$. Then, from \ref{deltamethodgeneralprop}, it holds that 
+$$ \frac{1}{m\sqrt{\hat{\sigma}_{m,n}(t)}}\left(R_{m}(t) - 1 \right) = \frac{1}{\sqrt{\hat{\mathbb{V}\left(R_{m}(t)\right)}}}\left(R_{m}(t) - 1 \right)   \xrightarrow[m \to \infty]{d, H_{0}} \mathcal{N}\left(0, 1 \right).$$
+Take a confidence level $\alpha \in (0,1)$ and set $q_{1-\frac{\alpha}{2}}$ such that $\mathbb{P}\left(|\mathcal{N}\left(0,1\right)| \leq  q_{1-\frac{\alpha}{2}} \right) = 1 - \frac{\alpha}{2}$. We define the symmetric accessible test $\hat{\phi}_{m, n}(t)$ with asymptotic level $\alpha$ as 
+\begin{equation}
+\label{phihat}
+\hat{\phi}_{m,n}(t)= \mathbbm{1}_{\left\{ \frac{1}{\sqrt{\hat{\mathbb{V}\left(R_{m, n}(t)\right)}}}\left|R_{m}((t) - 1 \right| \geq q_{1- \frac{\alpha}{2}} \right\}}
+\end{equation}
+\begin{remark}(Power of the statistical test at a level $t$) In Remark \ref{powertest} we showed that the function $\rho \mapsto \mathbb{E}\left(\mathcal{P}^{\scriptscriptstyle (i)}_{m, \rho}(t)\right)$ is strictly decreasing, thus, if $\rho(e_1) \neq \rho(e_2)$ thus $\frac{\mathbb{E}\left(\mathcal{P}^{1}(t)\right)}{\mathbb{E}\left(\mathcal{P}^{2}(t)\right)} \neq 1$. 
+\end{remark}
+\section{Numerical studies}
+\subsection{Numerical studies of moments of the estimated perimeter}
+Let $X$ be a stationary, isotropic centered Gaussian field with covariance function given by $\rho(x) = (1 -3||x||_{2}/3C + (||x||_{2}/2C)^{3})\mathbbm{1}_{||x||_{2} < C}, x \in \mathbb{R}^2$
+Let ${Y(x; a, b, \theta): x \in \mathbb{R}^{2}}$ be a random field equal in distribution to  $\{X(Ax): x\in \mathbb{R}^{2}\}$, where 
+\begin{equation}
+A:= \begin{pmatrix} a & 0 \\ 0 & b\end{pmatrix} \begin{pmatrix} \cos(\theta) & \sin(\theta) \\ -\sin(\theta) & \cos(\theta)\end{pmatrix} 
+\end{equation}
+with $a, b \in \mathbb{R}^{2}$ and $\theta \in [0, \pi)$, the field $Y$ is also Gaussian with covariance function given by  $\rho_{X}(x) = (1 - 3||Ax||_{2}/2C + (||Ax||_{2})^{3}/2C^{3})\mathbbm{1}_{||Ax||_{2} < C},$, note that $a\neq b$ if and only if $Y$ is anisotropic. We chose to illustrate the computations of the statistics of the perimeter, using this covariance structure, and the value $\theta = 0$ and $a = 1$. 
+\begin{figure}[H]
+  \centering
+    {\includegraphics[scale=0.3]{EsperanceUnedirection.pdf}}
+    \hspace{0.2cm}
+ \caption{In each panel, we represent the values of first moment of the oriented perimeter in direction $2$ computed for different values of $b$, the theoretical curve Equation \eqref{propFisrtmoment} is depicted using a blue color (blue) and the empirical values are in orange, the computations were done with a Montecarlo $= 100000$, for different values of $b = 1, 2.5, 5, 10$ and $C = 40$. }
+\label{fig2}
+\end{figure}
+
+\begin{figure}[H]
+  \centering
+    {\includegraphics[scale=0.3]{EsperanceUnedirectionfonctionB.pdf}}
+    \hspace{0.2cm}
+ \caption{In each panel, we represent the values of first moment of the oriented perimeter in direction $2$ computed as a fonction of $b$ for a fixed level $t = 0$, the theoretical curve Equation \eqref{propFisrtmoment} is depicted using a blue color (blue) and the empirical values are in orange, the computations were done with a Montecarlo $= 100000$ and $C = 40$.}
+\label{fig2}
+\end{figure}
+
+
+\begin{figure}[H]
+  \centering
+    {\includegraphics[scale=0.4]{Testanisotropy2.pdf}}
+    \hspace{0.2cm} 
+ \caption{We represent the values of $\hat{\Phi}_{m}(b)$ see Equation \eqref{phihat} in blue color computed for a Montecarlo $= 2000$, for different values of $b = 1, 1.2, 1.5, 2$ and $C = 40$.}
+\label{fig2}
+\end{figure}
+
+\begin{figure}[H]
+  \centering
+    {\includegraphics[scale=0.4]{TestaniRatiopvalue.pdf}}
+    \hspace{0.2cm} 
+ \caption{$p_{\text{value}} = 2\mathbb{P}\left(N \geq |z|\right)$ with $z = \frac{\mathbb{E}\left(R_{m,n}(t)\right) - 1)}{\sqrt{\hat{\mathbb{V}\left(R_{m, n}(t)\right)}}}$ and $N \sim \mathcal{N}(0,1)$ in blue color computed for a Montecarlo $= 2000$, for different values of $b = 1, 1.1, 1.2, 1.5, 2$ and $C = 40$.}
+\label{fig2}
+\end{figure}
+
+\begin{center}
+\begin{tabular}{|l|c|c|c|c|c|c|c|c|}
+\hline
+\diagbox{b}{t} & 0.2 &  0.3 &  0.4 &  0.5 &  0.6 &  0.7 &  0.8 &  0.9  \\ \hline
+1  & 0.9866 &   0.9638 &  0.9971 &  0.9867 &  0.9674 &  0.9951 &  0.9754 &  0.9918  \\ \hline
+1.1 & 0 &  0 &  0 &  0 &  0 &  0 &  0 &  0.0007  \\ \hline
+1.2 & 0 &  0 &  0 &  0 &  0 &  0 &  0 &  0   \\ \hline 
+1.5 &  0 &  0 &  0 &  0 &  0 &  0 &  0 &  0   \\ \hline
+2 &  0 &  0 &  0 &  0 &  0 &  0 &  0 &  0  \\ \hline
+\end{tabular}
+\end{center}
+
+\begin{figure}[H]
+  \centering
+    {\includegraphics[scale=0.4]{TestaniRatiopvaluetheta.pdf}}
+    \hspace{0.2cm} 
+ \caption{We represent $p_{\text{value}} = 2\mathbb{P}\left(N \geq |z|\right)$ with $z = \frac{\mathbb{E}\left(R_{m,n}(t)\right) - 1)}{\sqrt{\hat{\mathbb{V}\left(R_{m, n}(t)\right)}}}$ and $N \sim \mathcal{N}(0,1)$ in blue color computed for a Montecarlo $= 2000$, for different values of $b = 1.1$ and $\theta = \pi/3, \pi/4, \pi/5, \pi/6, \pi/8 $ and $C = 40$.}
+\label{fig2}
+\end{figure}
+
+\begin{figure}[H]
+  \centering
+    {\includegraphics[scale=0.4]{TestaniPhi0.pdf}}
+    \hspace{0.2cm} 
+ \caption{We represent the values of $\hat{\Phi}_{m}$ see Equation \eqref{phihat}, computed as a function of $b$ and a fixed value $t=0$ in blue color for a Montecarlo $= 2000$, and $C = 40$.}
+\label{fig2}
+\end{figure}
+
+\begin{figure}[H]
+  \centering
+    {\includegraphics[scale=0.2]{TestaniRatiovsRHO.pdf}}
+    {\includegraphics[scale=0.2]{TestaniRatiovsTVA.pdf}}
+    \hspace{0.2cm} 
+ \caption{We represent the values of the mean of the ratio between the oriented perimeter $\mathbb{E}\left(\frac{\mathcal{P}^{(1)}(0)}{\mathcal{P}^{(2)}(0)}\right)$ in blue and the ratio between of the empirical value for $\hat{\rho(e_i)}$ computed using the first moment of the total variation (\ref{totalvariation}) for different values of $b$, Montecarlo $= 500$, $t = 0$ and $C = 40$.}
+\label{fig2}
+\end{figure}
+
+
+\begin{figure}[H]
+  \centering
+    {\includegraphics[scale=0.3]{imageU.pdf}}
+    \hspace{3cm}
+    {\includegraphics[scale=0.3]{levelset30000.pdf}}
+    \hspace{0.2cm}
+ \caption{ Image of level $30000$}
+\label{fig2}
+\end{figure}
+
+\begin{figure}[H]
+  \centering
+    {\includegraphics[scale=0.25]{ConfidenceIntervalRDStD.pdf}}
+    {\includegraphics[scale=0.25]{BoxplotRDStD.pdf}}
+    \hspace{0.2cm}
+ \caption{We represent the mean values of the ratio between the two oriented perimeters $\mathcal{P}^{1}, \mathcal{P}^{2}$ for real life data.}
+\label{fig2}
+\end{figure}
+
+
+\begin{figure}[H]
+  \centering
+    {\includegraphics[scale=0.25]{ConfidenceIntervalRDAu.pdf}}
+    {\includegraphics[scale=0.25]{BoxplotRDAu.pdf}}
+    \hspace{0.2cm}
+ \caption{We represent the mean values of the ratio between the two oriented perimeters $\mathcal{P}^{1}, \mathcal{P}^{2}$ for real life data.}
+\label{fig2}
+\end{figure}
+\subsection{Theroretical and numerical study of the covariance of the perimeter}
 Let us consider a stationary Gaussian random field $\left(X_{\scriptscriptstyle x}\right)_{x \in \mathbb{Z}^{2}}$ with zero mean and unit variance whose covariance structure is given by $\rho(x) = \text{Cov}\left(X_{\scriptscriptstyle 0}, X_{\scriptscriptstyle x}\right)$.
 \begin{Lemma} 
 Let $s, t \in \mathbb{R}$, 
 \label{CovLemma}
-\begin{align}
-\text{Cov}(\mathcal{P}_{m}(t), \mathcal{P}_{m}(s))  & = \text{Cov}(\mathcal{P}_{m}^{\scriptscriptstyle (1)}(t), \mathcal{P}_{m}^{\scriptscriptstyle (1)}(s)) + \text{Cov}(\mathcal{P}_{m}^{\scriptscriptstyle (1)}(t), \mathcal{P}_{m}^{\scriptscriptstyle (2)}(s)) + \text{Cov}(\mathcal{P}_{m}^{\scriptscriptstyle (2)}(t), \mathcal{P}_{m}^{\scriptscriptstyle (1)}(s)) \nonumber \\
-& + \text{Cov}(\mathcal{P}_{m}^{\scriptscriptstyle (2)}(t), \mathcal{P}_{m}^{\scriptscriptstyle (2)}(s)),
-\label{covariance}
-\end{align} 
+\begin{align*}
+\text{Cov}(\mathcal{P}_{m}(t), \mathcal{P}_{m}(s))  & = \sum_{1\leq i,j\leq 2}\text{Cov}(\mathcal{P}_{m}^{\scriptscriptstyle (i)}(t), \mathcal{P}_{m}^{\scriptscriptstyle (j)}(s)) 
+\end{align*} 
 with 
 \begin{align*}
 \text{Cov}\left(\mathcal{P}_{m}^{\scriptscriptstyle (i)}(t),\mathcal{P}_{m}^{\scriptscriptstyle (i)}(s) \right) 
@@ -713,7 +935,6 @@ Let, $R_{1}(x) = \frac{2s + \left( \pi^{\scriptscriptstyle(-, i)}_{U}(x)- \pi^{\
 \end{align*}}
 Also, there exist $C_2$ such that $R_{2}(x) \leq C_{2}r(x)\left(|U| + |V| + |W|\right)$. 
 Reconsidering Equation~(\ref{Thisthofour}) we get,
-\pagebreak
 {\small
 \begin{align*}
  \text{Cov}\left(f_{t}^{\scriptscriptstyle(1)}(0), f_{s}^{\scriptscriptstyle(i)}(x) \right) & =  \mathbb{E}\left(\mathbbm{1}_{\left\{ |2t - \sigma^{\scriptscriptstyle (+)}_{1}V| \leq |\sigma^{\scriptscriptstyle (-)}_{1}U|\right\}}\right. \\
@@ -746,108 +967,6 @@ the limit of the general term as $m$ goes to infinity is
 \end{align*}
 Besides, we just proved that for $m \in \mathbb{N}$, for all $x\in \mathbb{Z}^{2}$, $\left|\text{Cov}\left(f_{t}^{\scriptscriptstyle(1)}(0), f_{s}^{\scriptscriptstyle(i)}(x)\right)\right| \leq Cr(x)$, thus applying the dominated convergence theorem, $\lim_{m \to \infty}\text{Cov}\left(\frac{1}{m}\mathcal{P}_{m}^{\scriptscriptstyle (1)}(t), \frac{1}{m}\mathcal{P}_{m}^{\scriptscriptstyle (1)}(s) \right)$ exists.
 \end{proof}
-Now that we know more about the second moment of the perimeter, we can construct a Multi-directional multivariate CLT that will lead us to an isotropy test, the following Central Limit Theorem is proved with a lesser condition on the covariance of the field.
-\vspace{-0.5cm}
-\subsection{Isotropy test using the oriented perimeter}
-In order to get the CLT we have to add some assumptions on the covariance structure of the field, we will need the following  assumptions 
-\begin{itemize}
-\item \textbf{$(A_{1})$} $\lim_{n \to \infty} m^{-2}\sum_{x, y \in \mathbb{G}_{m}}\rho(x-y)$ exists.
-\item \textbf{$(A_{2})$} $\lim_{n \to \infty} m^{-2}\sum_{x, y \in \mathbb{G}_{m}}\rho(x-~y)^{2}$ exists.
-\end{itemize} 
-\begin{Theorem}\label{TCL}(Multi-directional multivariate CLT for r-threshold). We consider that $X_{x \in \mathbb{G}_{m}}$ a centered stationary standard Gaussian, let $r$ be a positive integer, $m \geq 2$ and $t_{1}, \cdots,t_{r} \in \mathbb{R}$, then, under \textbf{$(A_{1})$} and \textbf{$(A_{2})$},
-\begin{equation*}
-\frac{1}{m}\left(\begin{pmatrix} \mathcal{P}^{\scriptscriptstyle (1)}_{m}(t_{1}) \\  \vdots \\ \mathcal{P}^{\scriptscriptstyle (1)}_{m}(t_{r}) \\ \mathcal{P}^{\scriptscriptstyle (2)}_{m}(t_{2}) \\  \vdots \\ \mathcal{P}^{\scriptscriptstyle (2)}_{m}(t_{r})  \end{pmatrix} - \begin{pmatrix} \mathbb{E}(\mathcal{P}^{\scriptscriptstyle (1)}_{m}(t_{1}))  \\ \vdots \\ \mathbb{E}(\mathcal{P}^{\scriptscriptstyle (1)}_{m}(t_{r}))\\\mathbb{E}(\mathcal{P}^{\scriptscriptstyle (2)}_{m}(t_{1})) \\ \vdots \\ \mathbb{E}(\mathcal{P}^{\scriptscriptstyle (2)}_{m}(t_{r})) \end{pmatrix}\right) \xrightarrow[m \to \infty]{d} \mathcal{N}\left(0,\,\Sigma_{2r}^{\star}\right),
-\end{equation*}
-where $\xrightarrow[]{d}$ holds for the convergence in distribution and $\mathcal{N}\left(0,\,\Sigma_{2r}^{\star}\right)$ for the $2r$-dimensional centered Gaussian distribution with covariance matrix $\Sigma^\star_{2r}$ given by
-\begin{align*}
-\Sigma^{\star}_{2r}(l,i,k,j) & : = \lim_{m \to \infty}\text{Cov}\left(\frac{1}{m}\mathcal{P}^{\scriptscriptstyle (i)}_{m}(t_{l}),  \frac{1}{m}\mathcal{P}^{\scriptscriptstyle (j)}_{m}(t_{k}) \right)
-\end{align*}
-\end{Theorem}
-\begin{proof} For the sake of simplicity, we will prove the CLT for $r=1$, the generalised case is done following the same procedure. Following the idea that has been presented in \cite{Psymetrie}, 
-using the Cramèr-Wold method, we need to prove that for each $(a_1, a_2) \in \mathbb{R}^{2}$, we have 
-\begin{align*}
-\frac{a_{1}}{m}\left(\mathcal{P}^{\scriptscriptstyle (1)}(t) - \mathbb{E}\left(\mathcal{P}^{\scriptscriptstyle (1)}(t)\right)\right) + \frac{a_{2}}{m}\left(\mathcal{P}^{\scriptscriptstyle (2)}(t) - \mathbb{E}\left(\mathcal{P}^{\scriptscriptstyle (2)}(t)\right)\right) \xrightarrow[m \to \infty]{d} \mathcal{N}\left(0,\,\sigma^{2}\right) 
-\end{align*}
-with $\sigma^{2} = \lim_{m \to \infty} \mathbb{V}\left( \frac{a_{1}}{m}\mathcal{P}^{\scriptscriptstyle (1)}(t) + \frac{a_{2}}{m}\mathcal{P}^{\scriptscriptstyle (2)}(t) \right)$.
-We first need to recall some notations that were introduced in the first section \eqref{fi}. Let $\mathbb{G}_{m} := \text{\larger[1]{$[$}}0, m \text{\larger[1]{$)$}}^{2} \cap \mathbb{Z}^{2}$  for $i \in \{1,2\}$,  $a_{1}, a_{2} \in \mathbb{R}$, $t \in \mathbb{R}$, $x \in \mathbb{G}_{m}$ and $j \in \{1,\ldots,r\}$.  We recall as introduced in \eqref{fi}
-\begin{align*}
-f_{t}^{\scriptscriptstyle (i)}(x) := \mathbbm{1}_{\left\{\min\left(X_{x+e_{i}}, X_{\scriptscriptstyle x}\right) < t \leq \max\left(X_{x+e_{i}}, X_{\scriptscriptstyle x}\right)\right\}}
-\end{align*}
-Note that $0 \leq f_{t}^{\scriptscriptstyle (i)}(x) \leq 1$ \textit{a.s.}, let us denote the 4-dimensional Gaussian vector by $\mathbb{X}_{x_1, x_2} = (X_{x_1, x_2}, X_{x_1 + 1, x_2}, X_{x_2, x_1+1}, X_{x_2, x_1} )$ and $g_{t} : \mathbb{R}^{4} \to \mathbb{R}$, 
-\begin{align*}
-g_{t}\left(\mathbb{X}_{x_1, x_2}\right) & := a_{1}\mathbbm{1}_{\left\{\min\left(X_{x_1, x_2}, X_{\scriptscriptstyle x_1 +  1, \scriptscriptstyle x_2}\right) < t \leq \max\left(X_{x_1, x_2}, X_{\scriptscriptstyle x_1 +  1, \scriptscriptstyle x_2}\right)\right\}} \\
-& \hspace{1cm} + a_{2}\mathbbm{1}_{\left\{\min\left(X_{x_2, x_1}, X_{\scriptscriptstyle x_2, x_1 + 1}\right) < t \leq \max\left(X_{x_2, x_1}, X_{\scriptscriptstyle x_2, x_1 + 1}\right)\right\}}
-\end{align*}
-Considering the sum over all elements of the window, we get that 
-\begin{align*} 
-\sum_{(x_1, x_2) \in \mathbb{G}_{m}} g_{t}\left(\mathbb{X}_{x_1, x_2}\right) - \mathbb{E}\left(g_{t}\left(\mathbb{X}_{x_1, x_2}\right)\right) = a_{1}\left(\mathcal{P}^{\scriptscriptstyle (1)}(t) - \mathbb{E}\left(\mathcal{P}^{\scriptscriptstyle (1)}(t)\right)\right) - a_{2}\left(\mathcal{P}^{\scriptscriptstyle (2)}(t) - \mathbb{E}\left(\mathcal{P}^{\scriptscriptstyle (2)}(t)\right)\right),
-\end{align*}
-Applying Theorem $2$ in \cite{arcones} we get that 
-\begin{align*}
-m^{-1} \sum_{(x_1, x_2) \in \mathbb{G}_{m}} f_{\scriptscriptstyle t}\left(\mathbb{X}_{x_1, x_2}\right) - \mathbb{E}\left(f_{\scriptscriptstyle t}\left(\mathbb{X}_{x_1, x_2}\right)\right) \xrightarrow[m \to \infty]{d} \mathcal{N}\left(0,\,\sigma^{2}\right),
-\end{align*}
-with 
-\begin{align*}
-\sigma^{2} := \mathbb{E}\left(\big[f_{t}(\mathbb{X}_{0}) - \mathbb{E}\left(f_{t}(\mathbb{X}_{0})\right)\big]^{2}\right) \\
-& \hspace{-4cm}+ 2 \sum_{x_{1}, x_{2} = 1}^{\infty} \mathbb{E}\left(\big[f_{t}(\mathbb{X}_{0}) - \mathbb{E}\left(f_{t}(\mathbb{X}_{0})\right)\big]\big[f_{t}(\mathbb{X}_{x_1,x_2}) - \mathbb{E}\left(f_{t}(\mathbb{X}_{x_1, x_2})\right)\big]\right)
-\end{align*}
-\end{proof}
-\begin{remark}
-It is possible to generalize the result for $r$-thresholds by applying the same procedure.
-\end{remark}
-\paragraph{A test statistic} Following the idea  in \cite{bierme2019}  we propose a method to test the isotropy of the field $X$.
-Let us consider the null hypothesis
-\begin{center}
-  $H_{0}$ \, :\; The field $X$ is isotropic,
-\end{center}
-and the following normality asymptotic result that is obtained by applying the delta method to Theorem (\textcolor{blue}{\ref{TCL}}).
-\begin{Proposition}[Ratio of oriented perimeters]\label{deltamethodgeneralprop} 
-Let  $t \in \mathbb{R}$, and $\check{\mathcal{P}}^{\scriptscriptstyle  (i) }(\cdot)$ be the scaled oriented perimeter over direction $i$, introduced in Definition \ref{defPerimetre} computed at level $t$. Then, it holds that,
-\begin{equation*}
-\frac{1}{m}\left(\cfrac{\mathcal{P}^{\scriptscriptstyle  (1) }_{m}(t)}{\mathcal{P}^{\scriptscriptstyle  (2)}_{m}(t)} - \cfrac{\mathbb{E}\left(\mathcal{P}^{\scriptscriptstyle  (1) }_{m}(t)\right)}{\mathbb{E}\left(\mathcal{P}^{\scriptscriptstyle  (2)}_{m}(t)\right)} \right)  \xrightarrow[m \to \infty]{d} \mathcal{N}\left(0,  \tilde{\sigma}^{2}(t) \right),
-\end{equation*}
-with $\tilde{\sigma}^{2}(t) \in (0, \infty)$.
-% with $\tilde{\sigma}^{2}(t) = \frac{\tilde{\sigma}_{\scriptscriptstyle 1,1}^{2}(t)(\mu^{\star}_{2}(t))^{2} - 2\mu^{\star}_{2}(t)\mu^{\star}_{1}(t)\tilde{\sigma}_{\scriptscriptstyle 1,2}^{2}(t) +\tilde{\sigma}_{\scriptscriptstyle 2,2}^{2}(t)\mu^{\star}_{1}(t))^{2}}{\mu^{\star}_{2}(t)^4}$
-Let $t \in \mathbb{R}$  and  $R_{m}(t) := \cfrac{\mathcal{P}^{\scriptscriptstyle  (1) }(t)}{\mathcal{P}^{\scriptscriptstyle  (2) }(t)}$. Then, under $H_{0}$, it holds that
-\begin{equation}\label{ratiounderH0}
-\frac{1}{m}\left(R_{m}(t) - 1 \right)  \xrightarrow[m \to \infty]{d, H_0} \mathcal{N}\left(0,  \tilde{\sigma}^{2}(t)  \right),
-\end{equation} 
-% $\tilde{\sigma}^{2}(t) = \frac{2\left(\tilde{\sigma}_{\scriptscriptstyle 1,1}^{2}(t) \, - \, \tilde{\sigma}_{\scriptscriptstyle 1,2}^{2}(t)\right)}{\mu^{\star}_{2}(t)^2}$
-\end{Proposition}
-Consider the consistent empirical estimator $\hat{\sigma}(t):= \frac{1}{m^2}\hat{\mathbb{V}\left(R_{m}(t)\right)}$ of $\tilde{\sigma}^{2}(t)$, where $\hat{\mathbb{V}\left(R_{m}(t)\right)}$ is the empirical variance of the considered ratio. Then, from \ref{deltamethodgeneralprop}, it holds that 
-$$ \frac{1}{m\sqrt{\hat{\sigma}(t)}}\left(R_{m}(t) - 1 \right) = \frac{1}{\sqrt{\hat{\mathbb{V}\left(R_{m}(t)\right)}}}\left(R_{m}(t) - 1 \right)   \xrightarrow[m \to \infty]{d, H_{0}} \mathcal{N}\left(0, 1 \right).$$
-Take a confidence level $\alpha \in (0,1)$ and set $q_{1-\frac{\alpha}{2}}$ such that $\mathbb{P}\left(|\mathcal{N}\left(0,1\right)| \leq  q_{1-\frac{\alpha}{2}} \right) = 1 - \frac{\alpha}{2}$. We define the symmetric accessible test $\hat{\phi}_{m}(t)$ with asymptotic level $\alpha$ as 
-\begin{equation}
-\label{phihat}
-\hat{\phi}_{m}(t)= \mathbbm{1}_{\left\{ \frac{1}{\sqrt{\hat{\mathbb{V}\left(R_{m}(t)\right)}}}\left|R_{m}(t) - 1 \right| \geq q_{1- \frac{\alpha}{2}} \right\}}
-\end{equation}
-\begin{remark}(Power of the statistical test at a level $t$) In Remark \ref{decreasingrho} we showed that the function $\rho \mapsto \mathbb{E}\left(\mathcal{P}^{\scriptscriptstyle (i)}_{m, \rho}(t)\right)$ is strictly decreasing, thus, if $\rho(e_1) \neq \rho(e_2)$ thus $\frac{\mathbb{E}\left(\mathcal{P}^{1}(t)\right)}{\mathbb{E}\left(\mathcal{P}^{2}(t)\right)} \neq 1$. 
-\end{remark}
-\section{Numerical studies}
-\subsection{Numerical studies of moments of the estimated perimeter}
-
-Let $X$ be a stationary, isotropic centered Gaussian field with covariance function given by $\rho(x) = (1 -3||x||_{2}/3C + (||x||_{2}/2C)^{3})\mathbbm{1}_{||x||_{2} < C}, x \in \mathbb{R}^2$
-Let ${Y(x; a, b, \theta): x \in \mathbb{R}^{2}}$ be a random field equal in distribution to  $\{X(Ax): x\in \mathbb{R}^{2}\}$, where 
-\begin{equation}
-A:= \begin{pmatrix} a & 0 \\ 0 & b\end{pmatrix} \begin{pmatrix} \cos(\theta) & \sin(\theta) \\ -\sin(\theta) & \cos(\theta)\end{pmatrix} 
-\end{equation}
-with $a, b \in \mathbb{R}^{2}$ and $\theta \in [0, \pi)$, the field $Y$ is also Gaussian with covariance function given by  $\rho_{X}(x) = (1 -3||Ax||_{2}/3C + (||Ax||_{2}/2C)^{3})\mathbbm{1}_{||Ax||_{2} < C},$, note that $a\neq b$ if and only if $Y$ is anisotropic. We chose to illustrate the computations of the statistics of the perimeter, using this covariance structure, and the value $\theta = 0$ and $a = 1$. 
-\begin{figure}[H]
-  \centering
-    {\includegraphics[scale=0.3]{EsperanceUnedirection.pdf}}
-    \hspace{0.2cm}
- \caption{In each panel, we represent the values of first moment of the oriented perimeter in direction $2$ computed for different values of $b$, the theoretical curve Equation \eqref{propFisrtmoment} is depicted using a blue color (blue) and the empirical values are in orange, the computations were done with a Montecarlo $= 100000$, for different values of $b = 1, 2.5, 5, 10$ and $C = 40$. }
-\label{fig2}
-\end{figure}
-
-\begin{figure}[H]
-  \centering
-    {\includegraphics[scale=0.3]{EsperanceUnedirectionfonctionB.pdf}}
-    \hspace{0.2cm}
- \caption{In each panel, we represent the values of first moment of the oriented perimeter in direction $2$ computed as a fonction of $b$ for a fixed level $t = 0$, the theoretical curve Equation \eqref{propFisrtmoment} is depicted using a blue color (blue) and the empirical values are in orange, the computations were done with a Montecarlo $= 100000$ and $C = 40$.}
-\label{fig2}
-\end{figure}
-
 \begin{figure}[H]
   \centering
     {\includegraphics[scale=0.3]{ThreeConfNew.pdf}}
@@ -869,81 +988,6 @@ with $a, b \in \mathbb{R}^{2}$ and $\theta \in [0, \pi)$, the field $Y$ is also 
     {\includegraphics[scale=0.3]{Variance_40_30_10_1.pdf}}
     \hspace{0.2cm}
  \caption{We represent of the values of $\mathbb{V}\left(\mathcal{P}\right)(t)$, the value of the theoretical curve Equation \eqref{Thisthofour} in (blue) and the empirical values are in orange, the computations were done with a Montecarlo $= 100000$ to compute the theoretical value and Montecarlo $= 2000$ to compute the empirical one, for the values $b = 1$ and $C = 40$. }
-\label{fig2}
-\end{figure}
-
-\begin{figure}[H]
-  \centering
-    {\includegraphics[scale=0.4]{Testanisotropy2.pdf}}
-    \hspace{0.2cm} 
- \caption{We represent the values of $\hat{\Phi}_{m}(b)$ see Equation \eqref{phihat} in blue color computed for a Montecarlo $= 2000$, for different values of $b = 1, 1.2, 1.5, 2$ and $C = 40$.}
-\label{fig2}
-\end{figure}
-
-\begin{figure}[H]
-  \centering
-    {\includegraphics[scale=0.4]{TestaniRatiopvalue.pdf}}
-    \hspace{0.2cm} 
- \caption{We represent $p_{\text{value}}$  of the test see Equation \eqref{phihat} in blue color computed for a Montecarlo $= 2000$, for different values of $b = 1, 1.1, 1.2, 1.5, 2$ and $C = 40$.}
-\label{fig2}
-\end{figure}
-\begin{displaymath}
-  \renewcommand{\arraystretch}{1.5}
-\begin{array}{|C{0.4cm}|C{1cm}|C{1cm}|C{1cm}|C{1cm}|C{1cm}|C{1cm}|C{1cm}|C{1cm}|C{1cm}|C{1cm}|C{1cm}|}
-\hline
-b & 0.1190 &  0.3571 &  0.5952 &  0.8333 &  1.0714 &  1.3095 &  1.5476 &  1.7857 &  2.0238 &  2.2619 &  2.5 \\ \hline
-1  & 0.9971 &  0.9879 &  0.9547 &  0.9956 &  0.9800 &  0.9973 &  0.9997 &  0.9897 &  0.9737 &  0.9858 &  0.9816  \\ \hline
-1.1 & 0 &  0 &  0 &  0 &  0 &  0 &  0 &  0.0007 &  0.0052 &  0.0325 &  0.1036 \\ \hline
-1.2 & 0 &  0 &  0 &  0 &  0 &  0 &  0 &  0 &  0 &  0.0001 &  0.0035 \\ \hline 
-1.5 &  0 &  0 &  0 &  0 &  0 &  0 &  0 &  0 &  0 &  0 &  0 \\ \hline
-2 &  0 &  0 &  0 &  0 &  0 &  0 &  0 &  0 &  0 &  0 &  0 \\ \hline
-\end{array}
-\end{displaymath}
-
-\begin{figure}[H]
-  \centering
-    {\includegraphics[scale=0.4]{TestaniPhi0.pdf}}
-    \hspace{0.2cm} 
- \caption{We represent the values of $\hat{\Phi}_{m}$ see Equation \eqref{phihat}, computed as a function of $b$ and a fixed value $t=0$ in blue color for a Montecarlo $= 2000$, and $C = 40$.}
-\label{fig2}
-\end{figure}
-
-\begin{figure}[H]
-  \centering
-    {\includegraphics[scale=0.2]{TestaniRatiovsRHO.pdf}}
-    {\includegraphics[scale=0.2]{TestaniRatiovsTVA.pdf}}
-    \hspace{0.2cm} 
- \caption{We represent the values of the mean of the ratio between the oriented perimeter $\mathbb{E}\left(\frac{\mathcal{P}^{(1)}(0)}{\mathcal{P}^{(2)}(0)}\right)$ in blue and the ratio between of the empirical value for $\hat{\rho(e_i)}$ computed using the first moment of the total variation (\ref{totalvariation}) for different values of $b$, Montecarlo $= 500$, $t = 0$ and $C = 40$.}
-\label{fig2}
-\end{figure}
-
-
-\begin{figure}[H]
-  \centering
-    {\includegraphics[scale=0.3]{imageU.pdf}}
-    \hspace{3cm}
-    {\includegraphics[scale=0.3]{levelset30000.pdf}}
-    \hspace{0.2cm}
- \caption{ Image of level $30000$}
-\label{fig2}
-\end{figure}
-
-\begin{figure}[H]
-  \centering
-    {\includegraphics[scale=0.25]{ConfidenceIntervalRDStD.pdf}}
-    {\includegraphics[scale=0.25]{BoxplotRDStD.pdf}}
-    \hspace{0.2cm}
- \caption{We represent the mean values of the ratio between the two oriented perimeters $\mathcal{P}^{1}, \mathcal{P}^{2}$ for real life data.}
-\label{fig2}
-\end{figure}
-
-
-\begin{figure}[H]
-  \centering
-    {\includegraphics[scale=0.25]{ConfidenceIntervalRDAu.pdf}}
-    {\includegraphics[scale=0.25]{BoxplotRDAu.pdf}}
-    \hspace{0.2cm}
- \caption{We represent the mean values of the ratio between the two oriented perimeters $\mathcal{P}^{1}, \mathcal{P}^{2}$ for real life data.}
 \label{fig2}
 \end{figure}
 \appendix 
