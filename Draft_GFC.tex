@@ -101,61 +101,75 @@
 \begin{document}
 \section{Introduction}
 
-The main objective of our study is to be able to decide whether the texture of a grey-level image is isotropic or not. By the texture of an image, we mean the microscopic structure that is captured by the covariance function at the pixels scale. In order to achieve this goal, we propose a methodology built on a statistical test for which all components are rigourously validated. The originality of our approach is to stick on the geometrical features of the image without trying to identify the full distribution of the pixels values. Let us first start with an exemple of medical images where our methodology is applied. 
 
 
+The main objective of our study is to be able to decide whether the texture of a grey-level image is isotropic or not. By the texture of an image, we mean the microscopic structure that is captured by the covariance function at the pixels scale. In order to achieve this goal, we propose a methodology built on a statistical test for which all steps are rigorously validated. The originality of our approach is to stick on the geometrical features of the image without trying to identify the full distribution of the underlying random field that is supposed to serve as a model. More precisely, our observable statistic will be the black domain perimeter in thresholded images.
 
+The present paper is part of the methodological literature that deals with statistical inference based on geometrical observable features given by the Lipschitz-Killing curvatures (LKC) of the excursion sets. In image analysis, an excursion set is a region of the image where the pixel's value is higher than a fixed level, the level set is the boundary of the excursion set and the LKC's are the three natural Minkovski functionals: Euler characteristic (number of connected components minus number of holes), perimeter (length of the boundary), area (Lebesgue measure). Although such type of statistical study is an old engineers task (see \cite{Longuet-Higgins} for instance), it has recently received much attention from a probability theory and mathematical statistics point of view.  To cite some of these papers, let us quote \cite{Worsley96} where the localization of peaks is infered from the observation of the Euler characteristic of excursion sets in neuroimaging, \cite{Molina} where isotropy is tested through the observation of the gradient, \cite{DEL17} or \cite{bierme2019} where a test of Gaussianity is produced based on the Euler characteristic of excursion sets, \cite{Psymetrie} where a test of symmetry is produced based on the perimeter of thresholded images,  ({\sc \`a verifier et completer avec des papiers exterieurs \`a notre "famille". Pour chacun, what is infered? and what is observed? mettre dans ordre chronologique.})\\
+In particular, let us focus on two specific articles \cite{cabana1987affine, Berzin} with a similar objective as our, namely a test of isotropy, and based on similar observations, namely the length of level sets. Both papers are concerned with affine two-dimensional random fields, \emph{i.e.} stationary random fields $X$ defined on $\mathbb{R}^2$ and given as $X(\cdot)=Z(A\cdot)$, where $Z$ is centered, stationary and isotropic defined on $\mathbb{R}^2$ and $A$ is a matrix that can be reduced to $\begin{pmatrix} a&0\\0&b\end{pmatrix} \,\begin{pmatrix} \cos \theta & \sin \theta \\ -\sin \theta & \cos \theta\end{pmatrix}$. Within this continuous parametric frame, $X$ is isotropic in distribution if and only if $a=b$. In both articles, a test of isotropy is constructed, based on the measurement of the respective horizontal and vertical components of the length of the level sets. In the former article, some mixing condition yields a Gaussian asymptotics of the normalized level set length, while in the later article, a Gaussian condition  yields a similar result. This central limit theorem is the crux for establishing a fair statistical test.
+
+Implementations of this type of method can be found in medical imaging and image analysis in general, cosmology, hydrology, sea waves modeling, etc. As an example, let us exhibit some medical images that can be handled with our methodology. In this introductory part, we just show the images and a first tentative of descriptive statistics. The statistical results that we are able to infer from our methodology is detailed at the end of the present paper (see Section 4.3). 
+%\paragraph{Study of the anisotropic nature of bone X-rays.}
+%\textcolor{blue}{\textbf{Dans le papier, ils disent qu'ils ont 174 images, j'en ai 245 dans le dossier.}}
+%The X-ray images are from an retrospective multi-centric study that was conducted at
+%three French research hospitals (Amiens, Orleans and Cochin in Paris). ({\sc details necessaires?})
+%Patients were recruited from a program originated by the hospital of
+%Orleans between Nov. 2004 and Feb. 2006. 
+We analyzed $245$ X-ray images of calcaneus bones in order to detect the eventual anisotropic nature of the microarchitecture.
+%to assess if the distribution of the images is isotropic or not.  and used a geometric tool to do so, but first and for most, their is a necessary post processing step which is to  to stationarize the images, in order to be in the correct framework.
+We first applied a preprocessing step in order to get stationary images 
+%This step is performed by sustracting the trend which is represented by a plane obtained via a mean-square linear regression.
+and then 
+%Let $\alpha \in (0,1)$ and $t_{\alpha} = F^{-1}_{X}(\alpha)$ be the associated quantile of the image $X$. We 
+consider the thresholded images at various quantile levels $t_{\alpha}$, \emph{i.e.} the binary images $\{X > t_{\alpha}\}$.
 \begin{figure}[H]
 \centering
 {\includegraphics[scale=0.5]{imagesstationarisee.pdf}}
- \caption{Stationnarized image of a bone x-ray, with it's associted excursion sets thresholded at the first, second and third quartile.}
+ \caption{Stationnarized image of a bone x-ray, with its associated excursion sets thresholded at the first, second and third quartile.}
 \label{fig22}
 \end{figure}
+As observable statitics, we use 
+%compute the horizontal and vertical perimeter of each thresholded image, thus obtaining for each level $t_{\alpha}$, $(P^{(1)}_{i}(t_{\alpha}))_{i \leq 245}$, count
+the respective numbers of horizontal and vertical edges that separate a black pixel from a white pixel of the binary image. We name these counters as oriented perimeters, horizontal and vertical respectively. In case of an isotropic texture, the ratio of the two oriented perimeters should be close to one. At the opposite, if the observed ratio is far from one, then some anisotropy is expected in the microscopic texture of the image. 
 
-Let $\alpha \in (0,1)$ and $t_{\alpha} = F^{-1}_{X}(\alpha)$ be the associated quantile of the image $X$. We consider the thresholded image at level $t_{\alpha}$, $\{X > t_{\alpha}\}$, and then 
-%compute the horizontal and vertical perimeter of each thresholded image, thus obtaining for each level $t_{\alpha}$, $(P^{(1)}_{i}(t_{\alpha}))_{i \leq 245}$, 
-count the respective numbers of horizontal and vertical edges that are involved in the perimeter of the black region of the binary image. In case of an isotropic texture, the ratio of these two counters should be close to one. At the opposite, if the observed ratio is far from one, then some anisotropy is expected in the microscopic texture of the image. 
-
-The ratio has been computed for each image of the panel at various quantile levels. In Figure \ref{fig2}, the distribution of the obtained ratios is summerized in a boxplot for each level.
+The ratio has been computed for each image of the panel at various quantile levels $t_{\alpha}$. In Figure \ref{figBoxplot}, the distribution of the obtained ratios is summerized in a boxplot for each level.
 
 \begin{figure}[H]
-  \centering  
-   {\includegraphics[scale=0.28]{BoxplotRDAu.pdf}}
+  \centering
+    %{\includegraphics[scale=0.25]{ConfidenceIntervalRDAu.pdf}}
+    {\includegraphics[scale=0.28]{BoxplotRDAu.pdf}}
     \hspace{0.2cm}
- \caption{For $\alpha \in [0.15, 0.9]$, we represent on the left, the confidence interval of the mean of the ratio between the two oriented perimeters computed for $t_{\alpha}, \mathcal{P}^{1}(t_{\alpha}), \mathcal{P}^{2}(t_{\alpha})$ and its corresponding boxplot for real thresholded images of bone X-rays.}
-\label{fig2}
+ \caption{For $\alpha \in [0.15, 0.99]$, we represent the boxplot of the ratio between the two oriented perimeters computed at $t_{\alpha}$ level, $\mathcal{P}^{1}(t_{\alpha}), \mathcal{P}^{2}(t_{\alpha})$, for real thresholded images of bone X-rays.}
+\label{figBoxplot}
 \end{figure}
 
-We observe that the boxplots of the ratio between the horizontal and vertical counters are not distributed around one, whatever the observed level. 
-Moreover, for almost all images the observed ratios are above one whereas for some images extreme values are observed below one. We checked the fact that these extreme cases below one all belong to the same small group of images. Apparently, these images were subject to a $\pi/2$-angle rotation. Nevertheless, what is relevant on this sample of X-ray images of calcaneus is that the anisotropy of the texture can be revealed at any threshold level by simply comparing two single counters. It is worth to note that this anisotropy, although obvious through the proposed image analysis procedure, is not perceptible to the naked eye. 
-
-With a very different approach based on quadratic variations, the same sample of images has been analyzed in \cite{Richard??} and the same conclusion has been obtained: the calcaneus X-ray images are anisotropic. A by-product of our method is the measurement of the anisotropy through the ratio between the oriented perimeters. It will be used to produce a test of isotropy.
-
-\bigskip
-
-The present paper is part of the methodological literature that deals with statistical inference based on geometrical observable features. Although it is an old engineers question (see \cite{Longuet-Higgins} for instance), it has recently received much attention from a statistical point of view.  To cite some of these papers, let us quote \cite{Worsley96} where the localization of peaks are infered from the observation of the Euler chracteristic in neuroimaging, \cite{Molina} where isotropy is tested through the observation of the gradient, \cite{DEL17} or \cite{bierme2019} where a test of Gaussianity is produced based on the Euler characteristic of excursion sets, \cite{Psymetrie} where a test of symmetry is produced based on the perimeter of thresholded images,  ({\sc \`a verifier et completer avec d'autres non li\'es \`a notre "famille". Pour chacun, what is infered? and what is observed? mettre dans ordre chronologique.})\\
-In particular, let us focus on two specific articles \cite{cabana1987affine, Berzin} with a similar objective as our, namely a test of isotropy, and based on similar observations, namely the length of level sets. {\sc Expliquer la methode de ces papiers et les differences avec le present papier}. Implementations of this type of method can be found in cosmology, neuroimaging and medical imaging in general, hydrology, etc. 
+We observe that the boxplots of the ratio between the horizontal and vertical perimeters are not distributed around one, whatever the considered level. 
+%Which occurs when the distribution of the oriented perimeter is not the same, which appears to be the case in an anisotropic framework.
+Moreover, for almost all images the observed ratios are above one whereas for some images extreme values are observed below one. We checked the fact that these extreme cases below one all belong to the same small group of images. 
+%Apparently, these images were subject to a $\pi/2$-angle rotation. 
+Nevertheless, what is relevant on this sample of X-ray images of calcaneus is that the anisotropy of the texture can be revealed at any threshold level by simply comparing two single counters. It is worth to note that this anisotropy, although obvious through the proposed image analysis procedure, is not perceptible to the naked eye. \\
+With a very different approach based on quadratic variations, the same sample of images has been analyzed in \cite{Richard-Birme} and the same conclusion has been obtained: the calcaneus X-ray images are anisotropic. In the present paper, our work consists in a theoretical study of the oriented perimeters seen as random objects: proper definition, first moments, asymptotic behaviour as the size of image goes to infinity. A by-product of our method is the measurement of the anisotropy through the ratio between the oriented perimeters. It is used to produce a test of isotropy.
 
 \bigskip
 
 %\paragraph{Outline of our method.}
 Let us now present in details what is the content of our study. As already said, we aim at constructing a statistical test of isotropy based on the observation at small scale of the image. Our observation will be very sparse since it is reduced to count the horizontal and vertical edges that are involved at the interface between the black and the white pixels of the binary image. This geometrical quantity is nothing but the discrete perimeter (see \cite{HermineAgnes}), considering separately the horizontal contribution and the vertical one. 
 
-Assuming that the original grey-level image is a discrete Gaussian stationary field, we are able to explicitely compute the first two moments of the so-called "oriented perimeter". Our study of moments includes the asymptotic behavior as the number of pixels goes to infinity, as well as numerical illustrations for various Gaussian distributions. We then establish a Central Limit Theorem for the joint oriented perimeters at various levels. The perimeter being given as a sum of functionals of correlated Gaussian variables, the main argument for the CLT that we use is borrowed from Breuer-Major result as exposed in \cite{Arcones}. Let us note that a similar study was performed in \cite{Psymetrie} but under a very different context since the underlying Gaussian field was supposed to be a white noise. The totally independent structure of the pixels yield simple computations and estimations which are not allowed anymore in the correlated situation that we consider in the present paper. 
+Assuming that the original grey-level image is a discrete Gaussian stationary field, we are able to explicitely compute the first two moments of the so-called "oriented perimeter". Our study of moments includes the asymptotic behavior as the number of pixels goes to infinity, as well as numerical illustrations for various Gaussian distributions. We then establish a Central Limit Theorem for the joint oriented perimeters at various levels. The perimeter being given as a sum of functionals of correlated Gaussian variables, the main argument for the CLT that we use is borrowed from Breuer-Major result as exposed in \cite{Arcones}. Let us note that a similar study was performed in \cite{Psymetrie} but under a very different context since the underlying Gaussian field was supposed to be a white noise. The induced totally independent structure of the pixels led to simple computations and estimations which are not allowed anymore in the correlated situation that we consider in the present paper. 
 
-The next step of our method consists in building the promised statistical test. More precisely, $\rho$ being the covariance function of the Gaussian field and $(e_1,e_2)$ being the canonical basis of $\mathbb R^2$, we consider the null hypothesis $H0:~\rho(e_1)=\rho(e_2)$ that we call "local isotropy" through a misuse of language. We exhibit a statistic depending on the ratio of both oriented perimeters that goes to zero under $H0$ thanks to the CLT previoulsy established. Moreover, we prove the consistency of the proposed test. Let us insist on the fact that our test is a non-parametric one so that the alternative hypothesis reduces to $H1:~\rho(e_1)\ne \rho(e_2)$. {\sc verifier!}
+The next step of our method consists in building the promised statistical test. More precisely, $\rho$ being the covariance function of the Gaussian field and $(e_1,e_2)$ being the canonical basis of $\mathbb R^2$, we consider the null hypothesis $H0:~\rho(e_1)=\rho(e_2)$ that we call "local isotropy" through a misuse of language. We exhibit a statistic depending on the ratio of the oriented perimeters that goes to one under $H0$ thanks to the CLT previoulsy established. Moreover, we prove the consistency of the proposed test. Let us insist on the fact that our test is a non-parametric one so that the alternative hypothesis reduces to $H1:~\rho(e_1)\ne \rho(e_2)$. 
 
-The theoretical study is completed by a large amount of numerical illustrations based on simulated data. We sample Gaussian fields with compact support covariances and use parametric deformations to get anisotropic models. The performances of our test are illustrated on those models. The crucial question of estimating the variance of the perimeter is also explored.
-
-\bigskip
-
-{\sc The paper is organized as follows ...}
+The theoretical study is completed by extensive numerical illustrations based on simulated data. We sample Gaussian fields with compact support covariances and use parametric deformations to get anisotropic models. The performances of our test are illustrated on those models. The crucial question of estimating the variance of the perimeter is also explored. Finally, we apply our method to the calcaneus X-ray images that we have already presented. It allows us to infer properties and to estimate quantities that could be of interest from a medical point of view. 
 
 \bigskip
+
+The paper is organized as follows. Section 2 is devoted to the presentation of the mathematical framework, namely the grid  that defines the pixels and implies the discrete nature of the Gaussian random field that we use as a model for the grey-level image. We also precisely define the notion of discrete oriented perimeters that we consider all over the article. In Section 3, we proceed to the statistical study of the oriented perimeters by computing their first two moments and establishing a joint central limit theorem for both directions and various levels. Section 4 contains the numerical studies. Section 4.1 is dedicated to Monte-Carlo estimations of the variance of the oriented perimeter for a Gaussian toy model and to numerical illustrations of the local isotropy test for the same toy model. Section 4.2 is dedicated to the numerical analysis of the variance given as a convergent series and Section 4.3 to the statistical analysis of real data, the bones X-ray images that we already mentioned.  
+
+\bigskip
 \bigskip
 
 
-\textcolor{blue}{
+\begin{comment}
 \textbf{Cabana : Affine Processes: A test of isotropy based on level sets.} 
 Class of affine processes for the alternative, $H_{0} :X$ is isotropic, create the test using Estimators for the affinity parameters based only on one level set of the observed process, show consistence under some hypothesis. Proposes estimators of the affinity parameters $k = (1 - \frac{\lambda_{1}^{2}}{\lambda_{1}^{2}})$ and $\theta_{0}$ using the shape of the level curve of $X$ for fixed level $x$. Gets TCL for estimators under condition of \textit{X is uniformly mixing}. \\
 Let $\mathscr{C}$ is the level sets, principal objects that are used are $\mathscr{L}(T) = |T|^{-1}\int_{\mathscr{C}}ds$, $\mathscr{C}(T) = |T|^{-1}\int_{\mathcal{C}} \cos\Theta ds$, $\mathscr{S}(T) = |T|^{-1}\int_{\mathscr{C}} \sin2\Theta ds$ that are particular c*ases of line integrals : $\mathscr{F}(f, T) = |T|^{-1}\int_{\mathscr{C}}f(\Theta)ds$, with $f:(-\pi, \pi) \to \mathbb{R}$ is a bounded measurable function.\\
@@ -180,7 +194,7 @@ r=\sqrt{\hat{x}^{2} + \hat{y}^{2}}, \; \hspace{1cm} \; \hat{\Phi} = \begin{cases
 \end{cases}
 \end{equation*}
 By using standard ellipse, they can compute the direction of maximum variability in a direction of angle $\theta$. So, they are able to describe the spatial behavior of the mean vectors, quantifying by the calculation of $\theta$ the direction of maximum variability.
-} 
+\end{comment} 
 
 \section{Mathematical framework}\label{section1}
 \subsection{Construction of the binary image}\label{construction}
@@ -401,14 +415,10 @@ Let us now consider the case where $\rho(e_i) = -1$. Then there exists $N \sim \
 This result extends the one given in \cite{HermineAgnes} (Proposition 3) since we do not assume here that $\rho(e_i) > 0$. Using the former expression, we are also able to obtain an analytic expression for the first moment.
 \begin{Proposition}(Analytic expression for the first moment of the oriented perimeter)
 \label{analytic expression}
-\begin{itemize}
-  \item if $\rho(e_{i}) \in ]-1,1]$, 
-    {\small
   \begin{align}
   \label{propEquationFisrtmoment}
   \mathbb{E}\left(f^{(i)}(t) \right) = \int_{\rho(e_i)}^{1}\frac{\exp(-t^2/(1+u))}{\pi\sqrt{(1-u^2)}}du
-  \end{align}}
-  \end{itemize}
+  \end{align}
   \end{Proposition}
 \begin{proof}
 Let $t \in \mathbb{R}$, We consider the function $h_{t}$ defined as follow \begin{align*} 
@@ -416,13 +426,13 @@ h_{t}: (-1,1) &\longrightarrow \mathbb{R}, \\
 x & \longmapsto \mathbb{E}\left(\Phi\left(\dfrac{2t + \sqrt{2(1-x)}|N|}{\sqrt{2(1+x)}}\right) - \Phi\left(\dfrac{2t - \sqrt{2(1-x)}|N|}{\sqrt{2(1+x)}}\right)\right),
 \end{align*}
 with $N \sim \mathcal{N}\left(0,1\right)$. We introduce an intermediate function $p_{t}(x) = \mathbb{E}\left(\Phi\left(\dfrac{2t + \sqrt{2(1-x)}|N|}{\sqrt{2(1+x)}}\right)\right)$ making use of the symmetry properties of the cumulative distribution function $\Phi$, \linebreak we have $h_{t}(x) =p_{t}(x) - 1 + p_{-t}(x)$, thus the derivative of $h_{t}$ is equal to $h_{t}'(x) = p_{t}'(x) + p_{-t}'(x)$ and 
-\begin{align*}p_{t}'(x) & = \mathbb{E}\left(\frac{-2|N| -t\sqrt{2(1-x)}}{2(1+x)\sqrt{1-x^2}}\Phi'\left(\frac{2t + |N|\sqrt{2(1-x)}}{\sqrt{2(1+x)}}\right)\right), \\
+\begin{align*}p_{t}'(x) & = \mathbb{E}\left(\frac{-2|N| -t\sqrt{2(1-x)}}{2(1+x)\sqrt{1-x^2}}\Phi'\left(\frac{2t + |N|\sqrt{2(1-x)}}{\sqrt{2(1+x)}}\right)\right)\\
 & = \frac{\exp(-t^2/(1+x))}{2\sqrt{2\pi}(1+x)\sqrt{1-x^2}}\\
-& \hspace{0.7cm}\mathbb{E}\left(\left(-2|N| -t\sqrt{2(1-x)}\right)\exp\left(\frac{-t|N|\sqrt{2(1-x)}}{1+x}\right)\exp\left(\frac{-N^{2}(1-x)}{2(1+x)}\right)\right), \\
+& \hspace{0.7cm}\mathbb{E}\left(\left(-2|N| -t\sqrt{2(1-x)}\right)\exp\left(\frac{-t|N|\sqrt{2(1-x)}}{1+x}\right)\exp\left(\frac{-N^{2}(1-x)}{2(1+x)}\right)\right) \\
 & = \frac{\exp(-t^2/(1+x))}{4\pi(1+x)\sqrt{1-x^2}} \\
-& \hspace{0.7cm} \int_{-\infty}^{\infty}\exp\left(-\frac{y^2}{1+x}\right)\left(\left(-2|y| -t\sqrt{2(1-x)}\right)\exp\left(\frac{-t|y|\sqrt{2(1-x)}}{1+x}\right)\right)dy,\\
+& \hspace{0.7cm} \int_{-\infty}^{\infty}\exp\left(-\frac{y^2}{1+x}\right)\left(\left(-2|y| -t\sqrt{2(1-x)}\right)\exp\left(\frac{-t|y|\sqrt{2(1-x)}}{1+x}\right)\right)dy\\
 & = \frac{\exp(-t^2/(1+x))}{2\pi(1+x)\sqrt{1-x^2}}\exp\left(\frac{t^2(1-x)}{2(1+x)}\right) \\
-& \hspace{0.7cm} \int_{0}^{\infty}\left(\left(-2y -t\sqrt{2(1-x)}\right)\exp\left(-\frac{\left(y+t\sqrt{2(1-x)}/2\right)^{2}}{1+x}\right)\right)dy,  \\
+& \hspace{0.7cm} \int_{0}^{\infty}\left(\left(-2y -t\sqrt{2(1-x)}\right)\exp\left(-\frac{\left(y+t\sqrt{2(1-x)}/2\right)^{2}}{1+x}\right)\right)dy \\
 & = \frac{-\exp(-t^2/(1+x))}{2\pi\sqrt{(1-x^2)}}.
 \end{align*}Thus, $h_{t}'(x) = 2 \times \frac{-\exp(-t^2/(1+x))}{2\pi\sqrt{(1-x^2)}} = \frac{-\exp(-t^2/(1+x))}{\pi\sqrt{(1-x^2)}}$.
 % \begin{align*}
@@ -448,8 +458,10 @@ with $N \sim \mathcal{N}\left(0,1\right)$. We introduce an intermediate function
 % \end{align*}
 \end{proof}
 \begin{remark}(Degenerate dependence cases.)
+\label{casdegenerer}
 \begin{itemize}
 \item In the case of a fully dependent field, \textit{i.e}  $\rho(e_i) = 1$, note that $\mathbb{E}\left(\mathcal{P}_{m}^{\scriptscriptstyle (i)}(t) \right) = 0$.
+\item In the case where $\rho(e_i) \sim 1$, then $\mathbb{E}\left(f^{(i)}(t) \right) \sim \frac{\sqrt{1-\rho(e_i)}}{\pi\sqrt{2}} \exp(-t^2/2)$, as in \cite{HermineAgnes}, in that case the ratio $\mathcal{P}^{\scriptscriptstyle (1)}_{m}(t)/\mathcal{P}^{\scriptscriptstyle (2)}_{m}(t)$ is invariant in regard to $t$
 \item In the independent case, \textit{i.e.} $\rho(e_{i}) = \text{Cov}\left(X_{0}, X_{e_i}\right) = 0$, we can write
 {\small
 \begin{align*}
@@ -495,7 +507,7 @@ This follows directly from \ref{analytic expression}. The function $\rho \mapsto
 \end{remark}
 \subsection{Isotropy test using the oriented perimeter}
 \label{isotest}
-In order to construct a local isotropy test using the oriented perimeter of the field $X$, we first  establish a Central Limit Theorem for the variable $\mathcal{P}^{\scriptscriptstyle (i)}_{m}(t)$. To do that, we have to add some assumptions on $\rho$ the covariance structure of the field $X$.
+In order to construct a local isotropy test using the oriented perimeter of the binary image, we first  establish a Central Limit Theorem for the variable $\mathcal{P}^{\scriptscriptstyle (i)}_{m}(t)$. To do that, we add some assumptions on $\rho$, the covariance structure of the field $X$.
 \begin{enumerate}
  \itemA
  $\begin{aligned}[t]
@@ -506,7 +518,7 @@ In order to construct a local isotropy test using the oriented perimeter of the 
  \lim_{m \to \infty} m^{-2}\sum_{x, y \in \mathbb{G}_{m}}\rho(x-~y)^{2}\; \text{exists}.
 \end{aligned}$
 \end{enumerate} 
-\begin{Theorem}\label{TCL}(Multi-directional multivariate CLT for r-threshold). We consider that $(X_{x})_{x\in \mathbb{G}_{m}}$ is a centered stationary standard Gaussian field. Let $r$ be a positive integer and $t_{1}, \cdots,t_{r} \in \mathbb{R}$. Then, under \textbf{$(A_{1})$} and \textbf{$(A_{2})$},
+\begin{Theorem}\label{TCL}(Multi-directional multivariate CLT for r-threshold). We consider that $(X_{x})_{x\in \mathbb{G}_{m}}$ is a centered stationary standard Gaussian field with a covariance function what satisfies (\textbf{A}1) and (\textbf{A}2). Let $r$ be a positive integer and $t_{1}, \cdots,t_{r} \in \mathbb{R}$.  
 \begin{equation*}
 \frac{1}{m}\left(\begin{pmatrix} \mathcal{P}^{\scriptscriptstyle (1)}_{m}(t_{1}) \\  \vdots \\ \mathcal{P}^{\scriptscriptstyle (1)}_{m}(t_{r}) \\ \mathcal{P}^{\scriptscriptstyle (2)}_{m}(t_{2}) \\  \vdots \\ \mathcal{P}^{\scriptscriptstyle (2)}_{m}(t_{r})  \end{pmatrix} - \begin{pmatrix} \mathbb{E}(\mathcal{P}^{\scriptscriptstyle (1)}_{m}(t_{1}))  \\ \vdots \\ \mathbb{E}(\mathcal{P}^{\scriptscriptstyle (1)}_{m}(t_{r}))\\\mathbb{E}(\mathcal{P}^{\scriptscriptstyle (2)}_{m}(t_{1})) \\ \vdots \\ \mathbb{E}(\mathcal{P}^{\scriptscriptstyle (2)}_{m}(t_{r})) \end{pmatrix}\right) \xrightarrow[m \to \infty]{d} \mathcal{N}\left(0,\,\Sigma_{2r}^{\textcolor{white}{}^{\star}}\right),
 \end{equation*}
@@ -516,15 +528,15 @@ where $\xrightarrow[]{d}$ holds for the convergence in distribution and $\mathca
 \Sigma^{\textcolor{white}{}^{\star}}_{2r}(l,i,k,j) & : = \lim_{m \to \infty}\text{Cov}\left(\frac{1}{m}\mathcal{P}^{\scriptscriptstyle (i)}_{m}(t_{l}),  \frac{1}{m}\mathcal{P}^{\scriptscriptstyle (j)}_{m}(t_{k}) \right)
 \end{align}
 \end{Theorem}
-\begin{proof} For the sake of simplicity, we will prove the theorem for $r=1$, the generalized case can be established by following the same procedure. Using the Cramèr-Wold method, we will prove that for each $(a_1, a_2) \in \mathbb{R}^{2}$, we have 
+\begin{proof} For the sake of simplicity, we will prove the theorem for $r=1$, the generalized case can be established by following the same procedure. Let~$ t \in \mathbb{R}$, using the Cramèr-Wold method, we will prove that for each $(a_1, a_2) \in \mathbb{R}^{2}$, we have 
 \begin{align*}
 \frac{a_{1}}{m}\left(\mathcal{P}^{\scriptscriptstyle (1)}_{m}(t) - \mathbb{E}\left(\mathcal{P}^{\scriptscriptstyle (1)}_{m}(t)\right)\right) + \frac{a_{2}}{m}\left(\mathcal{P}^{\scriptscriptstyle (2)}_{m}(t) - \mathbb{E}\left(\mathcal{P}^{\scriptscriptstyle (2)}_{m}(t)\right)\right) \xrightarrow[m \to \infty]{d} \mathcal{N}\left(0,\,\sigma^{2}(t)\right) 
 \end{align*}
-with $\sigma^{2}(t) < \infty$. Let~$ t \in \mathbb{R}$, $x=(x_{1}, x_{2}) \in \mathbb{G}_{m}$ and $i \in \{1,2\}$, we recall the notation introduced in \eqref{fi}
+with $\sigma^{2}(t) < \infty$. For $x=(x_{1}, x_{2}) \in \mathbb{G}_{m}$ and $i \in \{1,2\}$, we recall the notation introduced in \eqref{fi}
 \begin{align*}
 f_{t}^{\scriptscriptstyle (i)}(x) := \mathbbm{1}_{\left\{\min\left(X_{x+e_{i}}, X_{\scriptscriptstyle x}\right) < t \leq \max\left(X_{x+e_{i}}, X_{\scriptscriptstyle x}\right)\right\}}.
 \end{align*}
-Let us denote the 4-dimensional Gaussian vector by $\mathbb{X}_{x} = (X_{x_1, x_2}, X_{x_1 + 1, x_2}, X_{x_2, x_1+1}, X_{x_2, x_1} )$ and $g_{t} : \mathbb{R}^{4} \to \mathbb{R}$, 
+Let us introduce the 4-dimensional Gaussian vector $\mathbb{X}_{x} = (X_{x_1, x_2}, X_{x_1 + 1, x_2}, X_{x_2, x_1+1}, X_{x_2, x_1} )$ and the function $g_{t}$ defined on  $\mathbb{R}^{4}$, 
 \begin{align*}
 g_{t}\left(u,v, w, z\right) & := a_{1}\mathbbm{1}_{\left\{\min\left(u, v\right) < t \leq \max\left(u, v\right)\right\}} + a_{2}\mathbbm{1}_{\left\{\min\left(w, z\right) < t \leq \max\left(w, z\right)\right\}},
 \end{align*}
@@ -549,14 +561,14 @@ which proves the theorem.
 \end{proof}
 We are now in position to construct the promised isotropy test.
 \subsection{Perimeter based local isotropy test}
-As previously discussed in Remark \ref{powertest}, we now aim to build a test using the specific structure of the mean perimeter in the case of local isotropy. Following the idea  in \cite{bierme2019}  we propose a method to test the local isotropy of the field $X$.
+As previously discussed in Remark \ref{powertest}, we now aim to build a test using the specific structure of the mean perimeter in the case of local isotropy. We propose a method to test the local isotropy of the field $X$.
 Let us consider the null hypothesis
 \begin{center}
   $H_{0}$ \, :\; $\rho(e_1) = \rho(e_2)$.
-\end{center}
+\end{center}ttt
 Under $H_{0}$, let us remark that $\mathbb{E}\left(\mathcal{P}^{\scriptscriptstyle  (1) }_{m}(t) \right)= \mathbb{E}\left(\mathcal{P}^{\scriptscriptstyle  (2) }_{m}(t)\right)$ and $\mathbb{V}\left(\mathcal{P}^{\scriptscriptstyle  (1) }_{m}(t) \right)= \mathbb{V}\left(\mathcal{P}^{\scriptscriptstyle  (2) }_{m}(t)\right)$ for all~$t$. Making use of Theorem \ref{TCL}, we have the following normality asymptotic result. 
 \begin{Proposition}[Ratio of oriented perimeters]\label{deltamethodgeneralprop} 
-Let  $t \in \mathbb{R}$, and $\mathcal{P}^{\scriptscriptstyle  (i) }(t)$ be the oriented perimeter over direction $i$, introduced in Definition \ref{defPerimetre}. Then, it holds that,
+Let  $t \in \mathbb{R}$, and $\mathcal{P}_{m}^{\scriptscriptstyle  (i) }(t)$ be the oriented perimeter over direction $i$, introduced in Definition \ref{defPerimetre}, under the same assumptions as in Theorem \ref{TCL}, it holds that,
 \begin{equation*}
 \frac{1}{m}\left(\cfrac{\mathcal{P}^{\scriptscriptstyle  (1) }_{m}(t)}{\mathcal{P}^{\scriptscriptstyle  (2)}_{m}(t)} - \cfrac{\mathbb{E}\left(\mathcal{P}^{\scriptscriptstyle  (1) }_{m}(t)\right)}{\mathbb{E}\left(\mathcal{P}^{\scriptscriptstyle  (2)}_{m}(t)\right)} \right)  \xrightarrow[m \to \infty]{d} \mathcal{N}\left(0,  \tilde{\sigma}^{2}(t) \right),
 \end{equation*}
@@ -744,12 +756,13 @@ where,
 \end{align*}}
 with $Z \sim \mathcal{N}(0,1)$. 
 \end{Lemma}
-Let $x \in \mathbb{Z}^{2}$ such that the covariance matrix $\Sigma_{i}(x)$ of the Gaussian vector $\left(X_{\scriptscriptstyle 0}, X_{e_1}, X_{\scriptscriptstyle x}, X_{x+e_i}\right)$ is invertible, 
+Let us now proceed and compute the contribution of the 4-cells configuration to the covariance.
+Let $x \in~\mathbb{Z}^{2}$ such that the covariance matrix $\Sigma_{i}(x)$ of the Gaussian vector $\left(X_{\scriptscriptstyle 0}, X_{e_1}, X_{\scriptscriptstyle x}, X_{x+e_i}\right)$ is invertible, 
 $$\Sigma_{i}(x) = \begin{pmatrix} 1 & \rho(e_1) & \rho(x) & \rho(x+e_i)\\
 \rho(e_1) & 1 & \rho(x-e_1) &  \rho(x+e_i- e_1) \\ 
 \rho(x) & \rho(x-e_1) & 1 & \rho(e_i) \\
 \rho(x+e_i) & \rho(x+e_i-e_1) & \rho(e_i) & 1 \end{pmatrix}.$$
-Let us define the following quantities   \begin{equation} \label{expressions} \Delta^{\scriptscriptstyle (i)}_{\scriptscriptstyle x} := X_{x+e_i} - X_{\scriptscriptstyle x}, \hspace{0.5cm} S^{\scriptscriptstyle (i)}_{\scriptscriptstyle x} := X_{x+e_i} + X_{\scriptscriptstyle x},\end{equation}
+Let us define the following quantities   
 \begin{center}
 $\Delta \rho(x) = \rho(x-e_1)-\rho(x)$ and $S\rho(x)  =  \rho(x-e_1)+\rho(x)$.
 \end{center}
@@ -757,21 +770,20 @@ $\Delta \rho(x) = \rho(x-e_1)-\rho(x)$ and $S\rho(x)  =  \rho(x-e_1)+\rho(x)$.
 Let $x \in \mathbb{Z}^{2}$ such that the covariance matrix $\Sigma_{i}(x)$ of the Gaussian vector $\left(X_{\scriptscriptstyle 0}, X_{e_1}, X_{\scriptscriptstyle x}, X_{x+e_i}\right)$ is invertible, we introduce the following quantities that are non zeros, \\ 
 $\left\{
  \begin{array}{rlc}
- \sigma^{\scriptscriptstyle (-)}_{1} & = &  \sqrt{2(1-\rho(e_1))} \\
- \sigma^{\scriptscriptstyle (+)}_{1} & = & \sqrt{2(1+\rho(e_1))} \\
- \end{array}\right.$ \\
+ \sigma^{\scriptscriptstyle (-)}_{1} & = &  \hspace{-6.9cm} \sqrt{2(1-\rho(e_1))} \\
+ \sigma^{\scriptscriptstyle (+)}_{1} & = & \sqrt{2(1+\rho(e_1))} \hspace{2cm} \text{with $\sigma^{\scriptscriptstyle (-)}_{1} > 0,  \; \sigma^{\scriptscriptstyle (+)}_{1} > 0 $, and} \\
+ \end{array}\right.$\\
  $\left\{
  \begin{array}{rlc}
-   \pi^{\scriptscriptstyle(-, i)}_{U}(x) & = & \hspace{-3cm} \frac{1}{\sigma^{\scriptscriptstyle (-)}_{1}}\left(\Delta \rho(x+e_i) -\Delta \rho(x)\right)  \\
-   \pi^{\scriptscriptstyle(-, i)}_{V}(x) & = & \hspace{-3cm} \frac{1}{\sigma^{\scriptscriptstyle (+)}_{1}}\left(S\rho(x+e_i)-S\rho(x)\right)  \\
-   \pi^{\scriptscriptstyle(-, i)}_{W}(x)& = & \left(2(1 - \rho(e_{i})) - \pi^{\scriptscriptstyle(-, i)}_{U}(x)^{2} - \pi^{\scriptscriptstyle(-, i)}_{V}(x)^{2}\right)^{\scriptscriptstyle (1/2)}, \end{array}\right.$ \\
-    $\left\{
+   \pi^{\scriptscriptstyle(-, i)}_{U}(x) & = & \hspace{-8cm} \frac{1}{\sigma^{\scriptscriptstyle (-)}_{1}}\left(\Delta \rho(x+e_i) -\Delta \rho(x)\right)  \\
+   \pi^{\scriptscriptstyle(-, i)}_{V}(x) & = & \hspace{-8cm} \frac{1}{\sigma^{\scriptscriptstyle (+)}_{1}}\left(S\rho(x+e_i)-S\rho(x)\right)  \\
+   \pi^{\scriptscriptstyle(-, i)}_{W}(x)& = & \left(2(1 - \rho(e_{i})) - \pi^{\scriptscriptstyle(-, i)}_{U}(x)^{2} - \pi^{\scriptscriptstyle(-, i)}_{V}(x)^{2}\right)^{\scriptscriptstyle (1/2)} \text{with also $\pi^{\scriptscriptstyle(-, i)}_{W}(x) > 0$, and}, \end{array}\right.$   \\ $\left\{
  \begin{array}{rlc}
-   \pi^{\scriptscriptstyle(+, i)}_{U}(x) & = & \hspace{-5cm} \frac{1}{\sigma^{\scriptscriptstyle (-)}_{1}}\left(\Delta \rho(x) + \Delta \rho(x+e_i)\right) \\
-    \pi^{\scriptscriptstyle(+, i)}_{V}(x) & = & \hspace{-5cm} \frac{1}{\sigma^{\scriptscriptstyle (+)}_{1}}\left(S \rho(x) + S\rho(x+e_i)\right) \\
-     \pi^{\scriptscriptstyle(+, i)}_{W}(x) & = & \hspace{-1.5cm} \frac{-1}{\pi^{\scriptscriptstyle(-, i)}_{W}(x)}\left(\pi^{\scriptscriptstyle(-, i)}_{U}(x)\pi^{\scriptscriptstyle(+, i)}_{U}(x) + \pi^{\scriptscriptstyle(-, i)}_{V}(x)\pi^{\scriptscriptstyle(+, i)}_{V}(x)\right) \\
-   \pi^{\scriptscriptstyle(+, i)}_{Z}(x)& = & \left(2(1 + \rho(e_i)) - \pi^{\scriptscriptstyle(+, i)}_{U}(x)^{2} - \pi^{\scriptscriptstyle(+, i)}_{V}(x)^{2} - \pi^{\scriptscriptstyle(+, i)}_{W}(x)^{2}\right)^{\scriptscriptstyle (1/2)}.
-\end{array}\right.$ \\
+   \pi^{\scriptscriptstyle(+, i)}_{U}(x) & = & \hspace{-9.5cm} \frac{1}{\sigma^{\scriptscriptstyle (-)}_{1}}\left(\Delta \rho(x) + \Delta \rho(x+e_i)\right) \\
+    \pi^{\scriptscriptstyle(+, i)}_{V}(x) & = & \hspace{-9.5cm} \frac{1}{\sigma^{\scriptscriptstyle (+)}_{1}}\left(S \rho(x) + S\rho(x+e_i)\right) \\
+     \pi^{\scriptscriptstyle(+, i)}_{W}(x) & = & \hspace{-6cm} \frac{-1}{\pi^{\scriptscriptstyle(-, i)}_{W}(x)}\left(\pi^{\scriptscriptstyle(-, i)}_{U}(x)\pi^{\scriptscriptstyle(+, i)}_{U}(x) + \pi^{\scriptscriptstyle(-, i)}_{V}(x)\pi^{\scriptscriptstyle(+, i)}_{V}(x)\right) \\
+   \pi^{\scriptscriptstyle(+, i)}_{Z}(x)& = & \left(2(1 + \rho(e_i)) - \pi^{\scriptscriptstyle(+, i)}_{U}(x)^{2} - \pi^{\scriptscriptstyle(+, i)}_{V}(x)^{2} - \pi^{\scriptscriptstyle(+, i)}_{W}(x)^{2}\right)^{\scriptscriptstyle (1/2)} \text{and finally, $\pi^{\scriptscriptstyle(+, i)}_{Z}(x) > 0$}.
+\end{array}\right.$  \\
 then,
 {\small
  \begin{align}
@@ -793,14 +805,8 @@ then,
 with $\Phi_{\pi^{\scriptscriptstyle(+, i)}_{Z}(x)}$ the cumulative distribution function of $Z \sim \mathcal{N}(0, (\pi^{\scriptscriptstyle(+, i)}_{Z}(x))^{2})$, 
 \end{Proposition}
 \begin{proof}(Proof of Proposition \ref{PropositionFourCell})
-Let us consider the Gaussian vector $\left(X_{\scriptscriptstyle 0}, X_{e_1}, X_{\scriptscriptstyle x}, X_{x+e_i}\right)$ of covariance matrix given by $$\Sigma_{i}(x) = \begin{pmatrix} 1 & \rho(e_1) & \rho(x) & \rho(x+e_i)\\
-\rho(e_1) & 1 & \rho(x-e_1) &  \rho(x+e_i- e_1) \\ 
-\rho(x) & \rho(x-e_1) & 1 & \rho(e_i) \\
-\rho(x+e_i) & \rho(x+e_i-e_1) & \rho(e_i) & 1 \end{pmatrix}.$$ 
+Let us consider the Gaussian vector $\left(X_{\scriptscriptstyle 0}, X_{e_1}, X_{\scriptscriptstyle x}, X_{x+e_i}\right)$ of covariance matrix given by $\Sigma_{i}(x)$ 
 Let us define the following quantities   \begin{equation} \label{expressions} \Delta^{\scriptscriptstyle (i)}_{\scriptscriptstyle x} := X_{x+e_i} - X_{\scriptscriptstyle x}, \hspace{0.5cm} S^{\scriptscriptstyle (i)}_{\scriptscriptstyle x} := X_{x+e_i} + X_{\scriptscriptstyle x},\end{equation}
-\begin{center}
-$\Delta \rho(x) = \rho(x-e_1)-\rho(x)$ and $S\rho(x)  =  \rho(x-e_1)+\rho(x)$.
-\end{center}
 The covariance matrix of the Gaussian vector $\left(\Delta^{\scriptscriptstyle (1)}_{\scriptscriptstyle 0}, S^{\scriptscriptstyle (1)}_{\scriptscriptstyle 0}, \Delta^{\scriptscriptstyle (i)}_{\scriptscriptstyle x}, S^{\scriptscriptstyle (i)}_{\scriptscriptstyle x}\right)$ is equal to ${\tilde{\Sigma}_{i}(x)~= M\Sigma_{i}(x) M^{\star}}$ with {\small $M = \begin{pmatrix}
 -1 & 1 & 0 &  0 \\
 1 & 1 & 0 &  0 \\
@@ -836,32 +842,16 @@ $\left\{
   $\left\{
   \begin{array}{rlc}
   \Delta^{\scriptscriptstyle (i)}_{\scriptscriptstyle  x}& = &  \pi^{\scriptscriptstyle(-, i)}_{U}(x)U +  \pi^{\scriptscriptstyle(-, i)}_{V}(x) V +  \pi^{\scriptscriptstyle(-, i)}_{W}(x) W, \textcolor{white}{ + \pi^{\scriptscriptstyle(+, i)}_{Z}(x)Z, } \\
-  S^{\scriptscriptstyle (i)}_{\scriptscriptstyle x} & = &    \pi^{\scriptscriptstyle(+, i)}_{U}(x)U +  \pi^{\scriptscriptstyle(+, i)}_{V}(x) V +  \pi^{\scriptscriptstyle(+, i)}_{W}(x) W +  \pi^{\scriptscriptstyle(+, i)}_{Z}(x)Z, \text{with}
-\end{array}\right.$ \\
-$\left\{
- \begin{array}{rlc}
- \sigma^{\scriptscriptstyle (-)}_{1} & = &  \sqrt{2(1-\rho(e_1))} \\
- \sigma^{\scriptscriptstyle (+)}_{1} & = & \sqrt{2(1+\rho(e_1))} \\
- \end{array}\right.$ \\
- $\left\{
- \begin{array}{rlc}
-   \pi^{\scriptscriptstyle(-, i)}_{U}(x) & = & \frac{1}{\sigma^{\scriptscriptstyle (-)}_{1}}\left(\Delta \rho(x+e_i) -\Delta \rho(x)\right) \\
-   \pi^{\scriptscriptstyle(-, i)}_{V}(x) & = &  \frac{1}{\sigma^{\scriptscriptstyle (+)}_{1}}\left(S\rho(x+e_i)-S\rho(x)\right)  \\
-   \pi^{\scriptscriptstyle(-, i)}_{W}(x)& = & \left(2(1 - \rho(e_{i})) - \pi^{\scriptscriptstyle(-, i)}_{U}(x)^{2} - \pi^{\scriptscriptstyle(-, i)}_{V}(x)^{2}\right)^{\scriptscriptstyle (1/2)} \end{array}\right.$ \\
-    $\left\{
- \begin{array}{rlc}
-   \pi^{\scriptscriptstyle(+, i)}_{U}(x) & = &  \frac{1}{\sigma^{\scriptscriptstyle (-)}_{1}}\left(\Delta \rho(x) + \Delta \rho(x+e_i)\right) \\
-    \pi^{\scriptscriptstyle(+, i)}_{V}(x) & = & \frac{1}{\sigma^{\scriptscriptstyle (+)}_{1}}\left(S \rho(x) + S\rho(x+e_i)\right) \\
-     \pi^{\scriptscriptstyle(+, i)}_{W}(x) & = & \frac{-1}{\pi^{\scriptscriptstyle(-, i)}_{W}(x)}\left(\pi^{\scriptscriptstyle(-, i)}_{U}(x)\pi^{\scriptscriptstyle(+, i)}_{U}(x) + \pi^{\scriptscriptstyle(-, i)}_{V}(x)\pi^{\scriptscriptstyle(+, i)}_{V}(x)\right) \\
-   \pi^{\scriptscriptstyle(+, i)}_{Z}(x)& = & \left(2(1 + \rho(e_i)) - \pi^{\scriptscriptstyle(+, i)}_{U}(x)^{2} - \pi^{\scriptscriptstyle(+, i)}_{V}(x)^{2} - \pi^{\scriptscriptstyle(+, i)}_{W}(x)^{2}\right)^{\scriptscriptstyle (1/2)}.
+  S^{\scriptscriptstyle (i)}_{\scriptscriptstyle x} & = &    \pi^{\scriptscriptstyle(+, i)}_{U}(x)U +  \pi^{\scriptscriptstyle(+, i)}_{V}(x) V +  \pi^{\scriptscriptstyle(+, i)}_{W}(x) W +  \pi^{\scriptscriptstyle(+, i)}_{Z}(x)Z.
+
 \end{array}\right.$ \\
 Developing the indicator function, we get the following expression
 {\small
 \begin{align*}
 \mathbbm{1}_{\left\{ |2s - S^{i}_{\scriptscriptstyle x}| \leq |\Delta^{\scriptscriptstyle(i)}_ {\scriptscriptstyle x}| \right\}}
 & = \mathbbm{1}_{\big\{ 2s -  \pi^{\scriptscriptstyle(+, i)}_{U}(x)U -  \pi^{\scriptscriptstyle(+, i)}_{V}(x) V -  \pi^{\scriptscriptstyle(+, i)}_{W}(x) W  - |\Delta^{\scriptscriptstyle(i)}_ {\scriptscriptstyle x}| \leq \pi^{\scriptscriptstyle(+, i)}_{Z}(x)Z} \\ 
-& \hspace{3cm} _{\leq 2s -  \pi^{\scriptscriptstyle(+, i)}_{U}(x)U -  \pi^{\scriptscriptstyle(+, i)}_{V}(x) V -  \pi^{\scriptscriptstyle(+, i)}_{W}(x) W + |\Delta^{\scriptscriptstyle(i)}_ {\scriptscriptstyle x}| \big\}}
-\end{align*}}Thus, 
+& \hspace{3cm} _{\leq 2s -  \pi^{\scriptscriptstyle(+, i)}_{U}(x)U -  \pi^{\scriptscriptstyle(+, i)}_{V}(x) V -  \pi^{\scriptscriptstyle(+, i)}_{W}(x) W + |\Delta^{\scriptscriptstyle(i)}_ {\scriptscriptstyle x}| \big\}},
+\end{align*}}thus, 
 \begin{align*}
 \mathbb{E}\left(\mathbbm{1}_{\left\{ |2t - S^{\scriptscriptstyle (1)}_{\scriptscriptstyle 0}| \leq |\Delta^{\scriptscriptstyle (1)}_{\scriptscriptstyle 0}|\right\}}\mathbbm{1}_{\left\{ |2s - S^{\scriptscriptstyle (i)}_{\scriptscriptstyle x}| \leq |\Delta^{\scriptscriptstyle (i)}_ {\scriptscriptstyle x}| \right\}}\right)\\
 &\hspace{-6.5cm} = \mathbb{E}\left(\mathbbm{1}_{\left\{ |2t - S^{\scriptscriptstyle (1)}_{\scriptscriptstyle 0}| \leq |\Delta^{\scriptscriptstyle (1)}_{\scriptscriptstyle 0}|\right\}}\mathbbm{1}_{\big\{ 2s -  \pi^{\scriptscriptstyle(+, i)}_{U}(x)U -  \pi^{\scriptscriptstyle(+, i)}_{V}(x) V -  \pi^{\scriptscriptstyle(+, i)}_{W}(x) W  - |\Delta^{\scriptscriptstyle(i)}_ {\scriptscriptstyle x}| \leq \pi^{\scriptscriptstyle(+, i)}_{Z}(x)Z} \right.  \\  
@@ -877,22 +867,9 @@ Developing the indicator function, we get the following expression
 \end{proof}
 \begin{remark} In the three cells configuration, the matrix $\Sigma_{i}(x)$ is not positive-definite, thus the Cholesky decomposition does not apply, we have to proceed a differently, but this case is not relevant to the establishment of the Central Limit Theorem, therefor its computations will be presented in the Appendix.  
 \end{remark}
-\subsubsection{Spatial independence at large distance} 
-Let us start by considering the four cells configuration and let us see what happens when ${\rho(x) = \rho(x+e_i) = \rho(x-e_i) = \rho(x + e_i - e_1) = 0}$, supposedly when $x > > 0$. Then
-$\pi^{\scriptscriptstyle(-, i)}_{W}(x) = \sqrt{2(1-\rho(e_i))}$, $\pi^{\scriptscriptstyle(+, i)}_{W}(x) = 0$ and $\pi^{\scriptscriptstyle(+, i)}_{Z}(x) = \sqrt{2(1+\rho(e_i))}.$ Thus, Equation \eqref{Thisthofour} becomes 
-{\small
-\begin{align*}
-\mathbb{E}\left(\mathbbm{1}_{\left\{\min(X_{\scriptscriptstyle 0}, X_{e_1}) \leq t \leq \max(X_{\scriptscriptstyle 0}, X_{e_1})\right\}}\mathbbm{1}_{\left\{\min(X_{\scriptscriptstyle x}, X_{x+e_i}) \leq s \leq \max(X_{\scriptscriptstyle x}, X_{x+e_i}) \right\}}\right) \nonumber \\
-& \hspace{-10cm} = \mathbb{E}\left(\mathbbm{1}_{\left\{ |t - \frac{\sqrt{2(1+\rho(e_1))}V}{2}| \leq |\frac{\sqrt{2(1-\rho(e_1))}U}{2}|\right\}} \right.  \\
-& \left. \hspace{-10cm} \left(\mathbbm{1}_{\left\{\sqrt{2(1-\rho(e_i))}W \geq 0\right\}} \left(\Phi_{\pi^{\scriptscriptstyle(+, i)}_{Z}(x)}\left( 2s + \sqrt{2(1-\rho(e_1))} W\right) - \Phi_{\pi^{\scriptscriptstyle(+, i)}_{Z}(x)}\left(2s - \sqrt{2(1-\rho(e_1))} W\right)\right) \right. \right. \\
-&  \hspace{-10cm} \left. \left. \mathbbm{1}_{\left\{\sqrt{2(1-\rho(e_1))} W  \leq 0\right\}} \left(\Phi_{\pi^{\scriptscriptstyle(+, i)}_{Z}(x)}\left( 2s - \sqrt{2(1-\rho(e_1))}W \right) - \Phi_{\pi^{\scriptscriptstyle(+, i)}_{Z}(x)}\left(2s + \sqrt{2(1-\rho(e_1))} W\right)\right)\right)\right)\\ 
-& \hspace{-10cm} = \mathbb{E}\left(\mathbbm{1}_{\left\{ |t - \frac{\sqrt{2(1+\rho(e_1))}V}{2}| \leq |\frac{\sqrt{2(1-\rho(e_1))}U}{2}|\right\}}\mathbbm{1}_{\left\{ |s - \frac{\sqrt{2(1+\rho(e_i))}Z}{2}| \leq |\frac{\sqrt{2(1-\rho(e_i))}W}{2}|\right\}}\right) \\
-& \hspace{-10cm} = \mathbb{E}\left(\mathbbm{1}_{\left\{ |t - \frac{\sqrt{2(1+\rho(e_1))}V}{2}| \leq |\frac{\sqrt{2(1-\rho(e_1))}U}{2}|\right\}}\right)\mathbb{E}\left(\mathbbm{1}_{\left\{ |s - \frac{\sqrt{2(1+\rho(e_i))}Z}{2}| \leq |\frac{\sqrt{2(1-\rho(e_i))}W}{2}|\right\}}\right).
-\end{align*}
-}Thus, $\text{Cov}\left(f_{t}^{\scriptscriptstyle (1)}(0), f_{s}^{ \scriptscriptstyle (j)}(z)\right) = 0.$
 \section{Numerical studies}
 \subsection{Numerical studies of moments of the estimated perimeter}
-The toy model we use to illustrate the test, is a parametric model that belongs to the class of affine Gaussian processes with a covariance function of compact support, which falls within the framework of the CLT. The parametric nature proves to be advantageous in the examination of the behavior of the test under the alternative hypothesis ($H1$). 
+The toy model we use to illustrate the test, is a parametric model that belongs to the class of affine Gaussian processes with a covariance function of compact support, commonly known as `$m$-dependent field', the parameter $m$ designates the range of dependence meaning that for $||x||_{2} > C$, $\text{Cov}\left(X_{0}, X_{x}\right) = 0$ and in particular $\text{Cov}\left(f_{t}^{\scriptscriptstyle (1)}(0), f_{s}^{\scriptscriptstyle (i)}(x)\right) = 0$. This model falls within the framework of the CLT. The parametric nature proves to be advantageous in the examination of the behavior of the test under the alternative hypothesis ($H1$). 
 Let $X$ be a stationary, isotropic centered Gaussian field with covariance function given by $\rho(x) = (1 -3||x||_{2}/2C + (||x||_{2}/2C)^{3})\mathbbm{1}_{||x||_{2} < C}, x \in \mathbb{R}^2$.
 Let ${Y(x; a, b, \theta): x \in \mathbb{R}^{2}}$ be a random field equal in distribution to  $\{X(Ax): x\in \mathbb{R}^{2}\}$, where 
 \begin{equation}
@@ -904,33 +881,46 @@ with $a, b \in \mathbb{R}^{2}$ and $\theta \in [0, \pi)$, the field $Y$ is also 
     {\includegraphics[scale=0.3]{EsperanceUnedirection.pdf}}
     \hspace{0.2cm}
  \caption{In each panel, we represent the values of first moment of the oriented perimeter in direction $2$ computed for different values of $b$, the theoretical curve Equation \eqref{propFisrtmoment} is depicted using a blue color and the empirical values are in orange, the computations were done with a Montecarlo $= 100000$, for different values of $b = 1, 2.5, 5, 10$ and $C = 40$. }
-\label{fig2}
+% \label{fig2}
 \end{figure}
 
+\begin{figure}[H]
+  \centering
+    {\includegraphics[scale=0.3]{EsperanceUnedirectionfonctionB.pdf}}
+    \hspace{0.2cm}
+ \caption{In each panel, we represent the values of first moment of the oriented perimeter in direction $2$ computed as a fonction of $b$ for a fixed level $t = 0$, the theoretical curve Equation \eqref{propFisrtmoment} is depicted using a blue color (blue) and the empirical values are in orange.}
+\label{figsubwindow}
+\end{figure}
 
+\begin{figure}[H]
+  \centering
+    {\includegraphics[scale=0.3]{fourConfNew.pdf}}
+    \hspace{0.2cm}
+ \caption{In each panel, we represent of the values of $\mathbb{E}\left(f^{1}(0,1)f^{2}(x)\right)$ for $x = (1, 1)$ computed for different values of $b$, the value of the theoretical curve Equation \eqref{thisthothree} in (blue)and the empirical values are in orange, the computations were done with a Montecarlo $= 100000$, for different values of $b = 1, 2.5, 5, 10$ and $C = 40$. }
+\label{figfourConNew}
+\end{figure}
 
+\begin{figure}[H]
+  \centering
+    {\includegraphics[scale=0.3]{Variance_40_30_10_1.pdf}}
+    \hspace{0.2cm}
+ \caption{We represent of the values of $\mathbb{V}\left(\mathcal{P}\right)(t)$, the value of the theoretical curve Equation \eqref{Thisthofour} in (blue) and the empirical values are in orange, the computations were done with a Montecarlo $= 100000$ to compute the theoretical value and Montecarlo $= 2000$ to compute the empirical one, for the values $b = 1$ and $C = 40, 30, 10,1$. }
+\label{figVariance}
+\end{figure}
+\begin{figure}[H]
+  \centering
+    {\includegraphics[scale=0.3]{subwindowVarestimation.pdf}}
+    \hspace{0.2cm}
+ \caption{We represent of the values of $\mathbb{V}\left(\mathcal{P}\right)(t)$, the value of the theoretical curve Equation \eqref{Thisthofour} in (blue) and the empirical values are in orange, the computations were done with a Montecarlo $= 100000$ to compute, the theoretical value and Montecarlo $= 2000$ to compute the empirical one, for the subwindow estimation of the variance, the computations were done using an image of size $= 4800$, $C = 40$ and the size of $T_{i}$ for the variance estimation was $240\times240$, for the values $b = 1$ and $C = 40$. }
+\label{figSubwindowVariance}
+\end{figure}
 
 \begin{figure}[H]
   \centering
     {\includegraphics[scale=0.4]{Testanisotropy2.pdf}}
     \hspace{0.2cm} 
  \caption{We represent the values of $\hat{\Phi}_{m}(b)$ see Equation \eqref{phihat} in blue color computed for a Montecarlo $= 2000$, for different values of $b = 1, 1.2, 1.5, 2$ and $C = 40$.}
-\label{fig2}
-\end{figure}
-\begin{figure}[H]
-  \centering
-    {\includegraphics[scale=0.4]{TestaniRatiopvaluesubwindow.pdf}}
-    \hspace{0.2cm} 
- \caption{We represent the values of $\hat{\Phi}_{m}(b)$ see Equation \eqref{phihat} in blue color computed for a Montecarlo $= 2000$, for different values of $b = 1, 1.2, 1.5, 2$ and $C = 40$.}
-\label{fig2}
-
-\end{figure}
-\begin{figure}[H]
-  \centering
-    {\includegraphics[scale=0.3]{EsperanceUnedirectionfonctionB.pdf}}
-    \hspace{0.2cm}
- \caption{In each panel, we represent the values of first moment of the oriented perimeter in direction $2$ computed as a fonction of $b$ for a fixed level $t = 0$, the theoretical curve Equation \eqref{propFisrtmoment} is depicted using a blue color (blue) and the empirical values are in orange, the computations were done using an image of size $= 4800$, $C = 40$ and the size of $T_{i}$ for the variance estimation was $240\times240$.}
-\label{figsubwindow}
+% \label{fig2}
 \end{figure}
 
 \begin{figure}[H]
@@ -938,7 +928,7 @@ with $a, b \in \mathbb{R}^{2}$ and $\theta \in [0, \pi)$, the field $Y$ is also 
     {\includegraphics[scale=0.4]{TestaniRatiopvalue.pdf}}
     \hspace{0.2cm} 
  \caption{$p_{\text{value}} = 2\mathbb{P}\left(Z \geq |z|\right)$ with $z = \frac{\mathbb{E}\left(R_{m,n}(t)\right) - 1}{\sqrt{\hat{\mathbb{V}\left(R_{m, n}(t)\right)}}}$ and $Z \sim \mathcal{N}(0,1)$ in blue color computed for a Montecarlo $= 2000$, for different values of $b = 1, 1.1, 1.2, 1.5, 2$ and $C = 40$.}
-\label{fig2}
+% \label{fig2}
 \end{figure}
 
 \begin{center}
@@ -955,26 +945,34 @@ with $a, b \in \mathbb{R}^{2}$ and $\theta \in [0, \pi)$, the field $Y$ is also 
 
 \begin{figure}[H]
   \centering
+    {\includegraphics[scale=0.4]{TestaniRatiopvaluesubwindow.pdf}}
+    \hspace{0.2cm} 
+ \caption{We represent the $p_{\text{value}} = 2\mathbb{P}\left(Z \geq |z|\right)$ with $z = \frac{\mathbb{E}\left(R_{m,n}(t)\right) - 1}{\sqrt{\hat{\mathbb{V}\left(R_{m, n}(t)\right)}}}$ and $Z \sim \mathcal{N}(0,1)$ the computations for the variance were done using an image of size $= 4800$, $C = 40$ and the size of $T_{i}$ for the variance estimation was $240\times240$  for different values of $b = 1, 1.2, 1.5, 2$ and $C = 40$.}
+% \label{fig2}
+
+\end{figure}
+\begin{figure}[H]
+  \centering
     {\includegraphics[scale=0.4]{TestaniRatiopvaluetheta.pdf}}
     \hspace{0.2cm} 
  \caption{We represent $p_{\text{value}} = 2\mathbb{P}\left(N \geq |z|\right)$ with $z = \frac{\mathbb{E}\left(R_{m,n}(t)\right) - 1)}{\sqrt{\hat{\mathbb{V}\left(R_{m, n}(t)\right)}}}$ and $N \sim \mathcal{N}(0,1)$ in blue color computed for a Montecarlo $= 2000$, for different values of $b = 1.1$ and $\theta = \pi/12, \pi/8, \pi/6, \pi/3$ and $C = 40$.}
-\label{fig2}
+% \label{fig2}
 \end{figure}
 
-\paragraph{Blind angle}It is important to note that we only test a form of local isotropy, with preferential axis $(e_1,e_2)$ there exist anisotropic models where $\rho(e_1) = \rho(e_2)$, like it is the case when $\theta = \pi/4$, in that case the model is clearly anisotropic as we can see Figure and the test will accept the hypothesis. 
+\paragraph{Blind angle}It is important to note that we only test a form of local isotropy, with preferential axis $(e_1,e_2)$ there exist anisotropic models where $\rho(e_1) = \rho(e_2)$, like it is the case when $\theta = \pi/4$, in that case the model is clearly anisotropic as we can see Figure and the test will accept the hypothesis. \textcolor{red}{Add discussion about this, l'erreur de type 1 et 2.}
 \begin{figure}[H]
   \centering
     {\includegraphics[scale=0.4]{TestaniRatiopvaluepi4.pdf}}
     \hspace{0.2cm} 
  \caption{We represent $p_{\text{value}} = 2\mathbb{P}\left(N \geq |z|\right)$ with $z = \frac{\mathbb{E}\left(R_{m,n}(t)\right) - 1)}{\sqrt{\hat{\mathbb{V}\left(R_{m, n}(t)\right)}}}$ and $N \sim \mathcal{N}(0,1)$ in blue color computed for a Montecarlo $= 2000$, for different values of $b = 1.1$ and $\theta = \pi/4$ and $C = 40$.}
-\label{fig2}
+% \label{fig2}
 \end{figure}
 \begin{figure}[H]
   \centering
     {\includegraphics[scale=0.4]{TestaniPhi0.pdf}}
     \hspace{0.2cm} 
  \caption{We represent the values of $\hat{\Phi}_{m}$ see Equation \eqref{phihat}, computed as a function of $b$ and a fixed value $t=0$ in blue color for a Montecarlo $= 2000$, and $C = 40$.}
-\label{fig2}
+% \label{fig2}
 \end{figure}
 
 \begin{figure}[H]
@@ -983,23 +981,62 @@ with $a, b \in \mathbb{R}^{2}$ and $\theta \in [0, \pi)$, the field $Y$ is also 
     {\includegraphics[scale=0.2]{TestaniRatiovsTVA.pdf}}
     \hspace{0.2cm} 
  \caption{We represent the values of the mean of the ratio between the oriented perimeter $\mathbb{E}\left(\frac{\mathcal{P}^{(1)}(0)}{\mathcal{P}^{(2)}(0)}\right)$ in blue and the ratio between of the empirical value for $\hat{\rho(e_i)}$ computed using the first moment of the total variation (\ref{totalvariation}) for different values of $b$, Montecarlo $= 500$, $t = 0$ and $C = 40$.}
-\label{fig2}
+% \label{fig2}
 \end{figure}
-
-\subsection{directional sotropy test on real world Data}
+\subsection{Application of the local isotropy test to real world Data}
 \paragraph{Study of the anisotropic nature of bone X-rays.}
 The X-ray images are from an retrospective multi-centric study that was conducted at
 three French research hospitals (Amiens, Orleans and Cochin in Paris). Patients were recruited from a program originated by the hospital of Orleans between Nov. 2004 and Feb. 2006. We analyzed $245$ X-ray images of calcaneus bones. 
-%to assess if the distribution of the images is isotropic or not.  and used a geometric tool to do so, but first and for most, their is a necessary post processing step which is to  to stationarize the images, in order to be in the correct framework.
-We first applied a preprocessing step in order to get stationary images. This step is performed by sustracting the trend which is represented by a plane obtained via a mean-square linear regression.
+We first applied a preprocessing step in order to get stationary images. This step is performed by substracting the trend which is represented by a plane obtained via a mean-square linear regression, to avoid boundarie issues, we decided to crop from a $400\times400$  image to a $300\times300$ image.
 \begin{figure}[H]
 \centering
 {\includegraphics[scale=0.5]{UnonstationariserUstationariser.pdf}}
- \caption{Stationnarized image of a bone x-ray, with it's associted excursion sets thresholded at the first, second and third quartile.}
+ \caption{Stationnarized image of a bone x-ray, with its associated excursion sets thresholded at the first, second and third quartile.}
 \label{fig22}
 \end{figure}
-Estimation of $\rho(e_1)\sim0.94$ and $\rho(e_2)\sim0.96$
-\subsubsection{Behavior at large distance.}
+\paragraph{Applying the local isotropy test.}The first analysis of Figure \ref{figBoxplot} suggests that an additional pre-processing step is required. We observe a cluster of points for which the ratio $\mathcal{P}_{1}(q_{\alpha})/\mathcal{P}_{2}(q_{\alpha}) < 1$, which means that the corresponding images are misoriented. Thus, before proceeding with the analysis, it is necessary to apply a $\pi/2$-rotation to these images, which amounts to interchanging the values of $\mathcal{P}_{1}(q_{\alpha})$ and $ \mathcal{P}_{2}(q_{\alpha})$, here is the new boxplot that,
+\vspace{-0.5cm}
+\begin{figure}[H]
+  \centering
+    {\includegraphics[scale=0.4]{Boxplotimageretourne.pdf}}
+    \hspace{0.2cm}
+ \caption{For $\alpha \in [0.15, 0.99]$, we represent the boxplot of the ratio between the two oriented perimeters computed at $t_{\alpha}$ level, $\mathcal{P}^{1}(t_{\alpha}), \mathcal{P}^{2}(t_{\alpha})$, for real thresholded images of bone X-rays.}
+\label{Boxplotretournee}
+\end{figure}
+\vspace{-0.5cm}
+We can now proceed to apply the local isotropy test, we start by computing the ratio $R_{i}(q_{\alpha})$ for each level set of the image $U_{i}$ at quantile level $\alpha$, with then compute the $p_{value}(q_{\alpha}) = 2(1-\mathbb{P}\left(\mathcal{N} \leq \left|\overline{R}_{n}(q_{\alpha}) - 1)\right|/\overline{\sigma}_{n}(q_{\alpha})\right))$. 
+\begin{figure}[H]
+  \centering
+    {\includegraphics[scale=0.38]{Testalphadonnereel.pdf}}
+    \hspace{0.2cm}
+ \caption{For $\alpha \in [0.15, 0.99]$, we represent the $p_{value}$ of the test computed for different levels $q_{alpha}$ for real thresholded images of bone X-rays.}
+% \label{fig}
+\end{figure}
+The $p_{value}$ is lower than $0.001$, except for extreme values of $q_{\alpha}$ (\textit{i.e} $\alpha = 0.99$), this leads us to reject $H_{0}$ of having local isotropy, furthermore, when analyzing Figure \ref{Boxplotretournee} the distribution of the ratio $\left(R_{i}(t)\right)_{i\leq n}$ seems to be invariant in regards to the threshold level as cited in \ref{casdegenerer}, this suggests that the field is highly dependent, the next step would be to estimate $\rho(e_i)$ by using the total variation of the image by applying Proposition \ref{Variationtotal}. 
+% \begin{figure}[H]
+%   \centering
+%     {\includegraphics[scale=0.4]{rho.pdf}}
+%     \hspace{0.2cm}
+%  \caption{For $\alpha \in [0.15, 0.99]$, we represent the $p_{value}$ of the test computed for different levels $q_{alpha}$ for real thresholded images of bone X-rays.}
+% % \label{fig}
+% \end{figure}
+% \begin{figure}[H]
+%   \centering
+%     {\includegraphics[scale=0.4]{boxplotrho.pdf}}
+%     \hspace{0.2cm}
+%  \caption{For $\alpha \in [0.15, 0.99]$, we represent the $p_{value}$ of the test computed for different levels $q_{alpha}$ for real thresholded images of bone X-rays.}
+% % \label{fig}
+% \end{figure}
+\begin{figure}[H]
+  \centering
+    {\includegraphics[scale=0.4]{rhoss.pdf}}
+    \hspace{0.2cm}
+ \caption{On the left side of the image, we represent the couple $\left(\hat{\rho}_{i}(e_1), \hat{\rho}_{i}(e_2)\right)$ for each image $U_{i}$ and on the right side, we represent the boxplot of $(\hat{\rho}_{i}(e_1))_{i \leq n}$ (blue) and $(\hat{\rho}_{i}(e_2))_{i \leq n}$ (orange).}
+\label{boxplotrho}
+\end{figure}
+Looking at Figure \ref{boxplotrho}, it confirms the highly dependence behavior of the field.
+\appendix 
+\section{Behavior at large distance.}
 Considering the case where the size of the window $S$ goes to infinity, and assuming that $\rho(x) \to 0$ when $||x||_{2} \to \infty$, we would like to study the decay of $\text{Cov}\left(f_{t}^{\scriptscriptstyle(1)}(0), f_{s}^{\scriptscriptstyle(i)}(x) \right)$ for~$||x||_{2} >> 1$,  
 \begin{Lemma}
 \label{lemmarx}
@@ -1077,29 +1114,6 @@ the limit of the general term as $m$ goes to infinity is $\text{Cov}\left(f_{t}^
 Besides, we just proved that for $m \in \mathbb{N}$, for all $x\in \mathbb{Z}^{2}$, $\left|\text{Cov}\left(f_{t}^{\scriptscriptstyle(1)}(0), f_{s}^{\scriptscriptstyle(i)}(x)\right)\right| \leq Cr(x)$, thus applying the dominated convergence theorem, if $\sum_{x \in \mathbb{Z}^{2}} r(x) < \infty$ then, $\lim_{m \to \infty}\text{Cov}\left(\frac{1}{m}\mathcal{P}_{m}^{\scriptscriptstyle (1)}(t), \frac{1}{m}\mathcal{P}_{m}^{\scriptscriptstyle (1)}(s) \right)$ exists.
 \end{proof}
 
-\begin{figure}[H]
-  \centering
-    {\includegraphics[scale=0.3]{fourConfNew.pdf}}
-    \hspace{0.2cm}
- \caption{In each panel, we represent of the values of $\mathbb{E}\left(f^{1}(0,1)f^{2}(x)\right)$ for $x = (1, 1)$ computed for different values of $b$, the value of the theoretical curve Equation \eqref{thisthothree} in (blue)and the empirical values are in orange, the computations were done with a Montecarlo $= 100000$, for different values of $b = 1, 2.5, 5, 10$ and $C = 40$. }
-\label{fig2}
-\end{figure}
-
-\begin{figure}[H]
-  \centering
-    {\includegraphics[scale=0.3]{Variance_40_30_10_1.pdf}}
-    \hspace{0.2cm}
- \caption{We represent of the values of $\mathbb{V}\left(\mathcal{P}\right)(t)$, the value of the theoretical curve Equation \eqref{Thisthofour} in (blue) and the empirical values are in orange, the computations were done with a Montecarlo $= 100000$ to compute the theoretical value and Montecarlo $= 2000$ to compute the empirical one, for the values $b = 1$ and $C = 40, 30, 10,1$. }
-\label{fig2}
-\end{figure}
-\begin{figure}[H]
-  \centering
-    {\includegraphics[scale=0.3]{subwindowVarestimation.pdf}}
-    \hspace{0.2cm}
- \caption{We represent of the values of $\mathbb{V}\left(\mathcal{P}\right)(t)$, the value of the theoretical curve Equation \eqref{Thisthofour} in (blue) and the empirical values are in orange, the computations were done with a Montecarlo $= 100000$ to compute, the theoretical value and Montecarlo $= 2000$ to compute the empirical one, for the subwindow estimation of the variance, the computations were done using an image of size $= 4800$, $C = 40$ and the size of $T_{i}$ for the variance estimation was $240\times240$, for the values $b = 1$ and $C = 40$. }
-\label{fig2}
-\end{figure}
-\appendix 
 \section{Computation of the covariance for the three cells configuration}
 Let us consider the particular case where $\left\{ X_{0}, X_{e_1}\right\} \cap \left\{ X_{x}, X_{x+e_i}\right\} \neq \emptyset $,
  % $x \in \left\{-e_1, e_1, -e_2, e_2, (1,-1) \right\}$, 
@@ -1164,7 +1178,7 @@ Thus, putting everything together, we get
     {\includegraphics[scale=0.3]{ThreeConfNew.pdf}}
     \hspace{0.2cm}
  \caption{In each panel, we represent of the values of $\mathbb{E}\left(f^{1}(0,1)f^{2}(x)\right)$ for $x = (1,-1)$ computed for different values of $b$, the value of the theoretical curve Equation \eqref{thisthothree} in (blue)and the empirical values are in orange, the computations were done with a Montecarlo $= 100000$, for different values of $b = 1, 2.5, 5, 10$ and $C = 40$. }
-\label{fig2}
+\label{figThreeconfnew}
 \end{figure}
 Regarding the three cells configuration, one would have to reconsider the expression from the beginning and integrate the third variable $W$ that has a non vanishing variance in the independent regime \textit{i.e.} $\rho(e_1) = \rho(2e_1)=0$. Thus, those computations would give us the following expression,
 {\tiny
